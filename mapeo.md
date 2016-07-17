@@ -2,28 +2,42 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. Artifact Canceling</a>
+<li><a href="#sec-1">1. Preprocessing</a>
 <ul>
-<li><a href="#sec-1-1">1.1. % Impulsive artifact removal from each ECG channel,</a></li>
-<li><a href="#sec-1-2">1.2. liquid-dsp -&gt; c++ library</a></li>
-<li><a href="#sec-1-3">1.3. aquila -&gt; c++ library</a></li>
-<li><a href="#sec-1-4">1.4. spuc -&gt; c++ library</a></li>
-<li><a href="#sec-1-5">1.5. libc, libm, fftw -&gt; c libraries</a></li>
-<li><a href="#sec-1-6">1.6. Digital filters -&gt; github.com/vinniefalco/DSPFilters -&gt; c++ library</a></li>
+<li><a href="#sec-1-1">1.1. Artifact Canceling</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. liquid-dsp -&gt; c++ library</a></li>
+<li><a href="#sec-1-1-2">1.1.2. aquila -&gt; c++ library</a></li>
+<li><a href="#sec-1-1-3">1.1.3. spuc -&gt; c++ library</a></li>
+<li><a href="#sec-1-1-4">1.1.4. libc, libm, fftw -&gt; c libraries</a></li>
+<li><a href="#sec-1-1-5">1.1.5. Digital filters -&gt; github.com/vinniefalco/DSPFilters -&gt; c++ library</a></li>
 </ul>
 </li>
-<li><a href="#sec-2">2. Detrending</a></li>
-<li><a href="#sec-3">3. Power Line interference removal by notch filtering</a></li>
-<li><a href="#sec-4">4. Independent Component Analysis</a>
-<ul>
-<li><a href="#sec-4-1">4.1. LibICA</a></li>
+<li><a href="#sec-1-2">1.2. Detrending</a></li>
+<li><a href="#sec-1-3">1.3. Power Line interference removal by notch filtering</a></li>
 </ul>
 </li>
-<li><a href="#sec-5">5. Signal Interpolation</a></li>
-<li><a href="#sec-6">6. Channel selection and mother QRS detection</a></li>
-<li><a href="#sec-7">7. Mother QRS cancelling</a></li>
-<li><a href="#sec-8">8. Source separation by ICA on residual signals</a></li>
-<li><a href="#sec-9">9. Channel selection and Fetal QRS detection</a></li>
+<li><a href="#sec-2">2. mECG separation and canceling</a>
+<ul>
+<li><a href="#sec-2-1">2.1. Independent Component Analysis</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1. LibICA</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2. Signal Interpolation</a></li>
+<li><a href="#sec-2-3">2.3. Channel selection and mother QRS detection</a></li>
+<li><a href="#sec-2-4">2.4. Mother QRS cancelling</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. fECG extraction and fQRS detection</a>
+<ul>
+<li><a href="#sec-3-1">3.1. Source separation by ICA on residual signals</a></li>
+<li><a href="#sec-3-2">3.2. Channel selection and Fetal QRS detection</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. All</a></li>
+<li><a href="#sec-5">5. Evaluation code</a></li>
+<li><a href="#sec-6">6. Task related with c code implementation</a></li>
 </ul>
 </div>
 </div>
@@ -31,29 +45,29 @@ Documento para mapear todo el código de Varanini
 
 ECG -> 60000x4 (4canales 60000 muestras) 1000Hz
 
-# Artifact Canceling
+# Preprocessing
 
-% -&#x2014; Artifact canceling -&#x2014;
-% X=FecgFecgImpArtCanc(ECG,fs,cName,graph,dbFlag);
-X=FecgImpArtCanc(ECG,fs,cName,0,0);
+## Artifact Canceling
 
-## % Impulsive artifact removal from each ECG channel,
-
+  % -&#x2014; Artifact canceling -&#x2014;
+  % X=FecgFecgImpArtCanc(ECG,fs,cName,graph,dbFlag);
+  X=FecgImpArtCanc(ECG,fs,cName,0,0);
+ % Impulsive artifact removal from each ECG channel,
 % applying the function "ImpArtElimS" to each channel.
 
 Median filter -> Implementation
 
-## liquid-dsp -> c++ library
+### liquid-dsp -> c++ library
 
-## aquila -> c++ library
+### aquila -> c++ library
 
-## spuc -> c++ library
+### spuc -> c++ library
 
-## libc, libm, fftw -> c libraries
+### libc, libm, fftw -> c libraries
 
-## Digital filters -> github.com/vinniefalco/DSPFilters -> c++ library
+### Digital filters -> github.com/vinniefalco/DSPFilters -> c++ library
 
-# Detrending
+## Detrending
 
 %   ECG detrending
 %
@@ -63,12 +77,14 @@ Median filter -> Implementation
 %  and the estimated baseline. 
 %  In case of residual artifacts due to fast baseline movements, median filtering is used.
 
-# Power Line interference removal by notch filtering
+## Power Line interference removal by notch filtering
 
   % Analize el espectro en frecuencia para determinar si aplica un notch a 50Hz o a 60 Hz. y despues lo aplica zero phase filter
 % Notch filter
 
-# Independent Component Analysis
+# mECG separation and canceling
+
+## Independent Component Analysis
 
 % &#x2013;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;
 %   Fecg: Independent Component Analysis for mother ecg separation
@@ -78,15 +94,15 @@ Median filter -> Implementation
 %   was run a second time using the kurtosis.
 FastICA, Hyvarinen ()
 
-## LibICA
+### LibICA
 
-# Signal Interpolation
+## Signal Interpolation
 
 Interpolacion de la señal usando fft
 
 fftw-> Convertir a fft y luego conversion inversa con mas puntos.
 
-# Channel selection and mother QRS detection
+## Channel selection and mother QRS detection
 
 %   Fecg: "Mother" QRS detection
 %  - Best mother ECG selection based on a priori information on mother ECG pseudo-periodicity.
@@ -98,7 +114,7 @@ fftw-> Convertir a fft y luego conversion inversa con mas puntos.
 %
 % Tambien QRS detector
 
-# Mother QRS cancelling
+## Mother QRS cancelling
 
 % &#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;
 % Fecg: "Mother" ECG canceling using  PQRST approximation obtained by 
@@ -108,7 +124,9 @@ SVD implementacion C: Probably CLAPACK ->
 gams.nist.gov 
 www.netlib.org
 
-# Source separation by ICA on residual signals
+# fECG extraction and fQRS detection
+
+## Source separation by ICA on residual signals
 
 %   Fecg: Fetal ecg enhancement by ICA
 %   Fixed point algorithm of Hyvarinen with deflationary ortogonalization is applied.
@@ -116,7 +134,9 @@ www.netlib.org
 %   produces more robust estimates. In case of failure of convergence the algorithm 
 %   was run a second time using the kurtosis.
 
-# Channel selection and Fetal QRS detection
+## Channel selection and Fetal QRS detection
+
+# All
 
 % -&#x2014; detrending  -&#x2014;
 % Xd=FecgDetrFilt(X,fs,cName,graph,dbFlag);
@@ -158,3 +178,19 @@ qrsF=FecgQRSfDet(Ser,fs,cName,qrsM,graph,dbFlag,saveFig,saveFigRRf,qrsAf);
 %       and in backward starting from the end of such a interval
 %   - Best fetal QRS detection selection based on fetal RR variability and
 %     fetal-mother QRS position coincidence
+
+# Evaluation code
+
+-   Implemente el codigo de evaluacion usando la función tach del wfdb toolbox. Al parecer tiene un bug, donde los dos primeros valores son casi siempre iguales, y parecen errados.
+
+-   Ya envie un mensaje al repositorio de ellos para que lo tuvieran en cuenta.
+
+# Task related with c code implementation
+
+-   Implementacion en C para leer csv files. Usar libreria libcsv
+
+-   Implementacion de filtros Notch, Wandering y cancelacion de artefactos -> Ventana de observación de 5segundos?
+
+-   Al parecer mayoria de señales convergen para cosh ica!
+
+-   Concentrarse en implementación preprocessing (2 semanas) -> 2h/dia.

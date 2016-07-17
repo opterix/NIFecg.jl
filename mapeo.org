@@ -1,23 +1,24 @@
 Documento para mapear todo el código de Varanini
 
 ECG -> 60000x4 (4canales 60000 muestras) 1000Hz
-* Artifact Canceling
-    % ---- Artifact canceling ----
-    % X=FecgFecgImpArtCanc(ECG,fs,cName,graph,dbFlag);
-    X=FecgImpArtCanc(ECG,fs,cName,0,0);
-** % Impulsive artifact removal from each ECG channel,
+
+* Preprocessing
+** Artifact Canceling
+     % ---- Artifact canceling ----
+     % X=FecgFecgImpArtCanc(ECG,fs,cName,graph,dbFlag);
+     X=FecgImpArtCanc(ECG,fs,cName,0,0);
+    % Impulsive artifact removal from each ECG channel,
    % applying the function "ImpArtElimS" to each channel.
    
 Median filter -> Implementation
 
-** liquid-dsp -> c++ library
-** aquila -> c++ library
-** spuc -> c++ library
-** libc, libm, fftw -> c libraries
-** Digital filters -> github.com/vinniefalco/DSPFilters -> c++ library
-
-
-* Detrending
+*** liquid-dsp -> c++ library
+*** aquila -> c++ library
+*** spuc -> c++ library
+*** libc, libm, fftw -> c libraries
+*** Digital filters -> github.com/vinniefalco/DSPFilters -> c++ library
+    
+** Detrending
 %   ECG detrending
 %
 %  A baseline signal is estimated applying a low pass Butterworth filter 
@@ -26,12 +27,12 @@ Median filter -> Implementation
 %  and the estimated baseline. 
 %  In case of residual artifacts due to fast baseline movements, median filtering is used.
 
-* Power Line interference removal by notch filtering
+** Power Line interference removal by notch filtering
   % Analize el espectro en frecuencia para determinar si aplica un notch a 50Hz o a 60 Hz. y despues lo aplica zero phase filter
 % Notch filter
 
-
-* Independent Component Analysis
+* mECG separation and canceling
+** Independent Component Analysis
 % -----------------------------------------------------------------------------------
 %   Fecg: Independent Component Analysis for mother ecg separation
 %   Fixed point algorithm of Hyvarinen with deflationary ortogonalization is applied.
@@ -40,14 +41,14 @@ Median filter -> Implementation
 %   was run a second time using the kurtosis.
 FastICA, Hyvarinen ()
 
-** LibICA
+*** LibICA
 
-* Signal Interpolation
+** Signal Interpolation
 Interpolacion de la señal usando fft
 
 fftw-> Convertir a fft y luego conversion inversa con mas puntos.
 
-* Channel selection and mother QRS detection
+** Channel selection and mother QRS detection
 %   Fecg: "Mother" QRS detection
 %  - Best mother ECG selection based on a priori information on mother ECG pseudo-periodicity.
 %    A raw derivative filter signal obtained as the difference between 
@@ -58,7 +59,7 @@ fftw-> Convertir a fft y luego conversion inversa con mas puntos.
 %
 % Tambien QRS detector
 
-* Mother QRS cancelling
+** Mother QRS cancelling
 
 % ---------------------------------------------------------------------------------------------
 % Fecg: "Mother" ECG canceling using  PQRST approximation obtained by 
@@ -68,18 +69,19 @@ SVD implementacion C: Probably CLAPACK ->
 gams.nist.gov 
 www.netlib.org
 
-* Source separation by ICA on residual signals
+* fECG extraction and fQRS detection
 
+** Source separation by ICA on residual signals
+   
 %   Fecg: Fetal ecg enhancement by ICA
 %   Fixed point algorithm of Hyvarinen with deflationary ortogonalization is applied.
 %   In a first attempt the hyperbolic cosine as contrast function is used because it 
 %   produces more robust estimates. In case of failure of convergence the algorithm 
 %   was run a second time using the kurtosis.
 
-
-* Channel selection and Fetal QRS detection
-
-
+** Channel selection and Fetal QRS detection
+   
+* All
     
     % ---- detrending  ----
     % Xd=FecgDetrFilt(X,fs,cName,graph,dbFlag);
@@ -121,3 +123,14 @@ www.netlib.org
 %       and in backward starting from the end of such a interval
 %   - Best fetal QRS detection selection based on fetal RR variability and
 %     fetal-mother QRS position coincidence
+
+* Evaluation code
+
+- Implemente el codigo de evaluacion usando la función tach del wfdb toolbox. Al parecer tiene un bug, donde los dos primeros valores son casi siempre iguales, y parecen errados. 
+- Ya envie un mensaje al repositorio de ellos para que lo tuvieran en cuenta.
+
+* Task related with c code implementation
+- Implementacion en C para leer csv files. Usar libreria libcsv
+- Implementacion de filtros Notch, Wandering y cancelacion de artefactos -> Ventana de observación de 5segundos?
+- Al parecer mayoria de señales convergen para cosh ica!
+- Concentrarse en implementación preprocessing (2 semanas) -> 2h/dia.
