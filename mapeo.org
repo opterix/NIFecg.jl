@@ -138,5 +138,5 @@ www.netlib.org
 Se necesitan los siguientes paquetes:
 ** Octave-statistics 1.2.4
 ** Octave-signals
-** octave-pca
 ** Probablemente: liboctave-dev
+** lpc.m extraido de savanna
