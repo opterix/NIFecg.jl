@@ -134,3 +134,9 @@ www.netlib.org
 - Implementacion de filtros Notch, Wandering y cancelacion de artefactos -> Ventana de observación de 5segundos?
 - Al parecer mayoria de señales convergen para cosh ica!
 - Concentrarse en implementación preprocessing (2 semanas) -> 2h/dia.
+* Implementacion en Octave
+Se necesitan los siguientes paquetes:
+** Octave-statistics 1.2.4
+** Octave-signals
+** octave-pca
+** Probablemente: liboctave-dev
