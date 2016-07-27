@@ -8,8 +8,7 @@ ECG -> 60000x4 (4canales 60000 muestras) 1000Hz
      % X=FecgFecgImpArtCanc(ECG,fs,cName,graph,dbFlag);
      X=FecgImpArtCanc(ECG,fs,cName,0,0);
     % Impulsive artifact removal from each ECG channel,
-   % applying the function "ImpArtElimS" to each channel.
-   
+   % applying the function "ImpArtElimS" to each channel.   
 Median filter -> Implementation
 
 *** liquid-dsp -> c++ library
