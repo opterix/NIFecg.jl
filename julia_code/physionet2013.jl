@@ -11,20 +11,26 @@ csvdata=readcsv(string(ECGfiles, "/a23.csv"));
 ecgtime = csvdata[3:end,1];
 signals = csvdata[3:end,2:end];
 
-responsetype = Lowpass(3, fs=1000);
+fsamp=1000;
+
+responsetype = Lowpass(3, fs=fsamp);
 prototype=Butterworth(8);
 
 detrend_filter= digitalfilter(responsetype, prototype);
 
-sf=filtfilt(detrend_filter, signals[:,1])
 
-plot(ecgtime, signals[:,1])
-savefig("salida.png")
+#--Artifact canceling--
+X=ArtifCanceling(ECG, fsamp)
 
-plot(ecgtime, sf);
-savefig("filtered.png")
 
-clf()
+#sf=filtfilt(detrend_filter, signals[:,1])
+#plot(ecgtime, signals[:,1])
+#savefig("salida.png")
 
-plot(ecgtime, signals[:,1]-sf);
-savefig("detrended.png")
+#plot(ecgtime, sf);
+#savefig("filtered.png")
+
+#clf()
+
+#plot(ecgtime, signals[:,1]-sf);
+#savefig("detrended.png")
