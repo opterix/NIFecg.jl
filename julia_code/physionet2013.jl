@@ -13,24 +13,30 @@ signals = csvdata[3:end,2:end];
 
 fsamp=1000;
 
-responsetype = Lowpass(3, fs=fsamp);
+responsetype = Lowpass(3.5, fs=fsamp);
 prototype=Butterworth(8);
-
 detrend_filter= digitalfilter(responsetype, prototype);
 
 
 #--Artifact canceling--
-X=ArtifCanceling(ECG, fsamp)
+#X=ArtifCanceling(ECG, fsamp)
+
+#--Detrending signal
 
 
-#sf=filtfilt(detrend_filter, signals[:,1])
-#plot(ecgtime, signals[:,1])
-#savefig("salida.png")
+#--Notch filtering
 
-#plot(ecgtime, sf);
-#savefig("filtered.png")
+#--maternalICA
 
-#clf()
+#--signalInterpolation
 
-#plot(ecgtime, signals[:,1]-sf);
-#savefig("detrended.png")
+#--channelSelection and mother QRS
+
+#--mother QRS cancelling
+
+#--fetalICA
+
+#--channelSelection and fetal QRS
+
+
+
