@@ -17,5 +17,6 @@ end
 # Ejemplo de uso:
 # filepath="../data/a01.csv"
 # (ecgtime,ecg)=process_svs(filepath)
-# #ecgtime-> tiempo ecg
-# #ecg -> Matriz de 60000x4
+# #Resultado de la operación: 
+# # ecgtime-> tiempo ecg
+# # ecg -> Matriz de 60000x4
