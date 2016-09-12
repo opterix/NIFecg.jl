@@ -13,17 +13,17 @@ else
     C = cov(AECG, 2)
 end
 
-# FastICA
+#-------------- FastICA --------------
 
-M = fit(ICA, AECG, k; do_whiten=false)
-@test isa(M, ICA)
-@test indim(M) == m
-@test outdim(M) == k
-@test mean(M) == mv
-W = M.W
-@test_approx_eq transform(M, AECG) W' * (AECG .- mv)
-@test_approx_eq W'W eye(k)
-AECG_nowhite = W'*AECG
+# M = fit(ICA, AECG, k; do_whiten=false)
+# @test isa(M, ICA)
+# @test indim(M) == m
+# @test outdim(M) == k
+# @test mean(M) == mv
+# W = M.W
+# @test_approx_eq transform(M, AECG) W' * (AECG .- mv)
+# @test_approx_eq W'W eye(k)
+# AECG_nowhite = W'*AECG
 
 M = fit(ICA, AECG, k; do_whiten=true)
 @test isa(M, ICA)
@@ -49,15 +49,15 @@ subplot(414)
 
 figure(2)
 
-subplot(311)
-title("ICA_nowhite")
-plot(t[1:win], AECG_nowhite[1,1:win]', color="red", linewidth=1.0, linestyle="-")
-subplot(312)
-plot(t[1:win], AECG_nowhite[2,1:win]', color="black", linewidth=1.0, linestyle="-")
-subplot(313)
-plot(t[1:win], AECG_nowhite[3,1:win]', color="blue", linewidth=1.0, linestyle="-")
-
-figure(3)
+# subplot(311)
+# title("ICA_nowhite")
+# plot(t[1:win], AECG_nowhite[1,1:win]', color="red", linewidth=1.0, linestyle="-")
+# subplot(312)
+# plot(t[1:win], AECG_nowhite[2,1:win]', color="black", linewidth=1.0, linestyle="-")
+# subplot(313)
+# plot(t[1:win], AECG_nowhite[3,1:win]', color="blue", linewidth=1.0, linestyle="-")
+#
+# figure(3)
 
 subplot(311)
 title("ICA_white")
@@ -67,6 +67,6 @@ plot(t[1:win], AECG_white[2,1:win]', color="black", linewidth=1.0, linestyle="-"
 subplot(313)
 plot(t[1:win], AECG_white[3,1:win]', color="blue", linewidth=1.0, linestyle="-")
 
-return AECG_white, AECG_nowhite
+return AECG_white#, AECG_nowhite
 
 end

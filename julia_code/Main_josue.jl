@@ -1,29 +1,29 @@
-workspace()
-using MultivariateStats, Base.Test, DataFrames
-using PyPlot
-cd("/home/jarb/Documents/ExampleJUlia/")
+using MultivariateStats, Base.Test, DataFrames, PyPlot
+cd("/home/jarb/NI-Fecg/julia_code")
 
-include("ReadData.jl")
-include("MakeICAIndep.jl")
+include("process_svs.jl")
 include("MakeICAll.jl")
 
-global AECG, AECG_nowhite, AECG_white, t, n, k, m, data
+#global AECG, AECG_white, t, n, k, m
 
-# sources
-n = 60000 # numero de muestras
-k = 4 # numero de componentes
-m = 4 # numero de observacionhanges
-data = readtable("set-a/set-a-text/a01.csv") # data
+############# SOURCES #######################
+filepath="../data/a01.csv"
+#data = readtable("set-a/set-a-text/a01.csv") # data
+#t = linspace(0.0, 60.0, n) # time vector
 
-#Initializing
-AECG = zeros(n,4)
-AECG_nowhite = zeros(n,4)'
-AECG_white = zeros(n,4)'
-t = linspace(0.0, 60.0, n) # time vector
+############ LOAD DATA ######################
 
-###########################
-(AECG) = ReadData()
+#----------- Read and fix data --------------
+(t,AECG) = process_svs(filepath)
+(n,m) = size(AECG) # n - number of electros, m - sample size
 
-##########################
+
+########## SOURCE SEPARATION ################
+
+#----------------- ICA ----------------------
 #(AECG_white, AECG_nowhite) = MakeICAIndep(AECG)
-(AECG_white, AECG_nowhite) = MakeICAll(AECG)
+k = 4 # number of components
+PyPlot.close("all")
+(AECG_white) = MakeICAll(AECG)
+
+#----------------- FFT ----------------------
