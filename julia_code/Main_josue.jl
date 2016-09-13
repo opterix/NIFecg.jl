@@ -4,8 +4,6 @@ cd("/home/jarb/NI-Fecg/julia_code")
 include("process_svs.jl")
 include("MakeICAll.jl")
 
-#global AECG, AECG_white, t, n, k, m
-
 ############# SOURCES #######################
 filepath="../data/a01.csv"
 #data = readtable("set-a/set-a-text/a01.csv") # data
