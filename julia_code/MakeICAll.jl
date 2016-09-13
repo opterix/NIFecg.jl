@@ -2,8 +2,12 @@ function MakeICAll(AECG)
 
 ############################################33
 #ICA
-
+#(nf,mc) = size(AECG)
 AECG=AECG'
+
+for is in 1:m
+    AECG[:,is]= (AECG[:,is]-mean(AECG[:,is]))/std(AECG[:,is]);
+end
 
 mv = vec(mean(AECG,2))
 @assert size(AECG) == (m, n)
