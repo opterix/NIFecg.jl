@@ -3,6 +3,7 @@ cd("/home/jarb/NI-Fecg/julia_code")
 
 include("process_svs.jl")
 include("MakeICAll.jl")
+include("SortICA.jl")
 
 ############# SOURCES #######################
 filepath="../data/a01.csv"
@@ -13,7 +14,7 @@ filepath="../data/a01.csv"
 
 #----------- Read and fix data --------------
 (t,AECG) = process_svs(filepath)
-(n,m) = size(AECG) # n - number of electros, m - sample size
+(n,m) = size(AECG) # m - number of electros, n - sample size
 
 
 ########## SOURCE SEPARATION ################
@@ -23,5 +24,7 @@ filepath="../data/a01.csv"
 k = 4 # number of components
 PyPlot.close("all")
 (AECG_white) = MakeICAll(AECG)
+
+SortICA(AECG_white)
 
 #----------------- FFT ----------------------
