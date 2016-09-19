@@ -1,16 +1,21 @@
 function SortICA(AECG_white)
 
 variance = zeros(m)
-  variance[1]=var(AECG_white[1,:])
-  variance[2]=var(AECG_white[2,:])
-  variance[3]=var(AECG_white[3,:])
-  variance[4]=var(AECG_white[4,:])
-  println("Variance_components=$variance")
+for i in 1:m
+  variance[i]=var(AECG_white[:,i])
+end
 
-#  for
+variance_sort = sortperm(variance,rev=true)
 
-#AECG_sort =
+AECG_sort = zeros(n,m)
+for i in 1:m
+  indx=variance_sort[i]
+  AECG_sort[:,i]=AECG_white[:,indx]
+end
 
-#return
+#AECG_sort= AECG_sort'
+
+
+return AECG_sort
 
 end
