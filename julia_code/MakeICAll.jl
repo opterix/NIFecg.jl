@@ -10,6 +10,28 @@ for is in 1:m
     AECG[:,is]= (AECG[:,is]-mean(AECG[:,is]))/std(AECG[:,is]);
 end
 
+#------------------------
+
+srand(15678)
+
+## icagfun
+
+f = icagfun(:tanh)
+u, v = evaluate(f, 1.5)
+@test_approx_eq u 0.905148253644866438242
+@test_approx_eq v 0.180706638923648530597
+
+f = icagfun(:tanh, 1.5)
+u, v = evaluate(f, 1.2)
+@test_approx_eq u 0.946806012846268289646
+@test_approx_eq v 0.155337561057228069719
+
+f = icagfun(:gaus)
+u, v = evaluate(f, 1.5)
+@test_approx_eq u 0.486978701037524594696
+@test_approx_eq v -0.405815584197937162246
+
+
 #-------- Mean and covarience of data -----------------#
 mv = vec(mean(AECG,2))
 @assert size(AECG) == (m, n)
@@ -20,6 +42,17 @@ else
 end
 
 #-------------- FastICA --------------
+
+M = fit(ICA, AECG, k; do_whiten=false)
+@test isa(M, ICA)
+@test indim(M) == m
+@test outdim(M) == k
+@test mean(M) == mv
+W = M.W
+@test_approx_eq transform(M, AECG) W' * (AECG .- mv)
+@test_approx_eq W'W eye(k)
+AECG_nowhite = W'*AECG
+AECG_nowhite = AECG_nowhite'
 
 M = fit(ICA, AECG, k;do_whiten=true)#, winit=zeros(k,k))
 @test isa(M, ICA)

@@ -23,7 +23,7 @@ filepath="../data/a01.csv"
 #----------------- ICA ----------------------
 k = 4 # number of components
 (AECG_white) = MakeICAll(AECG)
-#----------------- Sort ICA results ----------------------
+#------------ Sort ICA results ----------------------
 (AECG_sort)=SortICA(AECG_white)
 
 
