@@ -1,5 +1,5 @@
 using MultivariateStats, Base.Test, DataFrames, PyPlot
-#cd("/home/jarb/NI-Fecg/julia_code")
+cd("/home/jarb/NI-Fecg/julia_code")
 
 include("process_svs.jl")
 include("Notch_Filter_Detrent.jl")
@@ -9,7 +9,7 @@ include("Plotting.jl")
 
 
 ############# SOURCES #######################
-filepath="../data/a01.csv"
+filepath="../data/a03.csv"
 #data = readtable("set-a/set-a-text/a01.csv") # data
 #t = linspace(0.0, 60.0, n) # time vector
 
