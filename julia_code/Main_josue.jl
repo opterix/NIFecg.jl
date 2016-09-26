@@ -9,7 +9,7 @@ include("Plotting.jl")
 
 
 ############# SOURCES #######################
-filepath="../data/a03.csv"
+filepath="../data/a01.csv"
 
 ############ LOAD DATA ######################
 #----------- Read and fix data --------------
@@ -24,12 +24,12 @@ filepath="../data/a03.csv"
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
-k = 2 # number of components
+k = 4 # number of components
 (AECG_white) = MakeICAll(AECG)
 #------------ Sort ICA results ----------------------
 (AECG_sort)=SortICA(AECG_white)
 
 
 ############### PLOTTING ###################
-seconds=1 #seconds to plot
+seconds=5 #seconds to plot
 Plotting(AECG,AECG_white,AECG_sort)
