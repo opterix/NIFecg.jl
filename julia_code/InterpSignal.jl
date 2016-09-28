@@ -1,26 +1,55 @@
-using Interpolations, DataFrames, ArrayFire
-N=9;
+using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP
+cd("/home/jarb/NI-Fecg/julia_code")
 
-srand(0);
- #a = @data([1.5, NA, NA, NA, NA, NA, 10.5]);
- a = ([1.5, 3, 6, 10.5]);
-  b = linspace(1, 100, 10);
-f=rand(N);
-t = linspace(0.0, 1, N) # time vector
+include("process_svs.jl")
+include("Notch_Filter_Detrent.jl")
+include("MakeICAll.jl")
+include("SortICA.jl")
+include("Plotting.jl")
 
 
-########### BSPLINE ############################
+############# SOURCES #######################
+filepath="../data/a01.csv"
 
-x = interpolate(b,BSpline(Linear()), OnGrid())
-B=zeros(length(b)*2)
-for i in 0:length(b)-1
-  tmpidxs = i+1.5
-  B[i*2+1] = b[i+1]
-  B[i*2+2] = x[tmpidxs]
-end
+############ LOAD DATA ######################
+#----------- Read and fix data --------------
+(t,AECG) = process_svs(filepath)
+(n,m) = size(AECG) # m - number of electros, n - sample size
 
-v1 = x[0.6]
-v2 = x[3.6]
+
+########### PREPROCESING ####################
+#------- Notch Filtering and detrending ------------
+(AECG, lowSignal) = notch_filter(AECG);
+
+
+########## SOURCE SEPARATION ################
+#----------------- ICA ----------------------
+k = 4 # number of components
+(AECG_white) = MakeICAll(AECG)
+#------------ Sort ICA results ----------------------
+(AECG_sort)=SortICA(AECG_white)
+# N=9;
+#
+# srand(0);
+#  #a = @data([1.5, NA, NA, NA, NA, NA, 10.5]);
+#  a = ([1.5, 3, 6, 10.5]);
+#   b = linspace(1, 100, 10);
+# f=rand(N);
+# t = linspace(0.0, 1, N) # time vector
+#
+#
+# ########### BSPLINE ############################
+#
+# x = interpolate(b,BSpline(Linear()), OnGrid())
+# B=zeros(length(b)*2)
+# for i in 0:length(b)-1
+#   tmpidxs = i+1.5
+#   B[i*2+1] = b[i+1]
+#   B[i*2+2] = x[tmpidxs]
+# end
+#
+# v1 = x[0.6]
+# v2 = x[3.6]
 #
 # ########## FOURIER ###########################3
 #
@@ -47,3 +76,37 @@ v2 = x[3.6]
 #   tmpidxs = idxs[i]:idxs[i+1]
 #   a[idxs[i]+1:idxs[i+1]-1] = linspace(a[idxs[i]],a[idxs[i+1]],length(tmpidxs))[2:end-1]
 # end
+
+
+###############################################################33
+Fe = 1000; #Sample rate
+Te = 1/Fe;
+Nech = 60000; #number of samples
+j =0 + 1im
+
+time = ([0:Te:(Nech-1)*Te]);
+timeDiscrete = ([0:1:Nech-1]')';
+frequency = (timeDiscrete/Nech)*Fe;
+
+signal = AECG_white[:,1]#linspace(1, 100, Nech);
+spectrum =  signal*exp(-2*pi*j*timeDiscrete'*timeDiscrete/Nech);
+fspec = [0:Nech-1]*Fe/Nech;
+reconstruction = spectrum*exp(2*pi*j*timeDiscrete'*timeDiscrete/Nech)/Nech;
+
+figure(4)
+subplot(121)
+title("Signal")
+plot(t,signal)
+subplot(122)
+plot(t,real(reconstruction),color="red")
+
+# **** interpolation ****
+
+Finterp = 2*Fe;
+Tinterp = 1/Finterp;
+TimeInterp = [0:Tinterp:(Nech-1)*Te];
+NechInterp = length(TimeInterp);
+TimeInterpDiscrete = [0:NechInterp-1];
+
+#Compute original signal value without any interpolation
+signalResampled = cos(2*pi*F1*(TimeInterp))+cos(2*pi*F2*(TimeInterp))+cos(2*pi*FMax*(TimeInterp));
