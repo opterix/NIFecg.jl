@@ -27,10 +27,10 @@ filepath="../data/a01.csv"
 k = 4 # number of components
 (AECG_white) = MakeICAll(AECG)
 #------------ Sort ICA results ----------------------
-#(AECG_sort)=SortICA(AECG_white)
+(AECG_sort)=SortICA(AECG_white)
 #----------- Resamplig signal -----------------------
 fact=2 # factor to resample the signal
-(AECG_resample) = InterpSignal(AECG_white)
+(t_resmp,AECG_resample) = InterpSignal(AECG_white)
 
 ############### PLOTTING ###################
 seconds=5 #seconds to plot
