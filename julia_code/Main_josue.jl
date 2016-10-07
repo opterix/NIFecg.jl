@@ -12,7 +12,7 @@ include("QRSm_detector.jl")
 
 ############# SOURCES #######################
 cd("/home/jarb/NI-Fecg/julia_code")
-filepath="../data/a01.csv"
+filepath="../data/a03.csv"
 
 
 ############ LOAD DATA ######################
@@ -22,7 +22,7 @@ filepath="../data/a01.csv"
 
 
 ############# GLOBAL VARIABLES ################
-window_size = 5 #seconds
+window_size = 10 #seconds
 rate_sample=1000 #Sample rate
 num_sample = window_size * rate_sample #number of samples
 
@@ -39,8 +39,8 @@ k = 4 # number of components
 #------------ Sort ICA results ----------------------
 (AECG_sort)=SortICA(AECG_white)
 #----------- Resamplig signal -----------------------
-fact=2 # factor to resample the signal
-(t_resmp,AECG_resample) = InterpSignal(AECG_white)
+#fact=2 # factor to resample the signal
+#(t_resmp,AECG_resample) = InterpSignal(AECG_white)
 #----------- QRS mother detector -----------------------
 (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white)
 
