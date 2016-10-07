@@ -6,8 +6,8 @@ function MakeICAll(AECG)
 AECG=AECG'
 
 # ------------------- Extract the mean value --------------------#
-for is in 1:m
-    AECG[:,is]= (AECG[:,is]-mean(AECG[:,is]))/std(AECG[:,is]);
+for i in 1:m
+    AECG[:,i]= (AECG[:,i]-mean(AECG[:,i]))/std(AECG[:,i]);
 end
 
 #------------------------
@@ -64,6 +64,6 @@ W = M.W
 AECG_white = W'*AECG
 AECG_white = AECG_white'
 
-return AECG_white#, AECG_nowhite
+return AECG_white
 
 end

@@ -1,21 +1,15 @@
-#Pkg.add("DSP");
-#Pkg.add("MultivariateStats")
-#Pkg.add("PyPlot")
-
-using DSP, MultivariateStats, PyPlot
-
 function notch_filter(x)
     #x=ecg; #read matrix ecg
-    Frec_Mues=1000;
-    time=60
+
+    #time=60
     #plot(ecgtime,signals[:,1]);
-    nmuestras=time*Frec_Mues
-    
+    #nmuestras=time*rate_sample
+
     #title("Pure ECG")
 
-    responsetype = Lowpass(3,fs=Frec_Mues);
+    responsetype = Lowpass(3,fs=rate_sample);
     prototype=Butterworth(8);
-    Notch=iirnotch(60,1,fs=Frec_Mues)
+    Notch=iirnotch(60,1,fs=rate_sample)
     detrend_filter= digitalfilter(responsetype, prototype);
 
     #sf=Array{Float64}(nmuestras, 4)
