@@ -37,14 +37,17 @@ t = t[1:num_sample,:]
  (AECG_fnotch, lowSignal) = notch_filter(AECG)
  println(size(AECG_fnotch))
 # #----------- Median filter ----------------
- window = 2000 # size of window in number of samples
- threshold = 15 # mV
-(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
+ #window = 5000 # size of window in number of samples
+ #threshold = 30 # mV
+#(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
+AECG_clean=AECG_fnotch
+
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
 k = m # number of components
 (AECG_white) = MakeICAll(AECG_clean)
+
 #------------ Sort ICA results ----------------------
 #(AECG_sort)=SortICA(AECG_white)
 #----------- Resamplig signal -----------------------
@@ -52,7 +55,7 @@ k = m # number of components
 #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
 #----------- QRS mother detector -----------------------
 (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white)
-#heart_rate_mother = size(QRSm_pos,2)
+heart_rate_mother = size(QRSm_pos,2)
 
 
 ############### PLOTTING ###################
