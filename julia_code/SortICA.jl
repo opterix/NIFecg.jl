@@ -1,5 +1,5 @@
 function SortICA(AECG_white)
-m=size(AECG_white,2)
+#m=size(AECG_white,2)
 variance = zeros(m)
 for i in 1:m
   variance[i]=var(AECG_white[:,i])

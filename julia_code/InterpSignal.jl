@@ -3,11 +3,11 @@ function InterpSignal(AECG_white)
 new_size=num_sample*fact;
 
 Te = 1/rate_sample;
-AECG_resample=zeros(new_size,4)
+AECG_resample=zeros(new_size,m)
 signal_resmp=[]
 #time = ([0:Te:(num_sample-1)*Te]);
 
-Finterp = 2*rate_sample;
+Finterp = fact*rate_sample;
 Tinterp = 1/Finterp;
 t_interp = [0:Tinterp:(num_sample)*Te];
 t_interp = t_interp[1:new_size,1]
