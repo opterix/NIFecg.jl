@@ -1,12 +1,12 @@
 function QRSm_detector(signal_mother)
 
-threshold_detc=0.2
-
+threshold_detc=0.3
+threshold_avoidnoise=200
 signal = signal_mother[1:num_sample,1]
 max_value = maximum(signal)
 min_value = minimum(signal)
 
-init=500
+init=1000
  scale_signal = []#zeros(num_sample,1)
 
 point_temp_max = zeros(num_sample,init)
@@ -18,6 +18,8 @@ QRSm_value_temp = ones(2,init)*NaN
  #global QRSm_pos = ones(2,2000)*NaN
  #global QRSm_value = ones(2,2000)*NaN
 
+acum_noise_max = threshold_avoidnoise
+acum_noise_min = threshold_avoidnoise
 acum_max = 0
 acum_min = 0
 indx_max = 1
@@ -29,7 +31,7 @@ for i in 1:num_sample
 #println(i)
     #------ max peaks -------------------
     #(acum_max,indx_max)= max_points(acum_max,indx_max)
-  if scale_signal >= (1-threshold_detc)
+  if scale_signal >= (1-threshold_detc) && acum_noise_max >= threshold_avoidnoise
       acum_max=acum_max+1
       point_temp_max[acum_max,indx_max] = signal[i,1]
       pos_temp_max[acum_max,indx_max] = i/rate_sample
@@ -39,13 +41,15 @@ for i in 1:num_sample
        QRSm_pos_temp[1,indx_max] = pos_temp_max[pos,indx_max]
        QRSm_value_temp[1,indx_max] =  value_temp
        indx_max=indx_max+1
+       acum_max=0
+       acum_noise_max=0
      end
-      acum_max=0
+     acum_noise_max=acum_noise_max+1
   end
 
     #------ min peaks -------------------
     #(acum_min,indx_min)= min_points(acum_min,indx_min)
-  if scale_signal <= (threshold_detc)
+  if scale_signal <= (threshold_detc) && acum_noise_min >= threshold_avoidnoise
        acum_min=acum_min+1
        point_temp_min[acum_min,indx_min] = signal[i,1]
        pos_temp_min[acum_min,indx_min] = i/rate_sample
@@ -55,8 +59,10 @@ for i in 1:num_sample
         QRSm_pos_temp[2,indx_min] = pos_temp_min[pos,indx_min]
         QRSm_value_temp[2,indx_min] =  value_temp
         indx_min=indx_min+1
+        acum_min=0
+        acum_noise_min = 0
       end
-       acum_min=0
+      acum_noise_min=acum_noise_min+1
   end
 
 end
