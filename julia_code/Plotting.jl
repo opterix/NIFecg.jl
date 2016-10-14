@@ -28,7 +28,7 @@ end
    subplot("$(k)1$(i)")
    if i == 1
      title("ICA_white")
-     plot(QRSm_pos[1,:]',QRSm_value[1,:]', "ro")
+     plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
      #plot(QRSm_pos[2,:]',QRSm_value[2,:]', "bo")
    end
    plot(t[1:num_sample], AECG_white[1:num_sample,i], color="black", linewidth=1.0, linestyle="-")
