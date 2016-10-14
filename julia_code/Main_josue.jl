@@ -18,7 +18,7 @@ filepath="../data/a03.csv"
 
 
 ############# GLOBAL VARIABLES ################
-window_size = 60 #seconds
+window_size = 5 #seconds
 rate_sample=1000 #Sample rate
 num_sample = window_size * rate_sample #number of samples
 
@@ -33,14 +33,13 @@ t = t[1:num_sample,:]
 
 
 # ########### PREPROCESING ####################
-# #------- Notch Filtering and detrending ------------
+#------- Notch Filtering and detrending ------------
  (AECG_fnotch, lowSignal) = notch_filter(AECG)
-# #----------- Median filter ----------------
- #window = 5000 # size of window in number of samples
- #threshold = 30 # mV
-#(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
-AECG_clean=AECG_fnotch
-
+#----------- Median filter ----------------
+window = 2000 # size of window in number of samples
+threshold = 30 # mV
+(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
+#AECG_clean = AECG_fnotch
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
