@@ -1,34 +1,38 @@
 ############## LIBRARIES ##############
 using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP
 
-############# SOURCES #######################
-func_path="julia_code/"
-data_path="data/"
 
 ############# FUNCTIONS ####################
-include("$(func_path)process_svs.jl")
-include("$(func_path)Notch_Filter_Detrent.jl")
-include("$(func_path)MakeICAll.jl")
-include("$(func_path)SortICA.jl")
-include("$(func_path)Plotting.jl")
-include("$(func_path)InterpSignal.jl")
-include("$(func_path)QRSm_detector.jl")
-include("$(func_path)MedianFilter.jl")
+include("process_svs.jl")
+include("Notch_Filter_Detrent.jl")
+include("MakeICAll.jl")
+include("QRSm_detector.jl")
+include("PlotTestQRSmDetector.jl")
 
 ############# DATA BASE ###############
+data_path="/home/jarb/NI-Fecg/data/"
+test_path="/home/jarb/NI-Fecg/test_image/"
 list_file=readdir(data_path)
-
-
+num_files=size(list_file,1)
 
 ############# GLOBAL VARIABLES ################
 window_size = 60 #seconds
 rate_sample=1000 #Sample rate
 num_sample = window_size * rate_sample #number of samples
+global m,n,k
 
 
+#---------- Initialize varibles
+heart_rate_mother = zeros(num_files)
+
+
+###########
+for i in 1:num_files
+
+file_name = list_file[i]
 ############ LOAD DATA ######################
 #----------- Read and fix data --------------
-(t,AECG) = process_svs(filepath)
+(t,AECG) = process_svs(joinpath(data_path,file_name))
 #----------- Load data according global varaibles ----
 AECG = AECG[1:num_sample,:]
 t = t[1:num_sample,:]
@@ -38,7 +42,6 @@ t = t[1:num_sample,:]
 # ########### PREPROCESING ####################
 # #------- Notch Filtering and detrending ------------
  (AECG_fnotch, lowSignal) = notch_filter(AECG)
- println(size(AECG_fnotch))
 # #----------- Median filter ----------------
  #window = 5000 # size of window in number of samples
  #threshold = 30 # mV
@@ -52,8 +55,11 @@ k = m # number of components
 (AECG_white) = MakeICAll(AECG_clean)
 #----------- QRS mother detector -----------------------
 (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white)
-heart_rate_mother = size(QRSm_pos,2)
 
+#QRSm[i].pos = QRSm_pos
+#QRSm[i].value = QRSm_value
+heart_rate_mother[i] = size(QRSm_pos,2)
 
 ############### PLOTTING ###################
-Plotting()
+PlotTestQRSmDetector(test_path,file_name,QRSm_pos,QRSm_value,t,AECG_white)
+end
