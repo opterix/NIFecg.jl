@@ -35,7 +35,6 @@ t = t[1:num_sample,:]
 # ########### PREPROCESING ####################
 # #------- Notch Filtering and detrending ------------
  (AECG_fnotch, lowSignal) = notch_filter(AECG)
- println(size(AECG_fnotch))
 # #----------- Median filter ----------------
  #window = 5000 # size of window in number of samples
  #threshold = 30 # mV
