@@ -13,7 +13,7 @@ include("MedianFilter.jl")
 
 
 ############# SOURCES #######################
-cd("/home/jarb/NI-Fecg/julia_code")
+# cd("/Desarrollos/NI-Fecg/julia_code")
 filepath="../data/a03.csv"
 
 
@@ -34,14 +34,14 @@ t = t[1:num_sample,:]
 
 # ########### PREPROCESING ####################
 #------- Notch Filtering and detrending ------------
- (AECG_fnotch, lowSignal) = notch_filter(AECG)
+(AECG_fnotch, lowSignal) = notch_filter(AECG)
 #----------- Median filter ----------------
 window = 2000 # size of window in number of samples
 threshold = 30 # mV
 (AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
 #AECG_clean = AECG_fnotch
 
-########## SOURCE SEPARATION ################
+########## SOURCE SEPARATION ################ndims(A)
 #----------------- ICA ----------------------
 k = m # number of components
 (AECG_white) = MakeICAll(AECG_clean)
