@@ -10,7 +10,7 @@ include("Plotting.jl")
 include("InterpSignal.jl")
 include("QRSm_detector.jl")
 include("MedianFilter.jl")
-
+include("Font_Separation_SVD.jl")
 
 ############# SOURCES #######################
 # cd("/Desarrollos/NI-Fecg/julia_code")
@@ -55,7 +55,7 @@ k = m # number of components
 @time (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white)
 heart_rate_mother = size(QRSm_pos,2)
 
-@time include("Font_Separation_SVD.jl")
+@time (NUrec,SVD_Values_Mot)=Font_Separation_SVD(AECG_fnotch)
 
 
 ############### PLOTTING ###################
