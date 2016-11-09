@@ -27,7 +27,12 @@ for i in 1:k
    plot(t[1:num_sample], AECG_white[1:num_sample,i], color="black", linewidth=1.0, linestyle="-")
 end
 
-
+figure(4)
+for i in 1:m
+   subplot("41$(i)")
+if i == 1 title("AECG reconstruction") end
+ plot(t[1:num_sample], AECGm[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
+end
 
  end
 
