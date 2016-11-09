@@ -53,10 +53,9 @@ k = m # number of components
 #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
 #----------- QRS mother detector -----------------------
 @time (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white)
-heart_rate_mother = size(QRSm_pos,2)
+heart_rate_mother = (60*size(QRSm_pos,2))/window_size
 
-@time (NUrec,SVD_Values_Mot)=Font_Separation_SVD(AECG_fnotch)
-
+@time (AECGm) = Font_Separation_SVD(AECG_clean);
 
 ############### PLOTTING ###################
 Plotting()
