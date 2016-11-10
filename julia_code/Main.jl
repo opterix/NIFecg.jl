@@ -9,6 +9,7 @@ include("SortICA.jl")
 include("Plotting.jl")
 include("InterpSignal.jl")
 include("QRSm_detector.jl")
+include("QRSf_detector.jl")
 include("MedianFilter.jl")
 include("Font_Separation_SVD.jl")
 
@@ -18,7 +19,7 @@ filepath="../data/a03.csv"
 
 
 ############# GLOBAL VARIABLES ################
-window_size = 60 #seconds
+window_size = 5 #seconds
 rate_sample=1000 #Sample rate
 num_sample = window_size * rate_sample #number of samples
 
@@ -41,8 +42,9 @@ threshold = 30 # mV
 #(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
 AECG_clean = AECG_fnotch
 
-########## SOURCE SEPARATION ################ndims(A)
+########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
+
 k = m # number of components
 @time (AECG_white) = MakeICAll(AECG_clean)
 
@@ -54,8 +56,11 @@ k = m # number of components
 #----------- QRS mother detector -----------------------
 @time (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white)
 heart_rate_mother = (60*size(QRSm_pos,2))/window_size
-
-@time (AECGm) = Font_Separation_SVD(AECG_clean);
+#------- SVD process and subtract mother signal---------
+@time (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean);
+@time (AECGf) = MakeICAll(AECGm)
+@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf)
+heart_rate_feto = (60*size(QRSf_pos,2))/window_size
 
 ############### PLOTTING ###################
 Plotting()
