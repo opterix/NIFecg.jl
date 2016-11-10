@@ -1,13 +1,13 @@
-function MakeICAll(AECG)
+function MakeICAll(signal)
 
 ############################################33
 #ICA
-#(nf,mc) = size(AECG)
-AECG=AECG'
+#(nf,mc) = size(signal)
+signal=signal'
 
 # ------------------- Extract the mean value --------------------#
 for i in 1:m
-    AECG[:,i]= (AECG[:,i]-mean(AECG[:,i]))/std(AECG[:,i]);
+    signal[:,i]= (signal[:,i]-mean(signal[:,i]))/std(signal[:,i]);
 end
 
 #------------------------
@@ -33,37 +33,37 @@ u, v = evaluate(f, 1.5)
 
 
 #-------- Mean and covarience of data -----------------#
-mv = vec(mean(AECG,2))
-@assert size(AECG) == (m, n)
+mv = vec(mean(signal,2))
+@assert size(signal) == (m, n)
 if VERSION < v"0.5.0-dev+660"
-    C = cov(AECG; vardim=2)
+    C = cov(signal; vardim=2)
 else
-    C = cov(AECG, 2)
+    C = cov(signal, 2)
 end
 
 #-------------- FastICA --------------
 
-M = fit(ICA, AECG, k; do_whiten=false)
+M = fit(ICA, signal, k; do_whiten=false)
 @test isa(M, ICA)
 @test indim(M) == m
 @test outdim(M) == k
 @test mean(M) == mv
 W = M.W
-@test_approx_eq transform(M, AECG) W' * (AECG .- mv)
+@test_approx_eq transform(M, signal) W' * (signal .- mv)
 @test_approx_eq W'W eye(k)
-AECG_nowhite = W'*AECG
-AECG_nowhite = AECG_nowhite'
+signal_nowhite = W'*signal
+signal_nowhite = signal_nowhite'
 
-M = fit(ICA, AECG, k;do_whiten=true)#, winit=zeros(k,k))
+M = fit(ICA, signal, k;do_whiten=true)#, winit=zeros(k,k))
 @test isa(M, ICA)
 @test indim(M) == m
 @test outdim(M) == k
 @test mean(M) == mv
 W = M.W
 @test_approx_eq W'C * W eye(k)
-AECG_white = W'*AECG
-AECG_white = AECG_white'
+signal_white = W'*signal
+signal_white = signal_white'
 
-return AECG_white
+return signal_white
 
 end
