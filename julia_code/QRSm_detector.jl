@@ -15,8 +15,6 @@ point_temp_min = zeros(num_sample,init)
 pos_temp_min = zeros(num_sample,init)
 QRSm_pos_temp = ones(2,init)*NaN
 QRSm_value_temp = ones(2,init)*NaN
- #global QRSm_pos = ones(2,2000)*NaN
- #global QRSm_value = ones(2,2000)*NaN
 
 acum_noise_max = threshold_avoidnoise
 acum_noise_min = threshold_avoidnoise
