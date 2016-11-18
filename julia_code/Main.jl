@@ -6,7 +6,7 @@ include("process_svs.jl")
 include("Notch_Filter_Detrent.jl")
 include("MakeICAll.jl")
 include("SortICA.jl")
-#include("Plotting.jl")
+include("Plotting.jl")
 include("InterpSignal.jl")
 include("QRSm_detector.jl")
 include("QRSf_detector.jl")
@@ -65,7 +65,6 @@ AECGf2 = QRSf_selector(AECGf)
 #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf)
 #heart_rate_feto = (60*size(QRSf_pos,2))/window_size
 ############### PLOTTING ###################
-<<<<<<< HEAD
 Plotting([5 6 7])
 #0 - all
 #1 - AECG
@@ -75,7 +74,3 @@ Plotting([5 6 7])
 #5 - AECGm
 #6 - AECGf
 #7 - AECGf with QRSf_pos, AECG_white and QRSm_pos
-=======
-#Plotting()
-include("Plotting.jl")
->>>>>>> b7da796627f96058e35aa9cc339a98d1a6de5020
