@@ -1,5 +1,4 @@
-#function Plotting()
-
+function Plotting(graph)
 
 PyPlot.close("all")
 
@@ -20,6 +19,7 @@ for i in 1:m
 subplot("41$(i)")
 if i == 1 title("AECG clean") end
  plot(t[1:num_sample], AECG_clean[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
+end
 end
 
 #-----------------------------------------------
@@ -45,6 +45,7 @@ for i in 1:m
 if i == 1 title("SVD reconstruction") end
  plot(t[1:num_sample], SVDrec[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
+end
 
 #-----------------------------------------------
 
@@ -53,35 +54,40 @@ figure(5)
 for i in 1:m
    subplot("41$(i)")
 if i == 1 title("AECG subtract SVD reconstruction") end
- plot(t[1:num_sample], AECGm[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
+plot(a/rate_sample,zeros(size(a,1)),"go") 
+plot(t[1:num_sample], AECGm[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
-if graph == 1 || finfirst(graph,6) != 0
+if graph == 0 || findfirst(graph,6) != 0
 figure(6)
 for i in 1:m
    subplot("41$(i)")
 if i == 1 title("AECG feto (after ICA-sorted)") end
+plot(a/rate_sample,zeros(size(a,1)),"go") 
  plot(t[1:num_sample], AECGf2[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
-if graph == 1 || finfirst(graph,7) != 0
+if graph == 1 || findfirst(graph,7) != 0
+
 figure(7)
 subplot(211)
-title("AECG feto")
+title("AECG feto=$(heart_rate_feto)")
+plot(a/rate_sample,zeros(size(a,1)),"go")
 plot(QRSf_pos[:,1]',QRSf_value[:,1]', "ro")
-plot(t[1:num_sample], AECGf2[1:num_sample,1], color="black", 
+plot(t[1:num_sample], AECGf[1:num_sample,1], color="black", 
 linewidth=1.0, linestyle="-")
 subplot(212)
-title("AECG mother")
+title("AECG mother=$(heart_rate_mother)")
 plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
 plot(t[1:num_sample], AECG_white[1:num_sample,1], color="black", 
 linewidth=1.0, linestyle="-")
 end
 
+end
 
 
 #figure(2)

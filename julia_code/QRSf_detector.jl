@@ -1,10 +1,10 @@
 function QRSf_detector(signal_feto)
 
-num_channel=3;
+num_channel=1;
 
 threshold_detc=0.2
-threshold_avoidnoise=200
-signal = signal_feto[1:num_sample,3]
+threshold_avoidnoise=300
+signal = signal_feto[1:num_sample,num_channel]
 max_value = maximum(signal)
 min_value = minimum(signal)
 
@@ -67,7 +67,7 @@ for i in 1:num_sample
 
 end
 
-if indx_min > indx_max
+if indx_min < indx_max
    QRSf_pos = QRSf_pos_temp[1,1:indx_max-1]
    QRSf_value = QRSf_value_temp[1,1:indx_max-1]
 else

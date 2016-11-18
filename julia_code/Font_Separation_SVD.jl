@@ -49,16 +49,17 @@ end
 # Restar con la original
 signal_subtract=signal-signal_rec;
 
-responsetype = Lowpass(40;fs=rate_sample)
+#=
+responsetype = Lowpass(90;fs=rate_sample)
 designmethod = Butterworth(4)# FIRWindow(hanning(64))
 
 signal_subtract[:,1]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,1])
 signal_subtract[:,2]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,2])
 signal_subtract[:,3]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,3])
 signal_subtract[:,4]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,4])
+println("r")
+=#
 
-#designmethod = Butterworth(24)
-#AECG_output[:,i]=filt(digitalfilter(responsetype, designmethod), signal)
 
 return signal_rec, signal_subtract;
 

@@ -17,8 +17,12 @@ include("MakeICAfeto.jl")
 
 ############# SOURCES #######################
 # cd("/Desarrollos/NI-Fecg/julia_code")
-filepath="../data/a06.csv"
-
+filepath="../data/a07.csv"
+filepath2="../data/a07.fqrs.txt"
+a=readdlm(filepath2)
+z(x) = x<num_sample
+idx=broadcast(z,a)
+a=a[idx]
 
 ############# GLOBAL VARIABLES ################
 window_size = 10 #seconds
@@ -46,7 +50,6 @@ AECG_clean = AECG_fnotch
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
-
 k = m # number of components
 (AECG_white) = MakeICAll(AECG_clean)
 
@@ -57,15 +60,16 @@ k = m # number of components
 #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
 #----------- QRS mother detector -----------------------
 (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white)
-heart_rate_mother = (60*size(QRSm_pos,2))/window_size
+heart_rate_mother = (60*size(QRSm_pos,1))/window_size
 #------- SVD process and subtract mother signal---------
 (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean, QRSm_pos, rate_sample);
 AECGf = MakeICAfeto(AECGm)
 AECGf2 = QRSf_selector(AECGf)
-#@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf)
-#heart_rate_feto = (60*size(QRSf_pos,2))/window_size
+@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf)
+heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+
 ############### PLOTTING ###################
-Plotting([5 6 7])
+Plotting([1 2 3 4 5 6 7])
 #0 - all
 #1 - AECG
 #2 - AECG_clean
@@ -74,3 +78,4 @@ Plotting([5 6 7])
 #5 - AECGm
 #6 - AECGf
 #7 - AECGf with QRSf_pos, AECG_white and QRSm_pos
+#diff numbre - none plot
