@@ -1,4 +1,4 @@
-function Font_Separation_SVD(signal)
+function Font_Separation_SVD(signal, QRSm_pos, rate_sample)
 
 window_svd=200; #samples
 

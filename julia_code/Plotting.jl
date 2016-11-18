@@ -1,4 +1,4 @@
-function Plotting()
+#function Plotting()
 
 
 PyPlot.close("all")
@@ -44,15 +44,15 @@ end
 figure(6)
 for i in 1:m
    subplot("41$(i)")
-if i == 1 title("AECG feto (after ICA)") end
- plot(t[1:num_sample], AECGf[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
+if i == 1 title("AECG feto (after ICA-sorted)") end
+ plot(t[1:num_sample], AECGf2[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 
 figure(7)
 subplot(211)
 title("AECG feto")
-plot(QRSf_pos[:,1]',QRSf_value[:,1]', "ro")
-plot(t[1:num_sample], AECGf[1:num_sample,3], color="black", 
+#plot(QRSf_pos[:,1]',QRSf_value[:,1]', "ro")
+plot(t[1:num_sample], AECGf2[1:num_sample,1], color="black", 
 linewidth=1.0, linestyle="-")
 subplot(212)
 title("AECG mother")
@@ -60,7 +60,7 @@ plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
 plot(t[1:num_sample], AECG_white[1:num_sample,1], color="black", 
 linewidth=1.0, linestyle="-")
 
-end
+#end
 
 
 
