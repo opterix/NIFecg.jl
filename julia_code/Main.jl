@@ -63,4 +63,12 @@ heart_rate_mother = (60*size(QRSm_pos,2))/window_size
 heart_rate_feto = (60*size(QRSf_pos,2))/window_size
 
 ############### PLOTTING ###################
-Plotting()
+Plotting([5 6 7])
+#0 - all
+#1 - AECG
+#2 - AECG_clean
+#3 - AECG_white with QRSm_pos
+#4 - SVDrec
+#5 - AECGm
+#6 - AECGf
+#7 - AECGf with QRSf_pos, AECG_white and QRSm_pos
