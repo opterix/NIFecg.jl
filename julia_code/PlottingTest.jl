@@ -1,4 +1,4 @@
-function Plotting(graph)
+function PlottingTest(graph)
 
 #  0  - all
 # [1] - AECG
@@ -30,6 +30,11 @@ subplot("41$(i)")
 if i == 1 title("AECG clean") end
  plot(t[1:num_sample], AECG_clean[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
+manager = get_current_fig_manager()
+manager[:window][:attributes]("-zoomed", 1)
+sleep(1)
+manager[:window][:attributes]("-zoomed", 0)
+savefig("../test_image/$(filename)_fig$(2).png") 
 end
 
 #-----------------------------------------------
@@ -68,6 +73,11 @@ if i == 1 title("AECG subtract SVD reconstruction") end
 plot(fetal_annot/rate_sample,zeros(size(fetal_annot,1)),"go") 
 plot(t[1:num_sample], AECGm[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
+manager = get_current_fig_manager()
+manager[:window][:attributes]("-zoomed", 1)
+sleep(1)
+manager[:window][:attributes]("-zoomed", 0)
+savefig("../test_image/$(filename)_fig$(5).png") 
 end
 
 #-----------------------------------------------
@@ -80,6 +90,11 @@ if i == 1 title("AECG feto (after ICA-sorted)") end
 plot(fetal_annot/rate_sample,zeros(size(fetal_annot,1)),"go") 
  plot(t[1:num_sample], AECGf2[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
+manager = get_current_fig_manager()
+manager[:window][:attributes]("-zoomed", 1)
+sleep(1)
+manager[:window][:attributes]("-zoomed", 2)
+savefig("../test_image/$(filename)_fig$(6).png") 
 end
 
 #-----------------------------------------------
@@ -98,6 +113,8 @@ plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
 plot(t[1:num_sample], AECG_white[1:num_sample,1], color="black", 
 linewidth=1.0, linestyle="-")
 end
+
+PyPlot.close("all")
 
 end
 

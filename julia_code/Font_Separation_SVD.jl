@@ -27,9 +27,9 @@ for i = 1:m #aplicar proceso para cada canal
 
 	##Guardo los valores de los complejos R detectados en una matriz
 	for ii = 1:length(QRSm_pos)   
-		SVD_Values[1:window_svd+1,ii]=(signal[Win_Pos_Rw_Int[ii]:Win_Pos_Fw_Int[ii],i]).*win_weight;
-		
-	end
+
+		SVD_Values[1:window_svd+1,ii]=(signal[Win_Pos_Rw_Int[ii]:Win_Pos_Fw_Int[ii],i]).*win_weight;	
+end
 	
 	# Aplico Singular Value Decomposition a la matriz que contiene los R.
 

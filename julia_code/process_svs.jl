@@ -1,5 +1,6 @@
 function process_svs(filepath)
-    a=readcsv(filepath) #read file
+
+    a=readcsv("../data/"*filepath*".csv") #read file
 
     t=a[3:end,1]
     b=a[3:end, 2:5] #Extract one channel information
