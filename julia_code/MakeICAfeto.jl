@@ -1,9 +1,8 @@
-function MakeICAfeto(signal_f)
+function MakeICAfeto(signal_f,nc,nch)
 
-k=4
 
 # ------------------- Extract the mean value --------------------#
-for i in 1:size(signal_f,2)
+for i in 1:nch
     signal_f[:,i]= (signal_f[:,i]-mean(signal_f[:,i]))/std(signal_f[:,i]);
 end
 
@@ -15,7 +14,7 @@ signal_f=signal_f'
 
 srand(15678)
 
-M = fit(ICA, signal_f, k;do_whiten=false)#, winit=zeros(k,k))
+M = fit(ICA, signal_f, nc;do_whiten=false)#, winit=zeros(nc,nc))
 W = M.W
 
 signal_f_white = W'*signal_f

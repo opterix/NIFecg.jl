@@ -1,4 +1,4 @@
-function MakeICAll(signal)
+function MakeICAll(signal,nch,ns)
 
 ############################################33
 #ICA
@@ -6,7 +6,7 @@ function MakeICAll(signal)
 signal=signal'
 
 # ------------------- Extract the mean value --------------------#
-for i in 1:m
+for i in 1:nch
     signal[:,i]= (signal[:,i]-mean(signal[:,i]))/std(signal[:,i]);
 end
 
@@ -34,7 +34,7 @@ u, v = evaluate(f, 1.5)
 
 #-------- Mean and covarience of data -----------------#
 mv = vec(mean(signal,2))
-@assert size(signal) == (m, n)
+@assert size(signal) == (nch, ns)
 if VERSION < v"0.5.0-dev+660"
     C = cov(signal; vardim=2)
 else
@@ -43,24 +43,24 @@ end
 
 #-------------- FastICA --------------
 
-M = fit(ICA, signal, k; do_whiten=false)
+M = fit(ICA, signal, nc; do_whiten=false)
 @test isa(M, ICA)
-@test indim(M) == m
-@test outdim(M) == k
+@test indim(M) == nch
+@test outdim(M) == nc
 @test mean(M) == mv
 W = M.W
 @test_approx_eq transform(M, signal) W' * (signal .- mv)
-@test_approx_eq W'W eye(k)
+@test_approx_eq W'W eye(nc)
 signal_nowhite = W'*signal
 signal_nowhite = signal_nowhite'
 
-M = fit(ICA, signal, k;do_whiten=true)#, winit=zeros(k,k))
+M = fit(ICA, signal, nc;do_whiten=true)#, winit=zeros(nc,nc))
 @test isa(M, ICA)
-@test indim(M) == m
-@test outdim(M) == k
+@test indim(M) == nch
+@test outdim(M) == nc
 @test mean(M) == mv
 W = M.W
-@test_approx_eq W'C * W eye(k)
+@test_approx_eq W'C * W eye(nc)
 signal_white = W'*signal
 signal_white = signal_white'
 
