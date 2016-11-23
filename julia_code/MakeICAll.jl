@@ -1,5 +1,4 @@
-function MakeICAll(signal_orig)
-
+function MakeICAll(signal,nch,ns)
 ############################################33
 #ICA
 #(nf,mc) = size(signal)
@@ -10,7 +9,7 @@ k=4;
 
 
 # ------------------- Extract the mean value --------------------#
-for i in 1:m
+for i in 1:nch
     signal[:,i]= (signal[:,i]-mean(signal[:,i]))/std(signal[:,i]);
 end
 
@@ -65,6 +64,7 @@ M = fit(ICA, signal, k; do_whiten=true, maxiter=200, tol=0.0001, verbose=true)#,
 #@test mean(M) == mv
 W = M.W
 #@test_approx_eq W'C * W eye(k)
+
 signal_white = W'*signal
 signal_white = signal_white'
 

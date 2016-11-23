@@ -1,13 +1,12 @@
-function Font_Separation_SVD(signal, QRSm_pos, rate_sample)
-
+function Font_Separation_SVD(signal, QRSm_pos,sr,nch,ns)
 window_svd=200; #samples
 
 ## SINGULAR VALUE DECOMPOSITION
 
 ## Defino la ventana a trabajar de 200 ms
 
-(Win_Pos_Fw) = (QRSm_pos*rate_sample) + window_svd/2 ;
-(Win_Pos_Rw) = (QRSm_pos*rate_sample) - window_svd/2 ;
+(Win_Pos_Fw) = (QRSm_pos*sr) + window_svd/2 ;
+(Win_Pos_Rw) = (QRSm_pos*sr) - window_svd/2 ;
 
 ## Pesos de la ventana (Tukey)
 alpha=0.5; #constante 0(rectangular) - 1(gausiana)
@@ -19,9 +18,9 @@ Win_Pos_Rw_Int = convert(Array{Int64}, round(Win_Pos_Rw));
 Win_Pos_Fw_Int = convert(Array{Int64}, round(Win_Pos_Fw));
 
 ## Inicializando variables
-signal_rec=zeros(n,m);
+signal_rec=zeros(ns,nch);
 
-for i = 1:m #aplicar proceso para cada canal
+for i = 1:nch #aplicar proceso para cada canal
 	## Tomo los valores alrededor del complejo R en la ventana definida
 	SVD_Values = zeros(window_svd+1, length(QRSm_pos));
 
@@ -50,7 +49,7 @@ end
 signal_subtract=signal-signal_rec;
 
 #=
-responsetype = Lowpass(90;fs=rate_sample)
+responsetype = Lowpass(90;fs=sr)
 designmethod = Butterworth(4)# FIRWindow(hanning(64))
 
 signal_subtract[:,1]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,1])
