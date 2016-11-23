@@ -42,7 +42,7 @@ window = 2000 # size of window in number of samples
 threshold = 30 # mV
 #(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
 AECG_clean = AECG_fnotch
-println(maximum(AECG_clean));
+#println(maximum(AECG_clean));
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
@@ -61,7 +61,8 @@ println(maximum(AECG_clean));
 (QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
 heart_rate_mother = (60*size(QRSm_pos,1))/window_size
 #------- SVD process and subtract mother signal---------
-(SVDrec,AECGm) = Font_Separation_SVD(AECG_clean, QRSm_pos,sr,nch,ns);
+
+(SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 AECGf = MakeICAfeto(AECGm,nc,nch)
 AECGf2 = QRSf_selector(AECGf, nc)
 @time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
@@ -85,3 +86,4 @@ ecg_der=ecg_der[2*delay+1:end,:]
 responseType=Bandpass(0.7,8;fs=sr)
 designMethod=Butterworth(10);
 salida = filtfilt(digitalfilter(responseType, designMethod), ecg_der);
+

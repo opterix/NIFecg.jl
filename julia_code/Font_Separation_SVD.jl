@@ -1,5 +1,7 @@
-function Font_Separation_SVD(signal, QRSm_pos,sr,nch,ns)
+function Font_Separation_SVD(signal,QRSm_pos,sr,nch,ns)
+
 window_svd=200; #samples
+numSVD=3; # number of single values take into account for reconstruction
 
 ## SINGULAR VALUE DECOMPOSITION
 
@@ -17,30 +19,37 @@ win_weight=tukey(window_svd+1, alpha)*0.8+0.2;
 Win_Pos_Rw_Int = convert(Array{Int64}, round(Win_Pos_Rw));
 Win_Pos_Fw_Int = convert(Array{Int64}, round(Win_Pos_Fw));
 
+if Win_Pos_Fw_Int[end] > ns
+  QRSm_pos_tmp=QRSm_pos[1:end-1]
+else
+  QRSm_pos_tmp=QRSm_pos
+end  
+
+
 ## Inicializando variables
 signal_rec=zeros(ns,nch);
 
 for i = 1:nch #aplicar proceso para cada canal
 	## Tomo los valores alrededor del complejo R en la ventana definida
-	SVD_Values = zeros(window_svd+1, length(QRSm_pos));
+	SVD_Values = zeros(window_svd+1, length(QRSm_pos_tmp));
 
 	##Guardo los valores de los complejos R detectados en una matriz
-	for ii = 1:length(QRSm_pos)   
+	for ii = 1:length(QRSm_pos_tmp)   
 
-		SVD_Values[1:window_svd+1,ii]=(signal[Win_Pos_Rw_Int[ii]:Win_Pos_Fw_Int[ii],i]).*win_weight;	
-end
+	SVD_Values[1:window_svd+1,ii]=(signal[Win_Pos_Rw_Int[ii]:Win_Pos_Fw_Int[ii],i]).*win_weight;	
+	end
 	
 	# Aplico Singular Value Decomposition a la matriz que contiene los R.
 
 	(U,S,V)=svd(SVD_Values);
 
-	Sprima=zeros(length(QRSm_pos));
-	Sprima[1:3]=S[1:3];
+	Sprima=zeros(length(QRSm_pos_tmp));
+	Sprima[1:numSVD]=S[1:numSVD];
 	#Sprima=S;
 	NUrec=U*diagm(Sprima)*V';
 	
 	#Reconstruir cada canal 
-	for ii = 1:length(QRSm_pos)  
+	for ii = 1:length(QRSm_pos_tmp)  
 		signal_rec[Win_Pos_Rw_Int[ii]:Win_Pos_Fw_Int[ii],i]=NUrec[1:window_svd+1,ii];
 	end
 end
