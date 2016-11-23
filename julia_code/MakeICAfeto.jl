@@ -1,5 +1,6 @@
-function MakeICAfeto(signal_f,nc,nch)
+function MakeICAfeto(signal_orig,nc,nch)
 signal_f=copy(signal_orig);
+k=nc;
 
 # ------------------- Extract the mean value --------------------#
 for i in 1:nch

@@ -22,7 +22,7 @@ filename="a02"
 ############# GLOBAL VARIABLES ################
 window_size = 10 #seconds
 sr=1000 #Sample rate
-ns = window_size * rate_sample #number of samples
+ns = window_size * sr #number of samples
 
 ############ LOAD DATA ######################
 #----------- Read and fix data --------------
@@ -63,7 +63,7 @@ heart_rate_mother = (60*size(QRSm_pos,1))/window_size
 #------- SVD process and subtract mother signal---------
 (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean, QRSm_pos,sr,nch,ns);
 AECGf = MakeICAfeto(AECGm,nc,nch)
-#AECGf2 = QRSf_selector(AECGf)
+AECGf2 = QRSf_selector(AECGf, nc)
 @time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
 heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 

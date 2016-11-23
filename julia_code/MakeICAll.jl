@@ -1,4 +1,4 @@
-function MakeICAll(signal,nch,ns)
+function MakeICAll(signal_orig,nch,ns)
 ############################################33
 #ICA
 #(nf,mc) = size(signal)
