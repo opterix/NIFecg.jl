@@ -20,7 +20,7 @@ include("Plotting.jl")
 filename="a02"
 
 ############# GLOBAL VARIABLES ################
-window_size = 10 #seconds
+window_size = 45 #seconds
 rate_sample=1000 #Sample rate
 num_sample = window_size * rate_sample #number of samples
 
@@ -43,11 +43,15 @@ window = 2000 # size of window in number of samples
 threshold = 30 # mV
 #(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
 AECG_clean = AECG_fnotch
+println(maximum(AECG_clean));
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
 k = m # number of components
 (AECG_white) = MakeICAll(AECG_clean)
+
+println(maximum(AECG_clean));
+
 
 #------------ Sort ICA results ----------------------
 #(AECG_sort)=SortICA(AECG_white)
@@ -64,3 +68,21 @@ AECGf2 = QRSf_selector(AECGf)
 @time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf)
 heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
+
+## Detector ECG feto con filtro derivativo
+nu=convert(Int64, ceil(0.005*rate_sample));
+nz=convert(Int64, floor(0.003*rate_sample/2)*2+1);
+B=vcat(ones(nu,1), zeros(nz,1), -1*ones(nu,1))
+delay=convert(Int64, floor(length(B)/2));
+
+ecgfx=vcat(repmat(AECGf2[1,:],1,delay)', AECGf, repmat(AECGf2[end,:],1,delay)')
+der=PolynomialRatio(vec(B),[1])
+
+ecg_der=filt(der,ecgfx);
+
+ecg_der=ecg_der[2*delay+1:end,:]
+
+
+responseType=Bandpass(0.7,8;fs=rate_sample)
+designMethod=Butterworth(10);
+salida = filtfilt(digitalfilter(responseType, designMethod), ecg_der);

@@ -8,8 +8,8 @@ function notch_filter(x, rate_sample)
     #title("Pure ECG")
     frec_Notch=60;
 
-    responsetype = Lowpass(3,fs=rate_sample);
-    prototype=Butterworth(8);
+    responsetype = Lowpass(5,fs=rate_sample);
+    prototype=Butterworth(4);
 
     Notch=iirnotch(frec_Notch,1,fs=rate_sample)
     Notch2=iirnotch(frec_Notch*2,1,fs=rate_sample)
