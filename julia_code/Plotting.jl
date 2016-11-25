@@ -1,5 +1,4 @@
-function Plotting(graph)
-
+function Plotting(graph=0)
 #  0  - all
 # [1] - AECG
 # [2] - AECG_clean
@@ -9,10 +8,11 @@ function Plotting(graph)
 # [6] - AECGf
 # [7] - AECGf with QRSf_pos, AECG_white and QRSm_pos
 # diff number - none plot
+# diff compositions [1 3 4] or [3 5 6], as you wish
 
-PyPlot.close("all")
+close("all")
 
-if findfirst(graph,0|1) != 0
+if findfirst(graph,1) != 0 || findfirst(graph,0) != 0
 figure(1)
 for i in 1:nch
 subplot("41$(i)")
@@ -23,7 +23,7 @@ end
 
 #-----------------------------------------------
 
-if findfirst(graph,0|2) != 0
+if findfirst(graph,2) != 0 || findfirst(graph,0) != 0
 figure(2)
 for i in 1:nch
 subplot("41$(i)")
@@ -34,7 +34,7 @@ end
 
 #-----------------------------------------------
 
-if findfirst(graph,0|3) != 0
+if findfirst(graph,3) != 0 || findfirst(graph,0) != 0
 figure(3)
 for i in 1:nch
    subplot("$(nch)1$(i)")
@@ -48,7 +48,7 @@ end
 
 #-----------------------------------------------
 
-if findfirst(graph,0|4) != 0
+if findfirst(graph,4) != 0 || findfirst(graph,0) != 0
 figure(4)
 for i in 1:nch
    subplot("41$(i)")
@@ -59,7 +59,7 @@ end
 
 #-----------------------------------------------
 
-if findfirst(graph,0|5) != 0
+if findfirst(graph,5) != 0 || findfirst(graph,0) != 0
 figure(5)
 
 for i in 1:nch
@@ -71,7 +71,7 @@ end
 end
 
 #-----------------------------------------------
-if findfirst(graph,0|6) != 0
+if findfirst(graph,6) != 0 || findfirst(graph,0) != 0
 figure(6)
 
 for i in 1:nc
@@ -83,7 +83,7 @@ end
 end
 
 #-----------------------------------------------
-if findfirst(graph,0|7) != 0
+if findfirst(graph,7) != 0 || findfirst(graph,0) != 0
 
 figure(7)
 subplot(211)

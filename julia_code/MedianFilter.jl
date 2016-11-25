@@ -1,46 +1,56 @@
-function MedianFilter(AECG_input,threshold,window)
+function MedianFilter(AECG_input,window,ns,nch,sr)
 
-AECG_output=zeros(n,m)
+AECG_output=zeros(ns,nch)
 
-responsetype = Lowpass(30;fs=rate_sample)
-designmethod = Butterworth(4)#FIRWindow(hanning(64))
+for i = 1:nch
+	signal = AECG_input[:,i];
+	#figure(i);plot(signal);
+	median_filtered_signal = [];
+	window_temp = window;
+  
+ 	# Compute a threshold from median global informaion
 
-for i in 1:m
-  signal = AECG_input[:,i]
-  median_filtered_signal = []
-  window_temp = window
- 
-  AECG_output[:,i]=filt(digitalfilter(responsetype, designmethod), signal)
+	difference_global = abs(signal - median(signal));
+  	#figure(i);plot(difference_global);
 
-#=
-  difference = abs(signal - median(signal))
-  median_difference = median(difference)
-  s = difference / float(median_difference)  
-  threshold = maximum(s)*0.95
-  println(threshold)
+  	median_difference_global = median(difference_global);
+	println("median_difference=$(median_difference_global)");
+  	s_global = difference_global / float(median_difference_global);
+	#figure(i);plot(s_global);
 
-  for ii in range(0, window_temp, n)
+	threshold_global = maximum(s_global);
+	figure(i);plot(ones(ns)*threshold_global, color="red");
 
-    if ii >= n
-      AECG_output[:,i]=median_filtered_signal
-      break
-    elseif ii > n-window_temp
-      window_temp = n - size(median_filtered_signal,1)
-    end
+  	for ii in range(0, window_temp, ns)
+	    	if ii >= ns
+		      	AECG_output[:,i]=median_filtered_signal
+	      	break
+	    	elseif ii > ns-window_temp
+		      	window_temp = ns - size(median_filtered_signal,1)
+	    	end
+		t_tmp=linspace(ii+1,ii+window_temp,window_temp);
+		signal_temp=signal[ii+1: ii+window_temp]
+		#figure(i);plot(t_tmp,signal_temp,color="black");
+   		
+		difference = abs(signal_temp - median(signal_temp))
+		figure(i);plot(t_tmp,difference,color="blue");
+		
+		median_difference = median(difference)
+		figure(i);plot(t_tmp,ones(window_temp)*median_difference,color="orange");
+		
+		s = difference / float(median_difference)
+		figure(i);plot(t_tmp,s,color="green");
+		
+		threshold_local = maximum(s);
+		figure(i);plot(t_tmp,ones(window_temp)*threshold_local,color="yellow");		
+		
+		mask = s .> threshold_local
+		signal_temp[mask] = threshold;# median(signal_temp)
+		median_filtered_signal = vcat(median_filtered_signal,signal_temp)
+	end
 
-    signal_temp=signal[ii+1: ii+window_temp]
-    difference = abs(signal_temp - median(signal_temp))
-    median_difference = median(difference)
-    s = difference / float(median_difference)
-    mask = s .> threshold
-    signal_temp[mask] = median(signal_temp)
-    median_filtered_signal = vcat(median_filtered_signal,signal_temp)
-
-  end
-=#
 
 end
-
 
 return  AECG_output
 

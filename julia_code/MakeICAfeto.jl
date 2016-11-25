@@ -1,6 +1,6 @@
 function MakeICAfeto(signal_orig,nc,nch)
+
 signal_f=copy(signal_orig);
-k=nc;
 
 # ------------------- Extract the mean value --------------------#
 for i in 1:nch
@@ -9,8 +9,8 @@ end
 
 signal_f=signal_f'
 
-#figure();plot(signal_f');
-M = fit(ICA, signal_f, k;do_whiten=true, maxiter=200, tol=0.0001, verbose=true)#, winit=zeros(k,k))
+#figure;plot(signal_f');
+M = fit(ICA, signal_f, nc;do_whiten=true, maxiter=200, tol=0.0001)#, verbose=true)
 W = M.W
 
 signal_f_white = W'*signal_f

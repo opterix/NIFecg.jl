@@ -17,10 +17,10 @@ include("MakeICAfeto.jl")
 include("Plotting.jl")
 
 ############# SOURCES #######################
-filename="a02"
+filename="a03"
 
 ############# GLOBAL VARIABLES ################
-window_size = 10 #seconds
+window_size = 60 #seconds
 sr=1000 #Sample rate
 ns = window_size * sr #number of samples
 
@@ -39,9 +39,8 @@ nch = size(AECG,2) # nch - number of channels
 (AECG_fnotch, lowSignal) = notch_filter(AECG, sr)
 #----------- Median filter ----------------
 window = 2000 # size of window in number of samples
-threshold = 30 # mV
-#(AECG_clean) = MedianFilter(AECG_fnotch,threshold,window)
-AECG_clean = AECG_fnotch
+(AECG_clean) = MedianFilter(AECG_fnotch,window,ns,nch,sr)
+#AECG_clean = AECG_fnotch
 #println(maximum(AECG_clean));
 
 ########## SOURCE SEPARATION ################
@@ -70,20 +69,20 @@ heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
 
 ## Detector ECG feto con filtro derivativo
-nu=convert(Int64, ceil(0.005*sr));
-nz=convert(Int64, floor(0.003*sr/2)*2+1);
-B=vcat(ones(nu,1), zeros(nz,1), -1*ones(nu,1))
-delay=convert(Int64, floor(length(B)/2));
+#nu=convert(Int64, ceil(0.005*sr));
+#nz=convert(Int64, floor(0.003*sr/2)*2+1);
+#B=vcat(ones(nu,1), zeros(nz,1), -1*ones(nu,1))
+#delay=convert(Int64, floor(length(B)/2));
 
-ecgfx=vcat(repmat(AECGf2[1,:],1,delay)', AECGf, repmat(AECGf2[end,:],1,delay)')
-der=PolynomialRatio(vec(B),[1])
+#ecgfx=vcat(repmat(AECGf2[1,:],1,delay)', AECGf, repmat(AECGf2[end,:],1,delay)')
+#der=PolynomialRatio(vec(B),[1])
 
-ecg_der=filt(der,ecgfx);
+#ecg_der=filt(der,ecgfx);
 
-ecg_der=ecg_der[2*delay+1:end,:]
+#ecg_der=ecg_der[2*delay+1:end,:]
 
 
-responseType=Bandpass(0.7,8;fs=sr)
-designMethod=Butterworth(10);
-salida = filtfilt(digitalfilter(responseType, designMethod), ecg_der);
+#responseType=Bandpass(0.7,8;fs=sr)
+#designMethod=Butterworth(10);
+#salida = filtfilt(digitalfilter(responseType, designMethod), ecg_der);
 
