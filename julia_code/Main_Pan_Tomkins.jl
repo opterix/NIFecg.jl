@@ -23,6 +23,7 @@ filename="a03"
 window_size = 60 #seconds
 sr=1000 #Sample rate
 ns = window_size * sr #number of samples
+nch=4
 
 ############ LOAD DATA ######################
 #----------- Read and fix data --------------
@@ -40,20 +41,35 @@ nch = size(AECG,2) # nch - number of channels
 
 (AECG_fnotch, lowSignal) = notch_filter(AECG, sr)
 
-#------- Low Pass Filter ------------
+#------- Normalization  ------------
 
+signal=copy(AECG_fnotch);
 
+for i in 1:nch
+    signal[:,i]= (signal[:,i]-mean(signal[:,i]))/maximum(abs(signal[:,i]));
+end
 
+#------- Passband Filter > 5Hz-15Hz
 
+responsetypeLP = Lowpass(15,fs=sr);
+prototypeLP=Butterworth(4);
 
+responsetypeHP = Highpass(5,fs=sr);
+prototypeHP = Butterworth(4);
 
+filtroLP=digitalfilter(responsetypeLP, prototypeLP);
+filtroHP=digitalfilter(responsetypeHP, prototypeHP);
 
+signal=filtfilt(filtroLP, signal);
+signal=filtfilt(filtroHP, signal);
 
+#------- Derivative Filter
 
-
-
-
-
-
-
+#B=vcat(ones(nu,1), zeros(nz,1), -1*ones(nu,1))
+#delay=convert(Int64, floor(length(B)/2));
+B=[-1, -2, 0 , 2, 1]/8;
+salida=conv(signal[:,1],B);
+salida=salida[3:end-2];
+salida= salida/maximum(abs(salida));
+salida=salida.^2;
 
