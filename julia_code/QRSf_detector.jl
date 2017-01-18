@@ -3,9 +3,9 @@ function QRSf_detector(signal_feto,ns,sr)
 num_channel=1;
 
 threshold_detc=0.2# threshold in relation of maximum and minumim values
-threshold_avoidnoise=150#constraint to avoid the estimation of several peaks by noise in small window.
+threshold_avoidnoise=200#constraint to avoid the estimation of several peaks by noise in small window.
 
-signal = signal_feto[1:ns,1] # suppose that the signal mother is the first independent component
+signal = signal_feto[1:ns,num_channel] # suppose that the signal mother is the first independent component
 max_value = maximum(signal)
 min_value = minimum(signal)
 
@@ -77,7 +77,7 @@ for i=1:ns
 end
 
 # assign the minimum number of peaks founded between min and max peaks
-if indx_min < indx_max
+if indx_min > indx_max
    QRSf_pos = QRSf_pos_temp[1,1:indx_max-1]
    QRSf_value = QRSf_value_temp[1,1:indx_max-1]
 else

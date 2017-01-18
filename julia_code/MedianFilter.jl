@@ -45,7 +45,10 @@ for i = 1:nch
 		figure(i);plot(t_tmp,ones(window_temp)*threshold_local,color="yellow");		
 		
 		mask = s .> threshold_local
-		signal_temp[mask] = threshold;# median(signal_temp)
+		if findfirst(mask,1) != 0
+			signal_temp[mask] = signal[findfirst(mask,1)];
+			#threshold_global;# median(signal_temp)
+		end
 		median_filtered_signal = vcat(median_filtered_signal,signal_temp)
 	end
 

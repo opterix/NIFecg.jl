@@ -20,7 +20,7 @@ include("Plotting.jl")
 filename="a03"
 
 ############# GLOBAL VARIABLES ################
-window_size = 60 #seconds
+window_size = 5 #seconds
 sr=1000 #Sample rate
 ns = window_size * sr #number of samples
 
@@ -39,18 +39,14 @@ nch = size(AECG,2) # nch - number of channels
 (AECG_fnotch, lowSignal) = notch_filter(AECG, sr)
 #----------- Median filter ----------------
 window = 2000 # size of window in number of samples
-(AECG_clean) = MedianFilter(AECG_fnotch,window,ns,nch,sr)
-#AECG_clean = AECG_fnotch
+#(AECG_clean) = MedianFilter(AECG_fnotch,window,ns,nch,sr)
+AECG_clean = AECG_fnotch
 #println(maximum(AECG_clean));
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
 nc = nch # number of components
-(AECG_white) = MakeICAll(AECG_clean,nch,ns)
-
-println(maximum(AECG_clean));
-
-
+(AECG_white) = MakeICAll(AECG_clean,nch,nc)
 #------------ Sort ICA results ----------------------
 #(AECG_sort)=SortICA(AECG_white)
 #----------- Resamplig signal -----------------------
