@@ -73,3 +73,18 @@ salida=salida[3:end-2];
 salida= salida/maximum(abs(salida));
 salida=salida.^2;
 
+#--- Moving integration
+
+h = ones(151)/151;
+Delay=75;
+
+salida=conv(salida, h);
+
+salida= salida[Delay+1:end-Delay];
+salida= salida/maximum(abs(salida));
+
+
+thra=mean(salida)
+
+region=salida.>(thra*maximum(salida));
+
