@@ -84,7 +84,20 @@ salida= salida[Delay+1:end-Delay];
 salida= salida/maximum(abs(salida));
 
 
-thra=mean(salida)
 
-region=salida.>(thra*maximum(salida));
+#--- Finding QRS Points Pan-Tompkins algorithm
+
+max_h = maximum(salida);
+thra=(mean(salida));
+region=(salida.>thra.*max_h);
+region=Int.(region)';
+
+
+left=find(diff([0,region])==1);
+
+
+#left = find(diff([0 region])==1);
+#right = find(diff([region 0])==-1);
+
+
 

@@ -41,10 +41,13 @@ for i = 1:nch
 		s = difference / float(median_difference)
 		figure(i);plot(t_tmp,s,color="green");
 		
-		threshold_local = maximum(s);
-		figure(i);plot(t_tmp,ones(window_temp)*threshold_local,color="yellow");		
-		
-		mask = s .> threshold_local
+
+		Threshold_local = maximum(s);
+		figure(i);plot(t_tmp,ones(window_temp)*Threshold_local,color="yellow");			
+		threshold=[];
+			
+
+		mask = s .> Threshold_local
 		signal_temp[mask] = threshold;# median(signal_temp)
 		median_filtered_signal = vcat(median_filtered_signal,signal_temp)
 	end

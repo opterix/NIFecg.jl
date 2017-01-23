@@ -1,4 +1,5 @@
-function Plotting(graph=0)
+function Plotting(graph)
+
 #  0  - all
 # [1] - AECG
 # [2] - AECG_clean
@@ -8,94 +9,93 @@ function Plotting(graph=0)
 # [6] - AECGf
 # [7] - AECGf with QRSf_pos, AECG_white and QRSm_pos
 # diff number - none plot
-# diff compositions [1 3 4] or [3 5 6], as you wish
 
-close("all")
+PyPlot.close("all")
 
-if findfirst(graph,1) != 0 || findfirst(graph,0) != 0
+if findfirst(graph,0|1) != 0
 figure(1)
-for i in 1:nch
+for i in 1:m
 subplot("41$(i)")
 if i == 1 title("AECG data") end
- plot(t[1:ns], AECG[1:ns,i], color="red", linewidth=1.0, linestyle="-")
+ plot(t[1:num_sample], AECG[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
 
-if findfirst(graph,2) != 0 || findfirst(graph,0) != 0
+if findfirst(graph,0|2) != 0
 figure(2)
-for i in 1:nch
+for i in 1:m
 subplot("41$(i)")
 if i == 1 title("AECG clean") end
- plot(t[1:ns], AECG_clean[1:ns,i], color="red", linewidth=1.0, linestyle="-")
+ plot(t[1:num_sample], AECG_clean[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
 
-if findfirst(graph,3) != 0 || findfirst(graph,0) != 0
+if findfirst(graph,0|3) != 0
 figure(3)
-for i in 1:nch
-   subplot("$(nch)1$(i)")
+for i in 1:k
+   subplot("$(k)1$(i)")
    if i == 1
      title("ICA_white")
      plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
    end
-   plot(t[1:ns], AECG_white[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+   plot(t[1:num_sample], AECG_white[1:num_sample,i], color="black", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
 
-if findfirst(graph,4) != 0 || findfirst(graph,0) != 0
+if findfirst(graph,0|4) != 0
 figure(4)
-for i in 1:nch
+for i in 1:m
    subplot("41$(i)")
 if i == 1 title("SVD reconstruction") end
- plot(t[1:ns], SVDrec[1:ns,i], color="red", linewidth=1.0, linestyle="-")
+ plot(t[1:num_sample], SVDrec[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
 
-if findfirst(graph,5) != 0 || findfirst(graph,0) != 0
+if findfirst(graph,0|5) != 0
 figure(5)
 
-for i in 1:nch
+for i in 1:m
    subplot("41$(i)")
 if i == 1 title("AECG subtract SVD reconstruction") end
-plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
-plot(t[1:ns], AECGm[1:ns,i], color="red", linewidth=1.0, linestyle="-")
+plot(fetal_annot/rate_sample,zeros(size(fetal_annot,1)),"go") 
+plot(t[1:num_sample], AECGm[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
-if findfirst(graph,6) != 0 || findfirst(graph,0) != 0
+if findfirst(graph,0|6) != 0
 figure(6)
 
-for i in 1:nc
+for i in 1:m
    subplot("41$(i)")
 if i == 1 title("AECG feto (after ICA-sorted)") end
-plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
- plot(t[1:ns], AECGf2[1:ns,i], color="red", linewidth=1.0, linestyle="-")
+plot(fetal_annot/rate_sample,zeros(size(fetal_annot,1)),"go") 
+ plot(t[1:num_sample], AECGf2[1:num_sample,i], color="red", linewidth=1.0, linestyle="-")
 end
 end
 
 #-----------------------------------------------
-if findfirst(graph,7) != 0 || findfirst(graph,0) != 0
+if findfirst(graph,0|7) != 0
 
 figure(7)
 subplot(211)
 title("AECG feto=$(heart_rate_feto)")
-plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
+plot(fetal_annot/rate_sample,zeros(size(fetal_annot,1)),"go")
 plot(QRSf_pos[:,1]',QRSf_value[:,1]', "ro")
-plot(t[1:ns], AECGf[1:ns,1], color="black", 
+plot(t[1:num_sample], AECGf[1:num_sample,1], color="black", 
 linewidth=1.0, linestyle="-")
 subplot(212)
 title("AECG mother=$(heart_rate_mother)")
 plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
-plot(t[1:ns], AECG_white[1:ns,1], color="black", 
+plot(t[1:num_sample], AECG_white[1:num_sample,1], color="black", 
 linewidth=1.0, linestyle="-")
 end
 
