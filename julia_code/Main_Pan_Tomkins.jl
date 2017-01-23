@@ -17,7 +17,7 @@ include("MakeICAfeto.jl")
 include("Plotting.jl")
 
 ############# SOURCES #######################
-filename="a03"
+filename="a02"
 
 ############# GLOBAL VARIABLES ################
 window_size = 60 #seconds
@@ -89,15 +89,31 @@ salida= salida/maximum(abs(salida));
 
 max_h = maximum(salida);
 thra=(mean(salida));
-region=(salida.>thra.*max_h);
-region=Int.(region)';
+region=Int.(salida.>thra.*max_h);
+#region=Int.(region)';
 
 
-left=find(diff([0,region])==1);
+aux=diff([0; region]);
+aux2=diff([region; 0]);
+left = find(aux.==1);
+right = find(aux2.==-1);
+
 
 
 #left = find(diff([0 region])==1);
 #right = find(diff([region 0])==-1);
 
+maximoRIndex=zeros(length(right),1);
+maximoRValue=zeros(length(right),1);
+
+for i in 1:length(right)
+    maximoRIndex[i] = indmax(signal[left[i]:right[i],1]);
+    maximoRIndex[i] = maximoRIndex[i]-1+left[i];
+        
+    maximoRValue[i] = maximum(signal[left[i]:right[i],1]);
+end
 
 
+
+plot(signal[:,1]);
+plot(maximoRIndex, maximoRValue, "go");
