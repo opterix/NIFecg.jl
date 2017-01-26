@@ -18,7 +18,7 @@ include("Plotting.jl")
 include("pan_tomkins_detector.jl")
 
 ############# SOURCES #######################
-filename="a15"
+filename="a13"
 
 ############# GLOBAL VARIABLES ################
 window_size = 10 #seconds
