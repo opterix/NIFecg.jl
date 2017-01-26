@@ -15,6 +15,7 @@ include("MedianFilter.jl")
 include("Font_Separation_SVD.jl")
 include("MakeICAfeto.jl")
 include("Plotting.jl")
+include("pan_tomkins_detector.jl")
 
 ############# SOURCES #######################
 filename="a03"
@@ -46,7 +47,7 @@ window = 2000 # size of window in number of samples
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
 nc = nch # number of components
-(AECG_white) = MakeICAll(AECG_clean,nch,ns)
+(AECG_white) = MakeICAll(AECG_clean,nch,ns,nc)
 
 println(maximum(AECG_clean));
 
@@ -56,16 +57,28 @@ println(maximum(AECG_clean));
 #----------- Resamplig signal -----------------------
 #fact=2 # factor to resample the signal
 #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
+
+
+#------------ Pan - Tomkins Detector QRS------------------
+
+Pan_Tomkins_Detector(AECG_fnotch);
+(maximoRIndex, maximoRValue)=Pan_Tomkins_Detector(AECG_fnotch);
+
+#---------------------------------------------------------
+
+
+
 #----------- QRS mother detector -----------------------
-(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
-heart_rate_mother = (60*size(QRSm_pos,1))/window_size
+#(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
+#heart_rate_mother = (60*size(QRSm_pos,1))/window_size
+
 #------- SVD process and subtract mother signal---------
 
-(SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
-AECGf = MakeICAfeto(AECGm,nc,nch)
-AECGf2 = QRSf_selector(AECGf, nc)
-@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
-heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+#(SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
+#AECGf = MakeICAfeto(AECGm,nc,nch)
+#AECGf2 = QRSf_selector(AECGf, nc)
+#@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
+#heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
 
 ## Detector ECG feto con filtro derivativo

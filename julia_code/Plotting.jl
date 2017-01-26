@@ -99,6 +99,11 @@ plot(t[1:num_sample], AECG_white[1:num_sample,1], color="black",
 linewidth=1.0, linestyle="-")
 end
 
+figure(8)
+plot(signal[:,1]);
+plot(maximoRIndex, maximoRValue, "go");
+title("QRS_Pan_Tomkins)")
+
 end
 
 
