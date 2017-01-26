@@ -1,4 +1,4 @@
-function Pan_Tomkins_Detector(AECG_fnotch)
+function Pan_Tomkins_Detector(signal, sr)
 
 ############# GLOBAL VARIABLES ################
 nch=4;
@@ -6,7 +6,7 @@ nch=4;
 
 #------- Normalization  ------------
 
-PTSignal=copy(AECG_fnotch);
+PTSignal=copy(signal);
 
 for i in 1:nch
     PTSignal[:,i]= (PTSignal[:,i]-mean(PTSignal[:,i]))/maximum(abs(PTSignal[:,i]));
@@ -56,18 +56,18 @@ aux2=diff([region; 0]);
 left = find(aux.==1);
 right = find(aux2.==-1);
 
-maximoRIndex=zeros(length(right),1);
-maximoRValue=zeros(length(right),1);
+maximoRIndex=zeros(length(right));
+maximoRValue=zeros(length(right));
 
 for i in 1:length(right)
-    maximoRIndex[i] = indmax(PTSignal[left[i]:right[i],1]);
+    maximoRIndex[i] = indmax(signal[left[i]:right[i],1]);
     maximoRIndex[i] = maximoRIndex[i]-1+left[i];
         
-    maximoRValue[i] = maximum(PTSignal[left[i]:right[i],1]);
+    maximoRValue[i] = maximum(signal[left[i]:right[i],1]);
 end
 
 
-return maximoRIndex, maximoRValue;
+return maximoRIndex/sr, maximoRValue;
 
 
 end

@@ -18,10 +18,10 @@ include("Plotting.jl")
 include("pan_tomkins_detector.jl")
 
 ############# SOURCES #######################
-filename="a03"
+filename="a01"
 
 ############# GLOBAL VARIABLES ################
-window_size = 60 #seconds
+window_size = 30 #seconds
 sr=1000 #Sample rate
 ns = window_size * sr #number of samples
 
@@ -40,14 +40,14 @@ nch = size(AECG,2) # nch - number of channels
 (AECG_fnotch, lowSignal) = notch_filter(AECG, sr)
 #----------- Median filter ----------------
 window = 2000 # size of window in number of samples
-(AECG_clean) = MedianFilter(AECG_fnotch,window,ns,nch,sr)
-#AECG_clean = AECG_fnotch
+#(AECG_clean) = MedianFilter(AECG_fnotch,window,ns,nch,sr)
+AECG_clean = AECG_fnotch
 #println(maximum(AECG_clean));
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
 nc = nch # number of components
-(AECG_white) = MakeICAll(AECG_clean,nch,ns,nc)
+(AECG_white) = MakeICAll(AECG_clean,nch,nc)
 
 println(maximum(AECG_clean));
 
@@ -61,24 +61,23 @@ println(maximum(AECG_clean));
 
 #------------ Pan - Tomkins Detector QRS------------------
 
-Pan_Tomkins_Detector(AECG_fnotch);
-(maximoRIndex, maximoRValue)=Pan_Tomkins_Detector(AECG_fnotch);
+(QRSm_pos, QRSm_value)=Pan_Tomkins_Detector(AECG_white, sr);
 
 #---------------------------------------------------------
-
-
-
 #----------- QRS mother detector -----------------------
 #(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
-#heart_rate_mother = (60*size(QRSm_pos,1))/window_size
+heart_rate_mother = (60*size(QRSm_pos,1))/window_size
 
 #------- SVD process and subtract mother signal---------
 
-#(SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
-#AECGf = MakeICAfeto(AECGm,nc,nch)
-#AECGf2 = QRSf_selector(AECGf, nc)
+(SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
+AECGf = MakeICAfeto(AECGm,nc,nch)
+AECGf2 = QRSf_selector(AECGf, nc)
 #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
-#heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+
+(QRSf_pos,QRSf_value)= Pan_Tomkins_Detector(AECGf, sr)
+
+heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
 
 ## Detector ECG feto con filtro derivativo

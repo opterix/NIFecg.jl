@@ -1,4 +1,4 @@
-function MakeICAll(signal_orig,nch,ns,nc)
+function MakeICAll(signal_orig,nch,nc)
 
 signal=copy(signal_orig')
 
@@ -24,10 +24,10 @@ srand(15678)
 
 #-------------- FastICA --------------
 
-#M = fit(ICA, signal, nc; do_whiten=false)
-#W = M.W
-#signal_nowhite = W'*signal
-#signal_nowhite = signal_nowhite'
+M = fit(ICA, signal, nc; do_whiten=false)
+W = M.W
+signal_nowhite = W'*signal
+signal_nowhite = signal_nowhite'
 
 M = fit(ICA, signal, nc; do_whiten=true, maxiter=200, tol=0.0001)#, verbose=true)
 W = M.W
