@@ -27,47 +27,58 @@ PTSignal=filtfilt(filtroLP, PTSignal);
 PTSignal=filtfilt(filtroHP, PTSignal);
 
 #------- Derivative Filter
-
 B=[-1, -2, 0 , 2, 1]/8;
-salida=conv(PTSignal[:,1],B);
-salida=salida[3:end-2];
-salida= salida/maximum(abs(salida));
-salida=salida.^2;
 
-#--- Moving integration
-
-h = ones(151)/151;
-Delay=75;
-
-salida=conv(salida, h);
-
-salida= salida[Delay+1:end-Delay];
-salida= salida/maximum(abs(salida));
+    cellRValue = cell(nch);
+    cellRIndex = cell(nch);
 
 
-#--- Finding QRS Points Pan-Tompkins algorithm
+for k in 1:nch    
+    salida=conv(PTSignal[:,k],B);
+    salida=salida[3:end-2];
+    salida= salida/maximum(abs(salida));
+    salida=salida.^2;
 
-max_h = maximum(salida);
-thra=(mean(salida));
-region=Int.(salida.>thra.*max_h);
+    #--- Moving integration
 
-aux=diff([0; region]);
-aux2=diff([region; 0]);
-left = find(aux.==1);
-right = find(aux2.==-1);
+    h = ones(151)/151;
+    Delay=75;
 
-maximoRIndex=zeros(length(right));
-maximoRValue=zeros(length(right));
+    salida=conv(salida, h);
 
-for i in 1:length(right)
-    maximoRIndex[i] = indmax(signal[left[i]:right[i],1]);
-    maximoRIndex[i] = maximoRIndex[i]-1+left[i];
+    salida= salida[Delay+1:end-Delay];
+    salida= salida/maximum(abs(salida));
+
+
+    #--- Finding QRS Points Pan-Tompkins algorithm
+
+    max_h = maximum(salida);
+    thra=(mean(salida));
+    region=Int.(salida.>thra.*max_h);
+
+    aux=diff([0; region]);
+    aux2=diff([region; 0]);
+    left = find(aux.==1);
+    right = find(aux2.==-1);
+
+    maximoRIndex=zeros(length(right));
+    maximoRValue=zeros(length(right));
+
+    for i in 1:length(right)
+        maximoRIndex[i] = indmax(signal[left[i]:right[i],k]);
+        maximoRIndex[i] = maximoRIndex[i]-1+left[i];
         
-    maximoRValue[i] = maximum(signal[left[i]:right[i],1]);
+        maximoRValue[i] = maximum(signal[left[i]:right[i],k]);
+    end
+
+    maximoRIndex=maximoRIndex/sr
+
+    cellRValue[k] = maximoRValue;
+    cellRIndex[k] = maximoRIndex;
 end
+    
 
-
-return maximoRIndex/sr, maximoRValue;
+return cellRIndex, cellRValue;
 
 
 end

@@ -84,6 +84,8 @@ for i in 1:nc
 #if i == 1 title("AECG feto (after ICA-sorted)") end
 #plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
     plot(t[1:ns], AECGf[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+    plot(QRSfcell_pos[i]',QRSfcell_value[i]', "ro")
+
     title("Sorted Second ICA signals")
 end
 end

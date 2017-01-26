@@ -18,10 +18,10 @@ include("Plotting.jl")
 include("pan_tomkins_detector.jl")
 
 ############# SOURCES #######################
-filename="a01"
+filename="a15"
 
 ############# GLOBAL VARIABLES ################
-window_size = 30 #seconds
+window_size = 10 #seconds
 sr=1000 #Sample rate
 ns = window_size * sr #number of samples
 
@@ -61,21 +61,27 @@ println(maximum(AECG_clean));
 
 #------------ Pan - Tomkins Detector QRS------------------
 
-(QRSm_pos, QRSm_value)=Pan_Tomkins_Detector(AECG_white, sr);
+(QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr);
+QRSm_pos=QRSmcell_pos[1];
+QRSm_value=QRSmcell_value[1];
+
 
 #---------------------------------------------------------
 #----------- QRS mother detector -----------------------
 #(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
-heart_rate_mother = (60*size(QRSm_pos,1))/window_size
+heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
 
 #------- SVD process and subtract mother signal---------
 
 (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
-AECGf = MakeICAfeto(AECGm,nc,nch)
-AECGf2 = QRSf_selector(AECGf, nc)
+AECGf = MakeICAll(AECGm,nc,nch)
+#AECGf2 = QRSf_selector(AECGf, nc)
 #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
 
-(QRSf_pos,QRSf_value)= Pan_Tomkins_Detector(AECGf, sr)
+(QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf, sr)
+QRSf_pos=QRSfcell_pos[1];
+QRSf_value=QRSfcell_value[1];
+
 
 heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
