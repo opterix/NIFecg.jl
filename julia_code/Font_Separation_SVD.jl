@@ -10,6 +10,15 @@ numSVD=3; # number of single values take into account for reconstruction
 (Win_Pos_Fw) = (QRSm_pos*sr) + window_svd/2 ;
 (Win_Pos_Rw) = (QRSm_pos*sr) - window_svd/2 ;
 
+#if Win_Pos_Fw[end] >60
+#   Win_Pos_Fw=Win_Pos_Fw[1:end-1];
+#end
+
+#if Win_Pos_Rw[1] <0
+#   Win_Pos_Rw=Win_Pos_Rw[2:end];
+#end
+
+
 ## Pesos de la ventana (Tukey)
 alpha=0.5; #constante 0(rectangular) - 1(gausiana)
 win_weight=tukey(window_svd+1, alpha)*0.8+0.2;
@@ -24,6 +33,14 @@ if Win_Pos_Fw_Int[end] > ns
 else
   QRSm_pos_tmp=QRSm_pos
 end  
+
+
+if Win_Pos_Rw_Int[1] < 0
+  QRSm_pos_tmp=QRSm_pos_tmp[2:end]
+  Win_Pos_Rw_Int=Win_Pos_Rw_Int[2:end]
+  Win_Pos_Fw_Int=Win_Pos_Fw_Int[2:end]	
+end
+
 
 
 ## Inicializando variables

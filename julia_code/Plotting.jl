@@ -69,7 +69,7 @@ figure(5)
 for i in 1:nch
    subplot("41$(i)")
 #if i == 1 title("AECG subtract SVD reconstruction") end
-#plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
+plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
     plot(t[1:ns], AECGm[1:ns,i], color="black", linewidth=1.0, linestyle="-")
     title("Residuals signals")
 end
@@ -79,13 +79,12 @@ end
 if findfirst(graph,6) != 0 || findfirst(graph,0) != 0
 figure(6)
 
-for i in 1:nc
+for i in 1:nch
    subplot("41$(i)")
 #if i == 1 title("AECG feto (after ICA-sorted)") end
-#plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
-    plot(t[1:ns], AECGf[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+    plot(t[1:ns], AECGf2[1:ns,i], color="black", linewidth=1.0, linestyle="-")
     plot(QRSfcell_pos[i]',QRSfcell_value[i]', "ro")
-
+    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
     title("Sorted Second ICA signals")
 end
 end
@@ -101,10 +100,9 @@ plot(t[1:ns], AECG_white[1:ns,1], color="black",
 linewidth=1.0, linestyle="-")
 subplot(212)
 title("Ritmo cardíaco fetal = $(heart_rate_feto)")
-#plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
 plot(QRSf_pos[:,1]',QRSf_value[:,1]', "bo")
-plot(t[1:ns], AECGf[1:ns,1], color="black", 
-linewidth=1.0, linestyle="-")
+plot(t[1:ns], AECGf2[1:ns,1], color="black", linewidth=1.0, linestyle="-")
+plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
 end
 
 end
