@@ -109,7 +109,7 @@ end
 if findfirst(graph,8) != 0 || findfirst(graph,0) != 0
 figure(8)
 
-a=collect(-999.9:0.2:999.9);  #Solamente funciona en ventanas de 10segundos
+a=collect(-999.9:0.2:999.9)/2;  #Solamente funciona en ventanas de 10segundos
 
 
 
