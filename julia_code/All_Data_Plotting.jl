@@ -7,7 +7,7 @@ list_file=readdir(data_path)
 num_files=size(list_file,1)
 
 #for i in 1:num_files
-for i in 5:5
+for i in 17:17
 file_name = list_file[i]
 file_name = file_name[1:end-4]
 println("Procesando Imagen $(file_name)")
