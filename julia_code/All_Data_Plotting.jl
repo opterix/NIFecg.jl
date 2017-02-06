@@ -6,8 +6,8 @@ data_path="../data"
 list_file=readdir(data_path)
 num_files=size(list_file,1)
 
-#for i in 1:num_files
-for i in 17:17
+for i in 1:num_files
+#for i in 19:19
 file_name = list_file[i]
 file_name = file_name[1:end-4]
 println("Procesando Imagen $(file_name)")
@@ -55,7 +55,7 @@ sleep(1)
 manager[:window][:attributes]("-zoomed", 2)
 savefig("../test_image/$(file_name)_fig$(7).png") 
 
-Plotting([8])
+Plotting([5 6 8])
 manager = get_current_fig_manager()
 manager[:window][:attributes]("-zoomed", 1)
 sleep(1)
