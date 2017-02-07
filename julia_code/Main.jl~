@@ -91,10 +91,24 @@ QRSf_pos=QRSfcell_pos[1];
 QRSf_value=QRSfcell_value[1];
 
 
+## Análisis en el espectro de la frecuencia
+
+QRS_Fourier=zeros(ns,nch);
+for i in 1:nch
+QRS_Fourier[:,i]=abs(fftshift(fft(AECGf2[1:ns,i])));
+end
+
+QRS_Fourier_2=QRS_Fourier[5000:5999,:]
+
+(PixFourier_pos,PixFourier_value)= Pan_Tomkins_Detector(QRS_Fourier_2,ns)
+
+####
+
+
 heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
 
-return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto;
+return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm,QRS_Fourier,PixFourier_pos,PixFourier_value,QRS_Fourier_2;
 
 
 

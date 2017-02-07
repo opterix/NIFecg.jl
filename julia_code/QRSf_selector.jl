@@ -9,15 +9,15 @@ function QRSf_selector(signal_feto,nch)
 
     Efft= abs(out_aux).^2;
 
-    lfrec=40*size(fft,1)/1000;
+    #lfrec=40*size(fft,1)/1000;
 
-    Etotal40=Efft[1:lfrec];
+    #Etotal40=Efft[1:lfrec];
 
-    seedw=collect(0.4:0.1:4);
+    #Seedw=collect(0.4:0.1:4);
 
-    for seedw in 0.4:0.1:4
-        Q
-    end
+    #for seedw in 0.4:0.1:4
+    #    Q
+    #end
 
 
 ##Método por maximos vs promedio-No funciona

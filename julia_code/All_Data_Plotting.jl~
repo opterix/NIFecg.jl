@@ -1,17 +1,17 @@
 
 include("Main.jl");
 
-global nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm;
+global nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm,QRS_Fourier,PixFourier_value,PixFourier_pos;
 data_path="../data"
 list_file=readdir(data_path)
 num_files=size(list_file,1)
 
 #for i in 1:num_files
-for i in 3:3
+for i in 5:5
 file_name = list_file[i]
 file_name = file_name[1:end-4]
 println("Procesando Imagen $(file_name)")
-(nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm)=process_fetal(file_name);
+(nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm,QRS_Fourier,PixFourier_value,PixFourier_pos)=process_fetal(file_name);
 
 
 #Plotting([2])
