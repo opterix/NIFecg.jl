@@ -119,13 +119,15 @@ for i in 1:nch
    subplot("42$(2*i-1)")
 #if i == 1 title("AECG feto (after ICA-sorted)") end
 
-     plot(a,abs(fftshift(fft(AECGf2[1:ns,i]))), color="black", linewidth=1.0, linestyle="-")  
+    plot(a,abs(fftshift(fft(AECGf2[1:ns,i]))), color="black", linewidth=1.0, linestyle="-")
+
+    #plot(a, angle(fftshift))
 
     xlim(0, 100);
 
 subplot("42$(2*i)")
 
-    plot(real(fft(AECGf2[1:ns,i])), imag(fft(AECGf2[1:ns,i])), color="black", marker="o", linestyle="None")  
+    plot(a, angle(fftshift(fft(AECGf2[1:ns,i])))*180/pi, color="black", marker="o", linestyle="None")  
 
 
 #    plot(QRSfcell_pos[i]',QRSfcell_value[i]', "ro")
