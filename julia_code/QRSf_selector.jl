@@ -45,12 +45,15 @@ function QRSf_selector(signal_feto,nch)
 		x[:,k]=x[:,k]/Etotal[:,k];
 	end
 
-	maximosQindex= maximum(x,1);
+    maximosQindex= maximum(x,1);
+    #(maxval,indQ)=findmax(Qfactor,1);
+    
 
 	print(maximosQindex);
         idx=sortperm(vec(maximosQindex),rev=true);
 	print(idx);
-        sorted_feto = signal_feto[:,idx];
+    sorted_feto = signal_feto[:,idx];
+    x=x[:,idx];
 #	pause();
 
 #Variar tren de pulsos desde 0.4Hz a 4 Hz#
@@ -76,5 +79,5 @@ function QRSf_selector(signal_feto,nch)
 #    idx=sortperm(entr_m,rev=false);
 #    sorted_feto = signal_feto[:,idx];
 
-    return sorted_feto;
+    return (sorted_feto, points*dw_min, x);
 end

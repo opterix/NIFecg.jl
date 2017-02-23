@@ -83,7 +83,7 @@ heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
 
 (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 AECGf = MakeICAll(AECGm,nc,nch)
-AECGf2 = QRSf_selector(AECGf, nc)
+(AECGf2, frecQ, Qfactor) = QRSf_selector(AECGf, nc)
 #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
 
 (QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr)
@@ -94,7 +94,7 @@ QRSf_value=QRSfcell_value[1];
 heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
 
-return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec;
+return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor;
 
 
 

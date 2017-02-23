@@ -1,7 +1,7 @@
 
 include("Main.jl");
 
-global nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec;
+global nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor;
 data_path="../data"
 list_file=readdir(data_path)
 num_files=size(list_file,1)
@@ -11,7 +11,7 @@ for i in 1:num_files
 file_name = list_file[i]
 file_name = file_name[1:end-4]
 println("Procesando Imagen $(file_name)")
-(nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec)=process_fetal(file_name);
+(nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor)=process_fetal(file_name);
 
 
 #Plotting([2])
@@ -61,7 +61,7 @@ sleep(1)
 manager[:window][:attributes]("-zoomed", 2)
 savefig("../test_image/$(file_name)_fig$(7).png") 
 
-Plotting([5 6 8])
+Plotting([8])
 manager = get_current_fig_manager()
 manager[:window][:attributes]("-zoomed", 1)
 sleep(1)
