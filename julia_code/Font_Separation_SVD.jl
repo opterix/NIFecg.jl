@@ -4,11 +4,17 @@ window_svd=200; #samples
 numSVD=3; # number of single values take into account for reconstruction
 
 ## SINGULAR VALUE DECOMPOSITION
+    ## Defino la ventana a trabajar de 200 ms
 
-## Defino la ventana a trabajar de 200 ms
+    maximind_all = max_per_channel(signal,QRSm_pos,sr,nch,ns);
 
-(Win_Pos_Fw) = (QRSm_pos*sr) + window_svd/2 ;
-(Win_Pos_Rw) = (QRSm_pos*sr) - window_svd/2 ;
+    Win_Pos_Fw=[];
+    Win_Pos_Rw=[];
+
+    for kch in 1:nch
+        (Win_Pos_Fw[:,nch]) = (maximind_all[:,nch]*sr) + window_svd/2 ;
+        (Win_Pos_Rw[:,nch]) = (maximind_all[:,nch]*sr) - window_svd/2 ;
+    end
 
 #if Win_Pos_Fw[end] >60
 #   Win_Pos_Fw=Win_Pos_Fw[1:end-1];
@@ -28,17 +34,19 @@ win_weight=tukey(window_svd+1, alpha)*0.8+0.2;
 Win_Pos_Rw_Int = convert(Array{Int64}, round(Win_Pos_Rw));
 Win_Pos_Fw_Int = convert(Array{Int64}, round(Win_Pos_Fw));
 
-if Win_Pos_Fw_Int[end] > ns
-  QRSm_pos_tmp=QRSm_pos[1:end-1]
-else
-  QRSm_pos_tmp=QRSm_pos
-end  
+for kch in 1:nch
+    if Win_Pos_Fw_Int[end,nch] > ns
+        QRSm_pos_tmp=maximind_all[1:end-1, nch]
+    else
+        QRSm_pos_tmp=maximind_all[:,nch]
+    end  
 
 
-if Win_Pos_Rw_Int[1] < 0
-  QRSm_pos_tmp=QRSm_pos_tmp[2:end]
-  Win_Pos_Rw_Int=Win_Pos_Rw_Int[2:end]
-  Win_Pos_Fw_Int=Win_Pos_Fw_Int[2:end]	
+    if Win_Pos_Rw_Int[1] < 0
+        QRSm_pos_tmp=QRSm_pos_tmp[2:end]
+        Win_Pos_Rw_Int=Win_Pos_Rw_Int[2:end]
+        Win_Pos_Fw_Int=Win_Pos_Fw_Int[2:end]	
+    end
 end
 
 
@@ -53,7 +61,7 @@ for i = 1:nch #aplicar proceso para cada canal
 	##Guardo los valores de los complejos R detectados en una matriz
 	for ii = 1:length(QRSm_pos_tmp)   
 
-	SVD_Values[1:window_svd+1,ii]=(signal[Win_Pos_Rw_Int[ii]:Win_Pos_Fw_Int[ii],i]).*win_weight;	
+	SVD_Values[1:window_svd+1,ii]=(signal[Win_Pos_Rw_Int[ii, i]:Win_Pos_Fw_Int[ii,i],i]).*win_weight;	
 	end
 	
 	# Aplico Singular Value Decomposition a la matriz que contiene los R.
@@ -88,4 +96,32 @@ println("r")
 
 return signal_rec, signal_subtract;
 
+end
+
+
+function max_per_channel(signal,QRSm_pos,sr,nch,ns)
+    window_maxsearch=100;
+
+
+    detections=zeros(1,ns);
+    detections[round(Int64, QRSm_pos*sr)]=1;
+
+    filtones=ones(1,Int(window_maxsearch/2));
+
+    mask = conv(vec(detections), vec(filtones));
+    mask = mask[Int(window_maxsearch/4):Int(window_maxsearch/4+ns)];
+    cambios = diff(mask);
+    initp = find(cambios.>0.5);
+    endingp = find(cambios.<-0.5);
+
+    maximind_all=zeros(length(initp), nch);
+
+    for l in 1:length(initp)
+        trimsignal=signal[initp[l]:endingp[l],:];
+        (maximo,maximind) = findmax(trimsignal,1);
+        maximind_all[l,:] = mod(maximind-1,size(trimsignal,1))+1+initp[l];
+    end
+
+    return maximind_all;
+       
 end

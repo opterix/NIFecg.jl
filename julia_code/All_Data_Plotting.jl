@@ -28,45 +28,45 @@ println("Procesando Imagen $(file_name)")
 #manager[:window][:attributes]("-zoomed", 2)
 #savefig("../test_image/$(file_name)_fig$(3).png") 
 
-Plotting([2])
+Plotting([3])
 manager = get_current_fig_manager()
 manager[:window][:attributes]("-zoomed", 1)
 sleep(1)
 manager[:window][:attributes]("-zoomed", 2)
-savefig("../test_image/$(file_name)_fig$(2).png") 
+savefig("../test_image/$(file_name)_fig$(3).png") 
 
 
-Plotting([5])
+Plotting([4])
 manager = get_current_fig_manager()
 manager[:window][:attributes]("-zoomed", 1)
 sleep(1)
 manager[:window][:attributes]("-zoomed", 2)
-savefig("../test_image/$(file_name)_fig$(5).png") 
+savefig("../test_image/$(file_name)_fig$(4).png") 
 
 
 
 
-Plotting([6])
-manager = get_current_fig_manager()
-manager[:window][:attributes]("-zoomed", 1)
-sleep(1)
-manager[:window][:attributes]("-zoomed", 2)
-savefig("../test_image/$(file_name)_fig$(6).png") 
+#Plotting([6])
+#manager = get_current_fig_manager()
+#manager[:window][:attributes]("-zoomed", 1)
+#sleep(1)
+#manager[:window][:attributes]("-zoomed", 2)
+#savefig("../test_image/$(file_name)_fig$(6).png") 
 
 
-Plotting([7])
-manager = get_current_fig_manager()
-manager[:window][:attributes]("-zoomed", 1)
-sleep(1)
-manager[:window][:attributes]("-zoomed", 2)
-savefig("../test_image/$(file_name)_fig$(7).png") 
+#Plotting([7])
+#manager = get_current_fig_manager()
+#manager[:window][:attributes]("-zoomed", 1)
+#sleep(1)
+#manager[:window][:attributes]("-zoomed", 2)
+#savefig("../test_image/$(file_name)_fig$(7).png") 
 
-Plotting([8])
-manager = get_current_fig_manager()
-manager[:window][:attributes]("-zoomed", 1)
-sleep(1)
-manager[:window][:attributes]("-zoomed", 2)
-savefig("../test_image/$(file_name)_fig$(8).png") 
+#Plotting([8])
+#manager = get_current_fig_manager()
+#manager[:window][:attributes]("-zoomed", 1)
+#sleep(1)
+#manager[:window][:attributes]("-zoomed", 2)
+#savefig("../test_image/$(file_name)_fig$(8).png") 
 
 
 
