@@ -1,19 +1,25 @@
 function Font_Separation_SVD(signal,QRSm_pos,sr,nch,ns)
 
-window_svd=200; #samples
-numSVD=3; # number of single values take into account for reconstruction
+window_svd=250; #samples
+    numSVD=3; # number of single values take into account for reconstruction
+
+
 
 ## SINGULAR VALUE DECOMPOSITION
     ## Defino la ventana a trabajar de 200 ms
 
     maximind_all = max_per_channel(signal,QRSm_pos,sr,nch,ns);
 
-    Win_Pos_Fw=[];
-    Win_Pos_Rw=[];
+    Win_Pos_Fw=zeros(size(maximind_all));
+    Win_Pos_Rw=zeros(size(maximind_all));
 
     for kch in 1:nch
-        (Win_Pos_Fw[:,nch]) = (maximind_all[:,nch]*sr) + window_svd/2 ;
-        (Win_Pos_Rw[:,nch]) = (maximind_all[:,nch]*sr) - window_svd/2 ;
+        #(Win_Pos_Fw[:,kch]) = (maximind_all[:,kch]*sr) + window_svd/2 ;
+        #(Win_Pos_Rw[:,kch]) = (maximind_all[:,kch]*sr) - window_svd/2 ;
+
+        Win_Pos_Fw[:,kch] = maximind_all[:,kch] + window_svd/2 ;
+        Win_Pos_Rw[:,kch] = maximind_all[:,kch] - window_svd/2 ;
+
     end
 
 #if Win_Pos_Fw[end] >60
@@ -32,22 +38,23 @@ win_weight=tukey(window_svd+1, alpha)*0.8+0.2;
 ## Convierto el arreglo a enteros
 
 Win_Pos_Rw_Int = convert(Array{Int64}, round(Win_Pos_Rw));
-Win_Pos_Fw_Int = convert(Array{Int64}, round(Win_Pos_Fw));
+    Win_Pos_Fw_Int = convert(Array{Int64}, round(Win_Pos_Fw));
 
-for kch in 1:nch
-    if Win_Pos_Fw_Int[end,nch] > ns
-        QRSm_pos_tmp=maximind_all[1:end-1, nch]
+#        QRSm_pos_tmp=maximind_all;
+
+#for kch in 1:nch
+    if any(Win_Pos_Fw_Int[end,:] .> ns)
+        QRSm_pos_tmp=maximind_all[1:end-1, :]
     else
-        QRSm_pos_tmp=maximind_all[:,nch]
+        QRSm_pos_tmp=maximind_all
     end  
 
-
-    if Win_Pos_Rw_Int[1] < 0
-        QRSm_pos_tmp=QRSm_pos_tmp[2:end]
-        Win_Pos_Rw_Int=Win_Pos_Rw_Int[2:end]
-        Win_Pos_Fw_Int=Win_Pos_Fw_Int[2:end]	
+    if any(Win_Pos_Rw_Int[1,:] .< 0)
+        QRSm_pos_tmp=QRSm_pos_tmp[2:end,:]
+        Win_Pos_Rw_Int=Win_Pos_Rw_Int[2:end,:]
+        Win_Pos_Fw_Int=Win_Pos_Fw_Int[2:end,:]	
     end
-end
+#end
 
 
 
@@ -56,10 +63,10 @@ signal_rec=zeros(ns,nch);
 
 for i = 1:nch #aplicar proceso para cada canal
 	## Tomo los valores alrededor del complejo R en la ventana definida
-	SVD_Values = zeros(window_svd+1, length(QRSm_pos_tmp));
+	SVD_Values = zeros(window_svd+1, size(QRSm_pos_tmp,1));
 
 	##Guardo los valores de los complejos R detectados en una matriz
-	for ii = 1:length(QRSm_pos_tmp)   
+	for ii = 1:size(QRSm_pos_tmp,1)   
 
 	SVD_Values[1:window_svd+1,ii]=(signal[Win_Pos_Rw_Int[ii, i]:Win_Pos_Fw_Int[ii,i],i]).*win_weight;	
 	end
@@ -68,14 +75,14 @@ for i = 1:nch #aplicar proceso para cada canal
 
 	(U,S,V)=svd(SVD_Values);
 
-	Sprima=zeros(length(QRSm_pos_tmp));
+	Sprima=zeros(size(QRSm_pos_tmp,1));
 	Sprima[1:numSVD]=S[1:numSVD];
 	#Sprima=S;
 	NUrec=U*diagm(Sprima)*V';
 	
 	#Reconstruir cada canal 
-	for ii = 1:length(QRSm_pos_tmp)  
-		signal_rec[Win_Pos_Rw_Int[ii]:Win_Pos_Fw_Int[ii],i]=NUrec[1:window_svd+1,ii];
+	for ii = 1:size(QRSm_pos_tmp,1)  
+		signal_rec[Win_Pos_Rw_Int[ii,i]:Win_Pos_Fw_Int[ii,i],i]=NUrec[1:window_svd+1,ii];
 	end
 end
 
@@ -100,7 +107,7 @@ end
 
 
 function max_per_channel(signal,QRSm_pos,sr,nch,ns)
-    window_maxsearch=100;
+    window_maxsearch=200;
 
 
     detections=zeros(1,ns);
@@ -110,6 +117,8 @@ function max_per_channel(signal,QRSm_pos,sr,nch,ns)
 
     mask = conv(vec(detections), vec(filtones));
     mask = mask[Int(window_maxsearch/4):Int(window_maxsearch/4+ns)];
+    mask[1]=0;
+    mask[end]=0;
     cambios = diff(mask);
     initp = find(cambios.>0.5);
     endingp = find(cambios.<-0.5);

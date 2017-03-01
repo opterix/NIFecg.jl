@@ -52,12 +52,19 @@ end
 #-----------------------------------------------
 
 if findfirst(graph,4) != 0 || findfirst(graph,0) != 0
-figure(4)
+    figure(4)
+
+
+    
 for i in 1:nch
    subplot("41$(i)")
 #if i == 1 title("SVD reconstruction") end
-    plot(t[1:ns], SVDrec[1:ns,i], color="black", linewidth=1.0, linestyle="-")
-    title("SVD reconstruction")
+    #plot(t[1:ns], SVDrec[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+    
+    plot(t[1:ns], AECGm[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
+
+    title("residual signals")
 end
 end
 
@@ -68,10 +75,10 @@ if findfirst(graph,5) != 0 || findfirst(graph,0) != 0
 
     a=collect(-999.9:0.2:999.9)/2;  #Solamente funciona en ventanas de 10segundos
 
-
     for i in 1:nch
            subplot("42$(2*i-1)")
-#if i == 1 title("AECG feto (after ICA-sorted)") end
+        #if i == 1 title("AECG feto (after ICA-sorted)") end
+     
 
     plot(a,abs(fftshift(fft(AECGm[1:ns,i]))), color="black", linewidth=1.0, linestyle="-")
     #plot(a, angle(fftshift))
@@ -81,8 +88,8 @@ subplot("42$(2*i)")
 
 #   subplot("41$(i)")
 #if i == 1 title("AECG subtract SVD reconstruction") end
-plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
-    plot(t[1:ns], AECGm[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+        plot(t[1:ns], AECGm[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+        plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
     title("Residuals signals")
 end
 end
@@ -92,9 +99,6 @@ if findfirst(graph,6) != 0 || findfirst(graph,0) != 0
     figure(6)
 
 a=collect(-999.9:0.2:999.9)/2;  #Solamente funciona en ventanas de 10segundos
-
-
-
 
 
 for i in 1:nch
