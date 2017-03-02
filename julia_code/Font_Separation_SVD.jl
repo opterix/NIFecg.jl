@@ -1,7 +1,7 @@
 function Font_Separation_SVD(signal,QRSm_pos,sr,nch,ns)
 
 window_svd=250; #samples
-    numSVD=3; # number of single values take into account for reconstruction
+    numSVD=4; # number of single values take into account for reconstruction
 
 
 
