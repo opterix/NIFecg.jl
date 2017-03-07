@@ -18,8 +18,8 @@ function QRSf_selector(signal_feto,nch)
     dw_min= fs/nsamples;
     f_final= Int(round(40/dw_min));
 
-    dw_ini = Int(round(1.3/dw_min)); #Iniciar buscando en 1.3Hz: 77 pulsos por min
-    dw_fin = Int(round(3.5/dw_min));
+    dw_ini = Int(round(0.8/dw_min)); #Iniciar buscando en 1.3Hz: 77 pulsos por min
+    dw_fin = Int(round(3.8/dw_min));
 
 	
 #    print(f_final);
@@ -33,7 +33,8 @@ function QRSf_selector(signal_feto,nch)
     kpoint=1;
     
     for i in points
-	Eparcial=median(Efft[round(Int64, 1:i:10*i),:],1);
+	Eparcial=median(Efft[round(Int64, 1:i:10*i)+1,:],1);
+        #O usar sum o average?
 	#print(Eparcial);
 	x[kpoint,:]=Eparcial;
         kpoint += 1;
@@ -54,6 +55,19 @@ function QRSf_selector(signal_feto,nch)
 	print(idx);
     sorted_feto = signal_feto[:,idx];
     x=x[:,idx];
+
+
+    (mval,mind) = findmax(sum(x,2),1);
+
+    TPfreq = points[mind[1]];
+    fftrec = zeros(Complex{Float64}, size(out_aux));
+    
+    fftrec[round(Int64, 1:TPfreq:size(out_aux,1)),:] = out_aux[round(Int64, 1:TPfreq:size(out_aux,1)),:];
+
+    sigrec=ifft(fftrec,1);
+    
+
+    
 #	pause();
 
 #Variar tren de pulsos desde 0.4Hz a 4 Hz#

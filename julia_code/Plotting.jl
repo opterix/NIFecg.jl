@@ -25,12 +25,23 @@ end
 #-----------------------------------------------
 
 if findfirst(graph,2) != 0 || findfirst(graph,0) != 0
-figure(2)
-for i in 1:nch
-subplot("41$(i)")
+    figure(2)
+
+#    a=collect(-999.9:0.2:999.9)/2;  #Solamente funciona en ventanas de 10segundos
+    
+    for i in 1:nch
+        #subplot("42$(2*i-1)")
+        subplot("41$(i)")
 #if i == 1 title("AECG clean") end
-    plot(t[1:ns], AECG_clean[1:ns,i], color="black", linewidth=1.0, linestyle="-")
-    title("Filtered signals")
+        plot(t[1:ns], AECG_clean[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+        title("Filtered signals")
+
+#        subplot("42$(2*i)")
+#
+ #       plot(a,abs(fftshift(fft(AECG_clean[1:ns,i]))), color="black", linewidth=1.0, linestyle="-")
+        #plot(a, angle(fftshift))
+ #       xlim(0, 100);
+        
 end
 end
 
@@ -142,8 +153,6 @@ if findfirst(graph,8) != 0 || findfirst(graph,0) != 0
 figure(8)
 
 a=collect(-999.9:0.2:999.9)/2;  #Solamente funciona en ventanas de 10segundos
-
-
 
 
 

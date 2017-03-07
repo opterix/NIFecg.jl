@@ -2,6 +2,7 @@
 include("Main.jl");
 
 global nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor;
+
 data_path="../data"
 list_file=readdir(data_path)
 num_files=size(list_file,1)
