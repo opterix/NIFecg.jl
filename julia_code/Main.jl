@@ -82,7 +82,7 @@ heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
 #------- SVD process and subtract mother signal---------
 
 (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
-AECGf = MakeICAll(AECGm,nc,nch)
+AECGf = MakeICAfeto(AECGm,nc,nch)
 (AECGf2, frecQ, Qfactor) = QRSf_selector(AECGf, nc)
 #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
 

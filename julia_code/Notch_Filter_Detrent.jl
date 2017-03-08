@@ -7,6 +7,7 @@ function notch_filter(x, rate_sample)
 
     #title("Pure ECG")
     frec_Notch=60;
+    frec_Notch2=50
 
     responsetype = Lowpass(5,fs=rate_sample);
     prototype=Butterworth(4);
@@ -14,8 +15,8 @@ function notch_filter(x, rate_sample)
     Notch=iirnotch(frec_Notch,1,fs=rate_sample)
     Notch2=iirnotch(frec_Notch*2,1,fs=rate_sample)
     Notch3=iirnotch(frec_Notch*3,1,fs=rate_sample)
-    Notch4=iirnotch(frec_Notch*4,1,fs=rate_sample)
-    Notch5=iirnotch(frec_Notch*5,1,fs=rate_sample)
+    Notch4=iirnotch(frec_Notch2,1,fs=rate_sample)
+    Notch5=iirnotch(frec_Notch2*2,1,fs=rate_sample)
 
     detrend_filter= digitalfilter(responsetype, prototype);
 
