@@ -95,3 +95,81 @@ function QRSf_selector(signal_feto,nch)
 
     return (sorted_feto, points*dw_min, x);
 end
+
+
+function smooth_RR(FQRSdetections, nch, fs)
+    max_frr = 0.55*fs;
+    min_frr = 0.35*fs;
+
+    smooth_FQRS=cell(nch);
+
+    for i in 1:nch
+
+        conteo=5
+
+        auxFQRSdet = copy(FQRSdetections[i])*fs;
+     
+        while conteo<size(auxFQRSdet,1)-1
+            med=median(diff(auxFQRSdet[conteo-4:conteo]));
+#            println(med);
+
+            if med>min_frr && med<max_frr
+                dTplus = auxFQRSdet[conteo+1]-auxFQRSdet[conteo]; #rr siguiente
+                dTminus = auxFQRSdet[conteo]-auxFQRSdet[conteo-1]; #rr anterior
+
+                if dTplus<0.7*med && dTminus<1.2*med
+                    #Extra detection
+                    #Eliminar detección
+                    deleteat!(auxFQRSdet, conteo+1);
+                    println("QRS eliminado");
+                elseif dTplus>1.75*med && dTminus>0.7*med
+                    #Pulso no detectado
+                    #usar la mediana del RR para insertar pulso no detectado
+                    missedFQRS= round(auxFQRSdet[conteo] + med);
+                    insert!(auxFQRSdet, conteo+1, missedFQRS);
+                    println("QRS insertado");
+                else
+                    #Detección normal
+                    conteo=conteo+1;
+                end
+            else
+                #rr out of physiological range
+                conteo = conteo+1;
+            end
+        end
+
+        smooth_FQRS[i]=auxFQRSdet/fs;
+        
+    end
+
+    return smooth_FQRS;
+end
+
+
+function smi_computation(FQRSdetections, nch, fs)
+
+    CI=0.98;
+    SMI = zeros(nch,1);
+       
+    for i in 1:nch
+        #QRS=zeros(window_time*fs,1);
+        #QRS[round(Int64, FQRSdetections[i]*fs)]=1;
+        QRS = FQRSdetections[i];
+        hrate= 60./(diff(QRS));
+
+        hrate_var = sort(vec(diff(hrate)));
+        Nhrate_var = size(hrate_var,1);
+
+        superior=ceil(Int64, Nhrate_var*(CI+(1-CI)/2));
+        inferior=ceil(Int64, Nhrate_var*(1-CI)/2);
+        if (superior!=0) && (inferior != 0)
+            hrate_var_robust=hrate_var[inferior:superior];
+            SMI[i] = size(find((hrate_var_robust.>30) | (hrate_var_robust.<-30)),1);
+        else
+            SMI[i] = 1000;
+        end
+           
+    end
+
+    return SMI;
+end

@@ -22,9 +22,6 @@ include("QRSf_selector.jl")
 
 function process_fetal(filename)
 
-
-
-
 ############# SOURCES #######################
 #filename="a12"
 
@@ -56,23 +53,17 @@ AECG_clean = AECG_fnotch
 #----------------- ICA ----------------------
 nc = nch # number of components
 (AECG_white) = MakeICAll(AECG_clean,nch,nc)
-
 println(maximum(AECG_clean));
-
 
 #------------ Sort ICA results ----------------------
 #(AECG_sort)=SortICA(AECG_white)
 #----------- Resamplig signal -----------------------
 #fact=2 # factor to resample the signal
 #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
-
-
 #------------ Pan - Tomkins Detector QRS------------------
-
 (QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr);
 QRSm_pos=QRSmcell_pos[1];
 QRSm_value=QRSmcell_value[1];
-
 
 #---------------------------------------------------------
 #----------- QRS mother detector -----------------------
@@ -88,27 +79,25 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
 
 (QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr)
 QRSf_pos=QRSfcell_pos[1];
-QRSf_value=QRSfcell_value[1];
+    QRSf_value=QRSfcell_value[1];
+    
+    (QRSfcell_pos_smooth) = smooth_RR(QRSfcell_pos, nch, sr);
+    SMI = smi_computation(QRSfcell_pos_smooth, nch, sr);
 
-
+    auxidx=sortperm(vec(SMI));
+    AECGf2=AECGf2[:,auxidx];
+    QRSfcell_pos_smooth=QRSfcell_pos_smooth[auxidx];
+    QRSfcell_pos=QRSfcell_pos[auxidx];
+    QRSfcell_value=QRSfcell_value[auxidx];
+    SMI=SMI[auxidx];
+    
 heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
-
-return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor;
-
-
-
-
+return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor, QRSfcell_pos_smooth, SMI;
 
 #-------Channel Selection after ICA---------
-
 #FETO=QRSf_selector(AECGf,nch);
 #Feto_Det=FETO[:,4];
-
-
-
-
-
 
 ## Detector ECG feto con filtro derivativo
 #nu=convert(Int64, ceil(0.005*sr));
@@ -118,11 +107,8 @@ return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_
 
 #ecgfx=vcat(repmat(AECGf2[1,:],1,delay)', AECGf, repmat(AECGf2[end,:],1,delay)')
 #der=PolynomialRatio(vec(B),[1])
-
 #ecg_der=filt(der,ecgfx);
-
 #ecg_der=ecg_der[2*delay+1:end,:]
-
 
 #responseType=Bandpass(0.7,8;fs=sr)
 #designMethod=Butterworth(10);

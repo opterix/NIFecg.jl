@@ -116,9 +116,13 @@ for i in 1:nch
    subplot("42$(2*i-1)")
 #if i == 1 title("AECG feto (after ICA-sorted)") end
 
-    plot(a,abs(fftshift(fft(AECGf2[1:ns,i]))), color="black", linewidth=1.0, linestyle="-")
+    #plot(a,abs(fftshift(fft(AECGf2[1:ns,i]))), color="black", linewidth=1.0, linestyle="-")
     #plot(a, angle(fftshift))
-    xlim(0, 100);
+    #xlim(0, 100);
+    plot(t[1:ns], AECGf2[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
+    plot(QRSfcell_pos_smooth[i], zeros(size(QRSfcell_pos_smooth[i],1),1), "ro")
+    title("Sorted Second ICA signals. SMI=$(SMI[i])")
 
 subplot("42$(2*i)")
 
@@ -126,8 +130,8 @@ subplot("42$(2*i)")
 #subplot("42$(i)")
 #if i == 1 title("AECG feto (after ICA-sorted)") end
     plot(t[1:ns], AECGf2[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
     plot(QRSfcell_pos[i]',QRSfcell_value[i]', "ro")
-    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
     title("Sorted Second ICA signals")
 end
 end
