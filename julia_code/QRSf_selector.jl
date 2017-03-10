@@ -121,13 +121,13 @@ function smooth_RR(FQRSdetections, nch, fs)
                     #Extra detection
                     #Eliminar detección
                     deleteat!(auxFQRSdet, conteo+1);
-                    println("QRS eliminado");
+                    #println("QRS eliminado");
                 elseif dTplus>1.75*med && dTminus>0.7*med
                     #Pulso no detectado
                     #usar la mediana del RR para insertar pulso no detectado
                     missedFQRS= round(auxFQRSdet[conteo] + med);
                     insert!(auxFQRSdet, conteo+1, missedFQRS);
-                    println("QRS insertado");
+                    #println("QRS insertado");
                 else
                     #Detección normal
                     conteo=conteo+1;

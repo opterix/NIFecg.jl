@@ -78,7 +78,7 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
 #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
 
 (QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr)
-QRSf_pos=QRSfcell_pos[1];
+
     QRSf_value=QRSfcell_value[1];
     
     (QRSfcell_pos_smooth) = smooth_RR(QRSfcell_pos, nch, sr);
@@ -90,8 +90,9 @@ QRSf_pos=QRSfcell_pos[1];
     QRSfcell_pos=QRSfcell_pos[auxidx];
     QRSfcell_value=QRSfcell_value[auxidx];
     SMI=SMI[auxidx];
-    
-heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+
+    QRSf_pos=QRSfcell_pos_smooth[1];
+    heart_rate_feto = (60*size(QRSf_pos,1))/window_size
 
 return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor, QRSfcell_pos_smooth, SMI;
 
