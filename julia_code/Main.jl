@@ -1,5 +1,5 @@
 ############## LIBRARIES ##############
-using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP
+using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Distances
 
 ############# FUNCTIONS ####################
 include("process_svs.jl")
@@ -75,14 +75,35 @@ heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
 (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 AECGf = MakeICAfeto(AECGm,nc,nch)
 (AECGf2, frecQ, Qfactor) = QRSf_selector(AECGf, nc)
-#@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
+    #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
+
+    #Aplicar transformada de Hilbert?
+    #fftHilbert= -j*sign(AECGf2).*fft(AECGf2)
+    
+    
 
 (QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr)
 
     QRSf_value=QRSfcell_value[1];
-    
+#    maxSeg=size(AECGm,1)/sr;
+
+    #rr smoothing de ida
     (QRSfcell_pos_smooth) = smooth_RR(QRSfcell_pos, nch, sr);
-    SMI = smi_computation(QRSfcell_pos_smooth, nch, sr);
+
+#    for kch in 1:nch
+#        QRSfcell_pos_smooth[kch]=flipdim(maxSeg - QRSfcell_pos_smooth[kch], 1)
+#    end
+
+    #rr smoothing de vuelta
+#    (QRSfcell_pos_smooth) = smooth_RR(QRSfcell_pos, nch, sr);
+
+    #Vuelta a orden original
+#    for kch in 1:nch
+#        QRSfcell_pos_smooth[kch]=flipdim(maxSeg - QRSfcell_pos_smooth[kch], 1)
+#    end
+
+
+    SMI = smi_computation(QRSfcell_pos_smooth, QRSm_pos, nch, sr);
 
     auxidx=sortperm(vec(SMI));
     AECGf2=AECGf2[:,auxidx];
@@ -93,6 +114,23 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
 
     QRSf_pos=QRSfcell_pos_smooth[1];
     heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+
+    FreqDiff = 1 - abs(heart_rate_mother-heart_rate_feto)/heart_rate_mother;
+
+#    println(FreqDiff)
+    
+    if FreqDiff > 0.9;
+        auxidx = [2,3,4,1];
+        AECGf2=AECGf2[:,auxidx];
+        QRSfcell_pos_smooth=QRSfcell_pos_smooth[auxidx];
+        QRSfcell_pos=QRSfcell_pos[auxidx];
+        QRSfcell_value=QRSfcell_value[auxidx];
+        SMI = SMI[auxidx];
+
+        QRSf_pos=QRSfcell_pos_smooth[2];
+        heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+
+    end
 
 return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor, QRSfcell_pos_smooth, SMI;
 
