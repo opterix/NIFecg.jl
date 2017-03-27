@@ -1,7 +1,7 @@
-function Pan_Tomkins_Detector(signal, sr)
+function Pan_Tomkins_Detector(signal, sr, nch)
 
 ############# GLOBAL VARIABLES ################
-nch=4;
+#nch=4;
 
 
 #------- Normalization  ------------

@@ -15,7 +15,7 @@ close("all")
 if findfirst(graph,1) != 0 || findfirst(graph,0) != 0
 figure(1)
 for i in 1:nch
-subplot("41$(i)")
+subplot("$(nch)1$(i)")
 #if i == 1 title("AECG data") end
     plot(t[1:ns], AECG[1:ns,i], color="black", linewidth=1.0, linestyle="-")
     title("Original signals")
@@ -31,7 +31,7 @@ if findfirst(graph,2) != 0 || findfirst(graph,0) != 0
     
     for i in 1:nch
         #subplot("42$(2*i-1)")
-        subplot("41$(i)")
+        subplot("$(nch)1$(i)")
 #if i == 1 title("AECG clean") end
         plot(t[1:ns], AECG_clean[1:ns,i], color="black", linewidth=1.0, linestyle="-")
         title("Filtered signals")

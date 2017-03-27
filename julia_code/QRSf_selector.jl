@@ -22,7 +22,7 @@ function QRSf_selector(signal_feto,nch)
     Etotal = sum(Efft[1:f_final,:],1);
     #    print(Etotal);
     points=collect(dw_ini:0.1:dw_fin);
-    x=zeros(size(points,1),4);
+    x=zeros(size(points,1),nch);
 
     kpoint=1;
     

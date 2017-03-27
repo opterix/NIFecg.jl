@@ -26,14 +26,25 @@ function process_fetal(filename)
 #filename="a12"
 
 ############# GLOBAL VARIABLES ################
-window_size = 10 #seconds
+    window_size = 30#seconds
 sr=1000 #Sample rate
-ns = window_size * sr #number of samples
+    ns = window_size * sr #number of samples
+
+    flag_Anot=false;
+    ecg_nativos=true;
 
 ############ LOAD DATA ######################
 #----------- Read and fix data --------------
-(t,AECG) = process_svs(filename)
-fetal_annot = process_txt(filename,ns)
+    (t,AECG) = process_svs(filename)
+    if flag_Anot
+        fetal_annot = process_txt(filename,ns)
+    else
+        fetal_annot=0;
+    end
+
+    if ecg_nativos
+        AECG = AECG*22350;
+    end
 
 #----------- Load data according global varaibles ----
 AECG = AECG[1:ns,:]
@@ -82,7 +93,7 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
     
     
 
-(QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr)
+(QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr, nch)
 
     QRSf_value=QRSfcell_value[1];
 #    maxSeg=size(AECGm,1)/sr;
