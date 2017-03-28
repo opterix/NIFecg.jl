@@ -1,6 +1,6 @@
 
 ############## LIBRARIES ##############
-using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Wavelets
+using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Wavelets, JLD
 
 ############# FUNCTIONS ####################
 include("process_svs.jl")
@@ -24,75 +24,107 @@ include("QRSf_selector.jl")
 # function process_fetal(filename)
 
 ############# SOURCES #######################
-filename="a02"
 
-############# GLOBAL VARIABLES ################
-window_size = 10 #seconds
-sr=1000 #Sample rate
-ns = window_size * sr #number of samples
+data_path="../data"
+list_file=readdir(data_path)
+num_files=size(list_file,1)
+#leer todos los datos en directorio data
 
-############ LOAD DATA ######################
-#----------- Read and fix data --------------
-(t,AECG) = process_svs(filename)
-fetal_annot = process_txt(filename,ns)
 
-#----------- Load data according global varaibles ----
-AECG = AECG[1:ns,:]
-t = t[1:ns,:]
-nch = size(AECG,2) # nch - number of channels
+for i in 1:num_files
+    file_name = list_file[i]
+    file_name = file_name[1:end-4]
+    println("Procesando record $(file_name)")
 
-# ########### PREPROCESING ####################
-#------- Notch Filtering and detrending ------------
-(AECG_fnotch, lowSignal) = notch_filter(AECG, sr)
-#----------- Median filter ----------------
-window = 2000 # size of window in number of samples
-#(AECG_clean) = MedianFilter(AECG_fnotch,window,ns,nch,sr)
-AECG_clean = AECG_fnotch
-#println(maximum(AECG_clean));
 
-########## SOURCE SEPARATION ################
-#----------------- ICA ----------------------
-nc = nch # number of components
-(AECG_white) = MakeICAll(AECG_clean,nch,nc)
-println(maximum(AECG_clean));
+    filename=file_name
 
-#------------ Sort ICA results ----------------------
-#(AECG_sort)=SortICA(AECG_white)
-#----------- Resamplig signal -----------------------
-#fact=2 # factor to resample the signal
-#(t_resmp,AECG_resample) = InterpSignal(AECG_white)
-#------------ Pan - Tomkins Detector QRS------------------
-(QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr);
-QRSm_pos=QRSmcell_pos[1];
-QRSm_value=QRSmcell_value[1];
+    ############# GLOBAL VARIABLES ################
 
-#---------------------------------------------------------
-#----------- QRS mother detector -----------------------
-#(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
-heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
+    fv_size=101;
 
-#------- SVD process and subtract mother signal---------
+    window_size = 60 #seconds
+    sr=1000 #Sample rate
+    ns = window_size * sr #number of samples
 
-(SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
-AECGf = MakeICAfeto(AECGm,nc,nch)
-(AECGf2, frecQ, Qfactor) = QRSf_selector(AECGf, nc)
-#@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
+    ############ LOAD DATA ######################
+    #----------- Read and fix data --------------
+    (t,AECG) = process_svs(filename)
+    fetal_annot = process_txt(filename,ns)
 
-(QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr)
+    #----------- Load data according global varaibles ----
+    AECG = AECG[1:ns,:]
+    t = t[1:ns,:]
+    nch = size(AECG,2) # nch - number of channels
 
-    QRSf_value=QRSfcell_value[1];
-    
-    (QRSfcell_pos_smooth) = smooth_RR(QRSfcell_pos, nch, sr);
-    SMI = smi_computation(QRSfcell_pos_smooth, nch, sr);
+    # ########### PREPROCESING ####################
+    #------- Notch Filtering and detrending ------------
+    (AECG_fnotch, lowSignal) = notch_filter(AECG, sr)
+    #----------- Median filter ----------------
+    window = 2000 # size of window in number of samples
+    AECG_clean = AECG_fnotch
 
-    auxidx=sortperm(vec(SMI));
-    AECGf2=AECGf2[:,auxidx];
-    QRSfcell_pos_smooth=QRSfcell_pos_smooth[auxidx];
-    QRSfcell_pos=QRSfcell_pos[auxidx];
-    QRSfcell_value=QRSfcell_value[auxidx];
-    SMI=SMI[auxidx];
 
-    QRSf_pos=QRSfcell_pos_smooth[1];
-    heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+    ########## SOURCE SEPARATION ################
+    #----------------- ICA ----------------------
+    nc = nch # number of components
+    (AECG_white) = MakeICAll(AECG_clean,nch,nc)
+    println(maximum(AECG_clean));
 
-#return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor, QRSfcell_pos_smooth, SMI;
+    #------------ Sort ICA results ----------------------
+    #(AECG_sort)=SortICA(AECG_white)
+    #----------- Resamplig signal -----------------------
+    #fact=2 # factor to resample the signal
+    #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
+    #------------ Pan - Tomkins Detector QRS------------------
+    (QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr);
+    QRSm_pos=QRSmcell_pos[1];
+    QRSm_value=QRSmcell_value[1];
+
+    #---------------------------------------------------------
+    #----------- QRS mother detector -----------------------
+    #(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
+    heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
+
+    #------- SVD process and subtract mother signal---------
+
+    (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
+
+    pos_examples = zeros(nch*size(fetal_annot,1), fv_size);
+    neg_examples = zeros(nch*size(fetal_annot,1), fv_size);
+
+    fetal_ini=fetal_annot-(fv_size-1)/2;
+    fetal_fin=fetal_annot+(fv_size-1)/2;
+
+    AECGm=vcat(AECGm, zeros(100,4));
+
+
+    for iannot = 1:size(fetal_annot,1)
+
+        if iannot==1
+            neg_point = fetal_annot[iannot]/2;
+        else
+            neg_point = (fetal_annot[iannot]+fetal_annot[iannot-1])/2;
+        end
+
+        neg_point_ini=   round(Int64, neg_point-(fv_size-1)/2);
+        neg_point_fin=   round(Int64, neg_point+(fv_size-1)/2);
+
+        if neg_point_ini<=0;
+            neg_point_ini=1;
+            neg_point_fin=fv_size;
+        end
+        
+        
+        pos_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[Int64(fetal_ini[iannot]):Int64(fetal_fin[iannot]),:]';
+        #print(iannot);
+        #println(iannot);
+
+        neg_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[neg_point_ini:neg_point_fin,:]'
+        
+    end
+
+
+    save("$(filename)_examples.jld", "pos_examples", pos_examples, "neg_examples", neg_examples)
+
+end
