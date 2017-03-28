@@ -25,6 +25,8 @@ include("QRSf_selector.jl")
 
 ############# SOURCES #######################
 
+mkdir("../Dictionaries")  # Un directorio para guardar los diccionarios generados
+
 data_path="../data"
 list_file=readdir(data_path)
 num_files=size(list_file,1)
@@ -125,6 +127,6 @@ for i in 1:num_files
     end
 
 
-    save("$(filename)_examples.jld", "pos_examples", pos_examples, "neg_examples", neg_examples)
+    save("../Dictionaries/$(filename)_examples.jld", "pos_examples", pos_examples, "neg_examples", neg_examples)
 
 end
