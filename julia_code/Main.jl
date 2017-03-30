@@ -72,7 +72,7 @@ println(maximum(AECG_clean));
 #fact=2 # factor to resample the signal
 #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
 #------------ Pan - Tomkins Detector QRS------------------
-(QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr);
+(QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr, nch);
 QRSm_pos=QRSmcell_pos[1];
 QRSm_value=QRSmcell_value[1];
 
