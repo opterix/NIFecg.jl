@@ -9,7 +9,7 @@ function Pan_Tomkins_Detector(signal, sr, nch)
 PTSignal=copy(signal);
 
 for i in 1:nch
-    PTSignal[:,i]= (PTSignal[:,i]-mean(PTSignal[:,i]))/maximum(abs(PTSignal[:,i]));
+    PTSignal[:,i]= (PTSignal[:,i]-mean(PTSignal[:,i]))/std(PTSignal[:,i]);
 end
 
 #------- Passband Filter > 5Hz-15Hz
@@ -36,7 +36,8 @@ B=[-1, -2, 0 , 2, 1]/8;
 for k in 1:nch    
     salida=conv(PTSignal[:,k],B);
     salida=salida[3:end-2];
-    salida= salida/maximum(abs(salida));
+    #salida= salida/maximum(abs(salida));
+    salida= salida/std(salida);
     salida=salida.^2;
 
     #--- Moving integration
