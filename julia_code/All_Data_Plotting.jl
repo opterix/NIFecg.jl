@@ -44,12 +44,12 @@ sleep(1)
 manager[:window][:attributes]("-zoomed", 2)
 savefig("../test_image/$(file_name)_fig$(4).png") 
 
-Plotting([5])
-manager = get_current_fig_manager()
-manager[:window][:attributes]("-zoomed", 1)
-sleep(1)
-manager[:window][:attributes]("-zoomed", 2)
-savefig("../test_image/$(file_name)_fig$(5).png") 
+#Plotting([5])
+#manager = get_current_fig_manager()
+#manager[:window][:attributes]("-zoomed", 1)
+#sleep(1)
+#manager[:window][:attributes]("-zoomed", 2)
+#savefig("../test_image/$(file_name)_fig$(5).png") 
 
     
 Plotting([6])
@@ -67,12 +67,12 @@ sleep(1)
 manager[:window][:attributes]("-zoomed", 2)
 savefig("../test_image/$(file_name)_fig$(7).png") 
 
-Plotting([8])
-manager = get_current_fig_manager()
-manager[:window][:attributes]("-zoomed", 1)
-sleep(1)
-manager[:window][:attributes]("-zoomed", 2)
-savefig("../test_image/$(file_name)_fig$(8).png") 
+#Plotting([8])
+#manager = get_current_fig_manager()
+#manager[:window][:attributes]("-zoomed", 1)
+#sleep(1)
+#manager[:window][:attributes]("-zoomed", 2)
+#savefig("../test_image/$(file_name)_fig$(8).png") 
 
 
 

@@ -26,8 +26,8 @@ function process_fetal(filename)
 #filename="a12"
 
 ############# GLOBAL VARIABLES ################
-    window_size = 30#seconds
-sr=1000 #Sample rate
+    window_size = 20#seconds
+    sr=1000 #Sample rate
     ns = window_size * sr #number of samples
 
     flag_Anot=true;
@@ -73,6 +73,9 @@ nc = nch # number of components
 #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
 #------------ Pan - Tomkins Detector QRS------------------
 (QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr, nch);
+#Implementar la parte de selección
+    
+    
 QRSm_pos=QRSmcell_pos[1];
 QRSm_value=QRSmcell_value[1];
 
