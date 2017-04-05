@@ -30,8 +30,8 @@ function process_fetal(filename)
 sr=1000 #Sample rate
     ns = window_size * sr #number of samples
 
-    flag_Anot=false;
-    ecg_nativos=true;
+    flag_Anot=true;
+    ecg_nativos=false;
 
 ############ LOAD DATA ######################
 #----------- Read and fix data --------------
@@ -58,13 +58,13 @@ nch = size(AECG,2) # nch - number of channels
 window = 2000 # size of window in number of samples
 #(AECG_clean) = MedianFilter(AECG_fnotch,window,ns,nch,sr)
 AECG_clean = AECG_fnotch
-#println(maximum(AECG_clean));
+
 
 ########## SOURCE SEPARATION ################
 #----------------- ICA ----------------------
 nc = nch # number of components
 (AECG_white) = MakeICAll(AECG_clean,nch,nc)
-println(maximum(AECG_clean));
+
 
 #------------ Sort ICA results ----------------------
 #(AECG_sort)=SortICA(AECG_white)
@@ -76,10 +76,33 @@ println(maximum(AECG_clean));
 QRSm_pos=QRSmcell_pos[1];
 QRSm_value=QRSmcell_value[1];
 
-#---------------------------------------------------------
+#rr smoothing de ida
+    flag=1; #bandera para aplicar segun frecuencas fetales o maternas
+    (QRSmcell_pos_smooth) = smooth_RR(QRSmcell_pos, nch, sr,flag);
+
+
+    SMI = smi_computation(QRSmcell_pos_smooth, nch, sr);
+
+    auxidx=sortperm(vec(SMI));
+    AECG_white=AECG_white[:,auxidx];
+    QRSmcell_pos_smooth=QRSmcell_pos_smooth[auxidx];
+    QRSmcell_pos=QRSmcell_pos[auxidx];
+    QRSmcell_value=QRSmcell_value[auxidx];
+    SMI=SMI[auxidx];
+
+    QRSm_pos=QRSmcell_pos_smooth[1];
+    heart_rate_mother = (60*size(QRSm_pos,1))/window_size
+
+
+
+
+#-------------------------------------------------------
 #----------- QRS mother detector -----------------------
 #(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
-heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
+
+#heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
+
+
 
 #------- SVD process and subtract mother signal---------
 
@@ -99,7 +122,8 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
 #    maxSeg=size(AECGm,1)/sr;
 
     #rr smoothing de ida
-    (QRSfcell_pos_smooth) = smooth_RR(QRSfcell_pos, nch, sr);
+    flag=2; #bandera para aplicar segun frecuencas fetales o maternas
+    (QRSfcell_pos_smooth) = smooth_RR(QRSfcell_pos, nch, sr,flag);
 
 #    for kch in 1:nch
 #        QRSfcell_pos_smooth[kch]=flipdim(maxSeg - QRSfcell_pos_smooth[kch], 1)
@@ -114,7 +138,7 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
 #    end
 
 
-    SMI = smi_computation(QRSfcell_pos_smooth, QRSm_pos, nch, sr);
+    SMI = smi_computation(QRSfcell_pos_smooth, nch, sr);
 
     auxidx=sortperm(vec(SMI));
     AECGf2=AECGf2[:,auxidx];
