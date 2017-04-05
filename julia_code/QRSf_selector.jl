@@ -84,10 +84,16 @@ function QRSf_selector(signal_feto,nch)
 end
 
 
-function smooth_RR(FQRSdetections, nch, fs)
+function smooth_RR(FQRSdetections, nch, fs, flag)
+
+if flag == 1 # fetal
     max_frr = 0.55*fs;
     min_frr = 0.35*fs;
+elseif flag == 2 # mother
+ max_frr = 0.55*fs;
+    min_frr = 0.35*fs;
 
+end
     smooth_FQRS=cell(nch);
 
     for i in 1:nch
@@ -133,7 +139,7 @@ function smooth_RR(FQRSdetections, nch, fs)
 end
 
 
-function smi_computation(FQRSdetections, QRSm_pos, nch, fs)
+function smi_computation(FQRSdetections, nch, fs)
 
     CI=0.98;
     SMI = zeros(nch,1);
