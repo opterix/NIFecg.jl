@@ -154,7 +154,7 @@ plot(t[1:ns], AECGf2[1:ns,1], color="black", linewidth=1.0, linestyle="-")
      
 
    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
-   plot(QRSf_pos[:,1], zeros(size(QRSf_pos[:,1],1),1), "bo")
+   plot(QRSf_pos[:,1], zeros(size(QRSf_pos[:,1],1),1)+0.5, "bo")
 
 end
 
