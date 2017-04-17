@@ -142,7 +142,7 @@ if findfirst(graph,7) != 0 || findfirst(graph,0) != 0
 figure(7)
 subplot(211)
 title("Ritmo cardíaco materno = $(heart_rate_mother)")
-plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
+plot(QRSm_pos[:,1]',zeros(size(QRSm_pos,1),1)', "ro")
 plot(t[1:ns], AECG_white[1:ns,1], color="black", 
 linewidth=1.0, linestyle="-")
 subplot(212)
@@ -182,7 +182,7 @@ subplot("42$(2*i)")
 
 
 #    plot(QRSfcell_pos[i]',QRSfcell_value[i]', "ro")
-#    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
+    plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
 
     title("Sorted Second ICA signals")
 end

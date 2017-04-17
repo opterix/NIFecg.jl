@@ -86,10 +86,10 @@ end
 
 function smooth_RR(FQRSdetections, nch, fs, flag)
 
-if flag == 1 # fetal
-    max_frr = 0.55*fs;
-    min_frr = 0.35*fs;
-elseif flag == 2 # mother
+if flag == 1 # mother
+    max_frr = 1*fs;
+    min_frr = 0.55*fs;
+elseif flag == 2 #fetal 
  max_frr = 0.55*fs;
     min_frr = 0.35*fs;
 

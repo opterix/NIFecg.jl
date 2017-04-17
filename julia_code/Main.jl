@@ -79,6 +79,7 @@ nc = nch # number of components
 QRSm_pos=QRSmcell_pos[1];
 QRSm_value=QRSmcell_value[1];
 
+
 #rr smoothing de ida
     flag=1; #bandera para aplicar segun frecuencas fetales o maternas
     (QRSmcell_pos_smooth) = smooth_RR(QRSmcell_pos, nch, sr,flag);
@@ -86,7 +87,7 @@ QRSm_value=QRSmcell_value[1];
 
     SMI = smi_computation(QRSmcell_pos_smooth, nch, sr);
 
-    auxidx=sortperm(vec(SMI));
+    auxidx=sortperm(vec(SMI)); 
     AECG_white=AECG_white[:,auxidx];
     QRSmcell_pos_smooth=QRSmcell_pos_smooth[auxidx];
     QRSmcell_pos=QRSmcell_pos[auxidx];
@@ -95,8 +96,6 @@ QRSm_value=QRSmcell_value[1];
 
     QRSm_pos=QRSmcell_pos_smooth[1];
     heart_rate_mother = (60*size(QRSm_pos,1))/window_size
-
-
 
 
 #-------------------------------------------------------
