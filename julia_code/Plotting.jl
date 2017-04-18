@@ -53,7 +53,7 @@ for i in 1:nch
    subplot("$(nch)1$(i)")
    if i == 1
  #    title("ICA_white")
-       plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
+       plot(QRSm_pos[:,1]',zeros(size(QRSm_pos,1),1)', "ro")#plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
        title("First ICA")
    end
    plot(t[1:ns], AECG_white[1:ns,i], color="black", linewidth=1.0, linestyle="-")
@@ -142,9 +142,9 @@ if findfirst(graph,7) != 0 || findfirst(graph,0) != 0
 figure(7)
 subplot(211)
 title("Ritmo cardíaco materno = $(heart_rate_mother)")
-plot(QRSm_pos[:,1]',zeros(size(QRSm_pos,1),1)', "ro")
 plot(t[1:ns], AECG_white[1:ns,1], color="black", 
 linewidth=1.0, linestyle="-")
+plot(QRSm_pos[:,1]',zeros(size(QRSm_pos,1),1)', "ro")
 subplot(212)
 title("Ritmo cardíaco fetal = $(heart_rate_feto)")
     #plot(QRSf_pos[:,1]',QRSf_value[:,1]', "bo")
