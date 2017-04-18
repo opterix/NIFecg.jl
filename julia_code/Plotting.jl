@@ -51,12 +51,9 @@ if findfirst(graph,3) != 0 || findfirst(graph,0) != 0
 figure(3)
 for i in 1:nch
    subplot("$(nch)1$(i)")
-   if i == 1
- #    title("ICA_white")
-       plot(QRSm_pos[:,1]',zeros(size(QRSm_pos,1),1)', "ro")#plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
-       title("First ICA")
-   end
    plot(t[1:ns], AECG_white[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+   plot(QRSm_pos[:,1]',zeros(size(QRSm_pos,1),1)', "ro")#plot(QRSm_pos[:,1]',QRSm_value[:,1]', "ro")
+       title("First ICA")
 end
 end
 

@@ -74,6 +74,7 @@ savefig("../test_image/$(file_name)_fig$(7).png")
 #manager[:window][:attributes]("-zoomed", 2)
 #savefig("../test_image/$(file_name)_fig$(8).png") 
 
+close("all")
 
 
 end
