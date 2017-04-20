@@ -17,6 +17,7 @@ include("MakeICAfeto.jl")
 include("Plotting.jl")
 include("pan_tomkins_detector.jl")
 include("QRSf_selector.jl")
+include("gini.jl")
 
 ############# ALL SOURCES #######################
 
@@ -110,12 +111,14 @@ QRSm_value=QRSmcell_value[1];
 
 (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 AECGf = MakeICAfeto(AECGm,nc,nch)
-(AECGf2, frecQ, Qfactor) = QRSf_selector(AECGf, nc)
+    (AECGf2, frecQ, Qfactor) = QRSf_selector(AECGf, nc)
+
+    
     #@time (QRSf_pos,QRSf_value)= QRSf_detector(AECGf,ns,sr)
 
     #Aplicar transformada de Hilbert?
     #fftHilbert= -j*sign(AECGf2).*fft(AECGf2)
-    
+
     
 
 (QRSfcell_pos,QRSfcell_value)= Pan_Tomkins_Detector(AECGf2, sr, nch)
@@ -142,20 +145,32 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
 
     SMI = smi_computation(QRSfcell_pos_smooth, nch, sr);
 
-    auxidx=sortperm(vec(SMI));
+    giniMeasure = zeros(nch)
+    for kch in 1:nch
+        if length(QRSfcell_pos_smooth[kch])<=10
+            giniMeasure[kch] = 0
+        else
+            giniMeasure[kch] = gini(AECGf2[:,kch])
+        end
+    end
+    #idx_new=sortperm(giniMeasure, rev=true);
+    #AECGf2=AECGf2[:,idx_new];
+
+
+    #auxidx=sortperm(vec(SMI));
+    auxidx=sortperm(giniMeasure, rev=true);
     AECGf2=AECGf2[:,auxidx];
     QRSfcell_pos_smooth=QRSfcell_pos_smooth[auxidx];
     QRSfcell_pos=QRSfcell_pos[auxidx];
     QRSfcell_value=QRSfcell_value[auxidx];
     SMI=SMI[auxidx];
-
     QRSf_pos=QRSfcell_pos_smooth[1];
-    heart_rate_feto = (60*size(QRSf_pos,1))/window_size
+    giniMeasure=giniMeasure[auxidx]
 
+    
+    heart_rate_feto = (60*size(QRSf_pos,1))/window_size
     FreqDiff = 1 - abs(heart_rate_mother-heart_rate_feto)/heart_rate_mother;
 
-#    println(FreqDiff)
-    
     if FreqDiff > 0.9;
         auxidx = [2,3,4,1];
         AECGf2=AECGf2[:,auxidx];
@@ -163,13 +178,15 @@ AECGf = MakeICAfeto(AECGm,nc,nch)
         QRSfcell_pos=QRSfcell_pos[auxidx];
         QRSfcell_value=QRSfcell_value[auxidx];
         SMI = SMI[auxidx];
-
-        QRSf_pos=QRSfcell_pos_smooth[2];
+        giniMeasure=giniMeasure[auxidx]
+        QRSf_pos=QRSfcell_pos_smooth[1];
         heart_rate_feto = (60*size(QRSf_pos,1))/window_size
-
     end
 
-return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor, QRSfcell_pos_smooth, SMI;
+
+
+
+return nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor, QRSfcell_pos_smooth, SMI, giniMeasure;
 
 #-------Channel Selection after ICA---------
 #FETO=QRSf_selector(AECGf,nch);

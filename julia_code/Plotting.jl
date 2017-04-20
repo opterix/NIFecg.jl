@@ -119,7 +119,7 @@ for i in 1:nch
     plot(t[1:ns], AECGf2[1:ns,i], color="black", linewidth=1.0, linestyle="-")
     plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
     plot(QRSfcell_pos_smooth[i], zeros(size(QRSfcell_pos_smooth[i],1),1), "ro")
-    title("Sorted Second ICA signals. SMI=$(SMI[i])")
+    title("Sorted Second ICA signals. SMI=$(SMI[i]). gini=$(giniMeasure[i])")
 
 subplot("42$(2*i)")
 
