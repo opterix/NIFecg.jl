@@ -46,15 +46,32 @@ println("Entrenando Support Vector Machine")
 
 ## Aplicar Support Vector Machine para clasificar 
 
-labels = vcat(zeros(size(T_Aux_Sig_Neg,1)),ones(size(T_Aux_Sig_Pos,1)));
-instances = vcat(T_Aux_Sig_Pos[:,1:64],T_Aux_Sig_Neg[:,1:64])'
+#labels = vcat(zeros(size(T_Aux_Sig_Neg,1)),ones(size(T_Aux_Sig_Pos,1)));
+instances = vcat(T_Aux_Sig_Pos[1:1000,1:64],T_Aux_Sig_Neg[1:1000,1:64])'
+labels = vcat(zeros(1000),ones(1000));
 #model = svmtrain(labels,instances,verbose=true);
 model = svmtrain(instances, labels, verbose=true);
 
-(predicted_labels, decision_values) = svmpredict(model,instances);
+#instances=convert(Matrix{Float64}, instances)
+#test_instances=convert(Matrix{Float64}, instances[:,1:end]);
+
+gc();
+
+b=instances[:,1:2];
+(predicted_labels, decision_values) = svmpredict(model,b);
+@printf "Finished 1st"
+
+b=instances[:,1:64];
+(predicted_labels, decision_values) = svmpredict(model,b);
+
+@printf "Finished 2nd"
+
+
+
+#(predicted_labels, decision_values) = svmpredict(model,test_instances);
 
 # Compute accuracy
-@printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
+#@printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
 
 save("../SVM_Model.jld","model",model)
     
