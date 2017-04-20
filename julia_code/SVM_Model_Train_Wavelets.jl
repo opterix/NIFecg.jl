@@ -1,9 +1,12 @@
 #### Leo los diccionarios generados, para la descomposición Wavelet ###
 
+using LIBSVM
+using JLD
+using Wavelets
+
 
 include("Read_Dictionary.jl");
-include("LIBSVM.jl");
-using LIBSVM
+#include("LIBSVM.jl");
 
 ## Variables ##
 
@@ -45,7 +48,8 @@ println("Entrenando Support Vector Machine")
 
 labels = vcat(zeros(size(T_Aux_Sig_Neg,1)),ones(size(T_Aux_Sig_Pos,1)));
 instances = vcat(T_Aux_Sig_Pos[:,1:64],T_Aux_Sig_Neg[:,1:64])'
-model = svmtrain(labels,instances,verbose=true);
+#model = svmtrain(labels,instances,verbose=true);
+model = svmtrain(instances, labels, verbose=true);
 
 (predicted_labels, decision_values) = svmpredict(model,instances);
 
