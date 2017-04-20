@@ -43,7 +43,7 @@ for i in 1:num_files
 
     ############# GLOBAL VARIABLES ################
 
-    fv_size=101;
+    fv_size=128;
 
     window_size = 60 #seconds
     sr=1000 #Sample rate
@@ -95,10 +95,10 @@ for i in 1:num_files
     pos_examples = zeros(nch*size(fetal_annot,1), fv_size);
     neg_examples = zeros(nch*size(fetal_annot,1), fv_size);
 
-    fetal_ini=fetal_annot-(fv_size-1)/2;
-    fetal_fin=fetal_annot+(fv_size-1)/2;
+    fetal_ini=fetal_annot-(fv_size)/2;
+    fetal_fin=(fetal_annot+(fv_size)/2)-1;
 
-    AECGm=vcat(AECGm, zeros(100,4));
+    AECGm=vcat(AECGm, zeros(128,4));
 
 
     for iannot = 1:size(fetal_annot,1)
@@ -109,8 +109,8 @@ for i in 1:num_files
             neg_point = (fetal_annot[iannot]+fetal_annot[iannot-1])/2;
         end
 
-        neg_point_ini=   round(Int64, neg_point-(fv_size-1)/2);
-        neg_point_fin=   round(Int64, neg_point+(fv_size-1)/2);
+        neg_point_ini=   round(Int64, neg_point-(fv_size)/2);
+        neg_point_fin=   round(Int64, neg_point+((fv_size)/2))-1;
 
         if neg_point_ini<=0;
             neg_point_ini=1;
