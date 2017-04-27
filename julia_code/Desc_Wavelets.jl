@@ -1,6 +1,6 @@
 
 ############## LIBRARIES ##############
-using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Wavelets, JLD
+using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Wavelets, JLD, Distances
 
 ############# FUNCTIONS ####################
 include("process_svs.jl")
@@ -18,6 +18,7 @@ include("MakeICAfeto.jl")
 include("Plotting.jl")
 include("pan_tomkins_detector.jl")
 include("QRSf_selector.jl")
+include("gini.jl")
 
 ############# ALL SOURCES #######################
 
@@ -78,15 +79,30 @@ for i in 1:num_files
     #----------- Resamplig signal -----------------------
     #fact=2 # factor to resample the signal
     #(t_resmp,AECG_resample) = InterpSignal(AECG_white)
+
+
     #------------ Pan - Tomkins Detector QRS------------------
     (QRSmcell_pos, QRSmcell_value)=Pan_Tomkins_Detector(AECG_white, sr,nch);
     QRSm_pos=QRSmcell_pos[1];
     QRSm_value=QRSmcell_value[1];
 
-    #---------------------------------------------------------
-    #----------- QRS mother detector -----------------------
-    #(QRSm_pos,QRSm_value)= QRSm_detector(AECG_white,ns,sr)
-    heart_rate_mother = (60*size(QRSmcell_pos[1],1))/window_size
+#rr smoothing de ida
+    flag=1; #bandera para aplicar segun frecuencas fetales o maternas
+    (QRSmcell_pos_smooth) = smooth_RR(QRSmcell_pos, nch, sr,flag);
+
+
+    SMI = smi_computation(QRSmcell_pos_smooth, nch, sr);
+
+    auxidx=sortperm(vec(SMI)); 
+    AECG_white=AECG_white[:,auxidx];
+    QRSmcell_pos_smooth=QRSmcell_pos_smooth[auxidx];
+    QRSmcell_pos=QRSmcell_pos[auxidx];
+    QRSmcell_value=QRSmcell_value[auxidx];
+    SMI=SMI[auxidx];
+
+    QRSm_pos=QRSmcell_pos_smooth[1];
+    heart_rate_mother = (60*size(QRSm_pos,1))/window_size
+
 
     #------- SVD process and subtract mother signal---------
 
@@ -102,7 +118,6 @@ for i in 1:num_files
 	deleteat!(fetal_ini,1);
 	deleteat!(fetal_fin,1);
 	deleteat!(fetal_annot,1);
-
     end	
 
     AECGm=vcat(AECGm, zeros(128,4));

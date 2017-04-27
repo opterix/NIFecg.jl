@@ -27,7 +27,7 @@ function process_fetal(filename)
 #filename="a12"
 
 ############# GLOBAL VARIABLES ################
-    window_size = 20#seconds
+    window_size = 10#seconds
     sr=1000 #Sample rate
     ns = window_size * sr #number of samples
 
