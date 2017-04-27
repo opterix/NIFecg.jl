@@ -1,5 +1,6 @@
 #### Leo los diccionarios generados para la descomposición Wavelet
 
+using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Wavelets, JLD
 
 ## Recursos ##
 

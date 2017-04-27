@@ -98,6 +98,13 @@ for i in 1:num_files
     fetal_ini=fetal_annot-(fv_size)/2;
     fetal_fin=(fetal_annot+(fv_size)/2)-1;
 
+    if fetal_ini[1]<1;
+	deleteat!(fetal_ini,1);
+	deleteat!(fetal_fin,1);
+	deleteat!(fetal_annot,1);
+
+    end	
+
     AECGm=vcat(AECGm, zeros(128,4));
 
 
@@ -116,7 +123,7 @@ for i in 1:num_files
             neg_point_ini=1;
             neg_point_fin=fv_size;
         end
-        
+	   
         
         pos_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[Int64(fetal_ini[iannot]):Int64(fetal_fin[iannot]),:]';
         #print(iannot);
