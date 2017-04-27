@@ -1,4 +1,4 @@
-function Font_Separation_SVD(signal,QRSm_pos,sr,nch,ns)
+function fontSeparationSVD(signal,QRSm_pos,sr,nch,ns)
 
     window_svd=700; #samples
     window_init= window_svd*0.4;

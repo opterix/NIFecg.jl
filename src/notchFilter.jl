@@ -1,4 +1,4 @@
-function notch_filter(x, rate_sample)
+function notchFilter(x, rate_sample)
     #x=ecg; #read matrix ecg
 
     #time=60

@@ -1,4 +1,4 @@
-function MedianFilter(AECG_input,window,ns,nch,sr)
+function medianFilter(AECG_input,window,ns,nch,sr)
 
 AECG_output=zeros(ns,nch)
 

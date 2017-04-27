@@ -1,4 +1,4 @@
-function gini(in_array)
+function giniCoefficient(in_array)
     # Compute the gini coefficient for an array
 
     #Convert to 1D array

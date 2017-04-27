@@ -1,10 +1,11 @@
 function preProcessingModule(AECG,sr)
 
-	include("Notch_Filter_Detrent.jl")
+	# Include function files	
+	include("notchFilter.jl")
 	
-	#Notch Filtering and detrending
-	(AECG_clean, lowSignal) = notch_filter(AECG, sr)
+	# Notch Filtering and detrending
+	(AECG_clean, lowSignal) = notchFilter(AECG, sr)
 
-	return AECG_clean, lowSignal
+	return AECG_clean
 
 end

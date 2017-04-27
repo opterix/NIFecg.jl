@@ -1,4 +1,4 @@
-function QRSf_selector(signal_feto,nch)
+function qrsFetalSelector(signal_feto,nch)
 
 	for i in 1:nch
             signal_feto[:,i]= (signal_feto[:,i]-mean(signal_feto[:,i]))/(std(signal_feto[:,i]));#
@@ -46,41 +46,8 @@ function QRSf_selector(signal_feto,nch)
     idx=sortperm(vec(maximosQindex),rev=true);
     print(idx);
     sorted_feto = signal_feto[:,idx];
-    x=x[:,idx];
-
-    (mval,mind) = findmax(sum(x,2),1);
-
-    TPfreq = points[mind[1]];
-    fftrec = zeros(Complex{Float64}, size(out_aux));
     
-    fftrec[round(Int64, 1:TPfreq:size(out_aux,1)),:] = out_aux[round(Int64, 1:TPfreq:size(out_aux,1)),:];
-
-    sigrec=ifft(fftrec,1);
-
-#pause();
-#Variar tren de pulsos desde 0.4Hz a 4 Hz#
-#lfrec=40*size(fft,1)/1000;
-#Etotal40=Efft[1:lfrec];
-#Seedw=collect(0.4:0.1:4);
-#for seedw in 0.4:0.1:4
-#Q
-#end
-
-##Método por maximos vs promedio-No funciona
-#    maximos = maximum(out,1);
-#    avAbsPower = mean(out,1);
-#    quality = maximos./avAbsPower;
-#    idx = sortperm(vec(quality), rev=true);
-
-##Método por entropia:
-#    entr_m=zeros(size(signal_feto,2))
-#    for i in 1:nch
-#        entr_m[i]=entropy(out[:,i]);
-#    end
-#    idx=sortperm(entr_m,rev=false);
-#    sorted_feto = signal_feto[:,idx];
-
-    return (sorted_feto, points*dw_min, x);
+    return sorted_feto
 end
 
 
