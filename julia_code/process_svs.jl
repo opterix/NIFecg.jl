@@ -3,7 +3,7 @@ function process_svs(filepath)
     a=readcsv("../data/"*filepath*".csv") #read file
 
     t=a[3:end,1]
-    b=a[3:end, 2:5] #Extract one channel information
+    b=a[3:end, 2:end] #Extract one channel information
 
     f(x) = typeof(x)==Float64 #function to test if elements are float
 

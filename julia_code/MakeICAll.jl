@@ -1,6 +1,6 @@
 function MakeICAll(signal_orig,nch,nc)
 
-signal=copy(signal_orig')
+signal=copy(signal_orig)
 
 # ------------------- Extract the mean value --------------------#
 for i in 1:nch
@@ -8,6 +8,7 @@ for i in 1:nch
 end
 
 #------------------------
+signal=signal'
 
 srand(15678)
 
