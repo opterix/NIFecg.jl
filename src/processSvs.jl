@@ -5,7 +5,7 @@ function processSvs(filepath)
     t=a[3:end,1]
     b=a[3:end, 2:end] #Extract one channel information
 
-    f(x) = typeof(x)==Float64 #function to test if elements are float
+    f(x) = typeof(x) == Float64 || typeof(x) == Int64 #function to test if elements are float
 
     bool_floats = broadcast(f,b)
     bool_floats = convert(Array{Bool,2}, bool_floats) #Convert array to boolean appropiate for logical indexing

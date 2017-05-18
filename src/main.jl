@@ -11,7 +11,7 @@ include("plotModule.jl")
 function sourceSeparationECG(filename)
 
 #------------------------------------ GLOBAL VARIABLES 
-ts = 20 # time_signal in seconds
+ts = 60 # time_signal in seconds
 sr = 1000 # sample rate
 ns = ts * sr # number of samples
 
@@ -20,7 +20,6 @@ ns = ts * sr # number of samples
 
 #---------------------------------------- PREPROCESING
 (AECG_clean) = preProcessingModule(AECG, sr)
-
 
 #----------------- MOTHER SUBSTRACTION AND COMPUTATION
 (heart_rate_mother,AECGm_ica,SVDrec,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value) = motherSubstractionModule(AECG_clean,nch,sr,ns,ts)
@@ -32,7 +31,7 @@ ns = ts * sr # number of samples
 
 return nch,ns,t,sr,fetal_annot,AECG,AECG_clean,
 AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,
-AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure;
+AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure
 
 end
 
