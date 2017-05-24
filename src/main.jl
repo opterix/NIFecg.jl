@@ -29,6 +29,7 @@ ns = ts * sr # number of samples
 #------------------ FETAL SUBSTRACTION AND COMPUTATION 
 (AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstractionModule(AECG_residual,heart_rate_mother,nch,sr,ts)
 
+#------------------ Grouping variables 
 (motherVar, fetalVar)=storageVarModule(AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,
 AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure)
 
