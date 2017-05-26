@@ -2,16 +2,22 @@ module plotModule
 	
 	#Libraries
 	using PyPlot
-
 	
 	export Plotting
 
-	function Plotting(graph=0)
+	function Plotting(inputVar,motherVar,fetalVar,graph=0,)
 
-		global nch,ns,t,sr,fetal_annot,AECG,AECG_clean,motherVar,fetalVar
+		nch = inputVar["nch"];
+		ts = inputVar["ts"];
+		sr = inputVar["sr"];
+		t = inputVar["t"];
+		ns = inputVar["ns"];
+		nch = inputVar["nch"];
+		fetal_annot = inputVar["fetal_annot"];
+		AECG = inputVar["AECG"];
+		AECG_clean = inputVar["AECG_clean"]; 
 
 		close("all")
-
 
 		#-----------------------------------------------
 		if findfirst(graph,1) != 0 || findfirst(graph,0) != 0
@@ -51,7 +57,7 @@ module plotModule
 			for i in 1:nch
 				subplot("41$(i)")    
 				plot(t[1:ns], motherVar["AECG_residual"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-				plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
+				if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 				title("residual signals")
 			end
 		end
@@ -69,7 +75,7 @@ module plotModule
 
 				subplot("42$(2*i)")
 				plot(t[1:ns], motherVar["AECG_residual"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-				plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go") 
+				if fetal_annot != 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end 
 				title("Residuals signals")
 			end
 		end
@@ -81,13 +87,13 @@ module plotModule
 			for i in 1:nch
 				subplot("42$(2*i-1)")
 				plot(t[1:ns], fetalVar["AECG_sort"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-				plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
+				if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 				plot(fetalVar["QRScell_pos_smooth"][i], zeros(size(fetalVar["QRScell_pos_smooth"][i],1),1), "ro")
 				title("Sorted Second ICA signals. SMI=$(fetalVar["SMI"][i]). gini=$(fetalVar["gini_measure"][i])")
 
 				subplot("42$(2*i)")
 				plot(t[1:ns], fetalVar["AECG_sort"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-				plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
+				if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 				plot(fetalVar["QRScell_pos"][i]',fetalVar["QRScell_value"][i]', "ro")
 				title("Sorted Second ICA signals")
 			end
@@ -104,7 +110,7 @@ module plotModule
 			subplot(212)
 			title("Ritmo cardíaco fetal = $(fetalVar["heart_rate"])")    
 			plot(t[1:ns], fetalVar["AECG_sort"][1:ns,1], color="black", linewidth=1.0, linestyle="-")
-			plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go")
+			if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 			plot(fetalVar["QRS_pos"][:,1], zeros(size(fetalVar["QRS_pos"][:,1],1),1)+0.5, "bo")
 		end
 

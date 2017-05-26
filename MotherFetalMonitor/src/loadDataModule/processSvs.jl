@@ -1,6 +1,6 @@
 function processSvs(filename)
 
-    a=readcsv(pwd()*"/"*filename*".csv") #read file
+    a=readcsv(filename*".csv") #read file
 
     t=a[3:end,1]
     b=a[3:end, 2:end] #Extract one channel information

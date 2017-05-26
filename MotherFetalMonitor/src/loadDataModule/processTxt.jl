@@ -1,6 +1,6 @@
-function processTxt(filepath,ns)
-   
-	a=readdlm("../data/Annotations/"*filepath*".fqrs.txt")
+function processTxt(filename,ns)
+   		
+	a=readdlm(filename*".fqrs.txt")
 	z(x) = x<ns
 	idx=broadcast(z,a)
 	a=a[idx]
