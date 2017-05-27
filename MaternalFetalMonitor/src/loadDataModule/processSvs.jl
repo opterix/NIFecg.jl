@@ -1,23 +1,20 @@
 function processSvs(filename)
 
-    a=readcsv(filename*".csv") #read file
+	a=readcsv(filename*".csv") #read file
 
-    t=a[3:end,1]
-    b=a[3:end, 2:end] #Extract one channel information
+	#Detección de los headers del archivo csv	
+	f(x) = typeof(x) == Float64 || typeof(x) == Int64 
+	bool_string = broadcast(f,a[:,1])
+	indx=findfirst(bool_string)
 
-    f(x) = typeof(x) == Float64 || typeof(x) == Int64 #function to test if elements are float
+	#Extraer la información del archivo
+	t=a[indx:end,1]
+	b=a[indx:end, 2:end] 
 
-    bool_floats = broadcast(f,b)
-    bool_floats = convert(Array{Bool,2}, bool_floats) #Convert array to boolean appropiate for logical indexing
-    b[~bool_floats]=0 #Convert all non-number strings to NaN
-    b=convert(Array{Float64,2}, b) #Convert to Float array
+	#Busca y convierte los valores NaN en 0
+	bool_floats = broadcast(f,b)
+	b[~bool_floats] = 0 #Convert all non-number strings to NaN
+	b=convert(Array{Float64,2}, b) #Convert to Float array
 
-    return t, b
+	return t, b
 end
-
-# Ejemplo de uso:
-# filepath="../data/a01.csv"
-# (ecgtime,ecg)=process_svs(filepath)
-# #Resultado de la operación:
-# # ecgtime-> tiempo ecg
-# # ecg -> Matriz de 60000x4
