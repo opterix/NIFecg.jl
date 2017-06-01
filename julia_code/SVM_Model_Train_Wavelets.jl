@@ -24,7 +24,7 @@ xt = wavelet(WT.db7)
 
 ## Aplicar los coeficientes Wavelet a todos los casos positivos y negativos ##
 
-for i in 2:num_files
+for i in 2:50
     file_name = list_file[i];
     println("Procesando Dictionary $(file_name)")
     d = load("$(data_dictio)/$(file_name)")
