@@ -2,13 +2,6 @@ using SVR
 using JLD
 using Wavelets
 
-
-include("Read_Dictionary.jl");
-#include("LIBSVM.jl");
-
-## Variables ##
-
-
 Aux_Sig_Pos=[];
 Aux_Sig_Neg=[];
 Wavelets_Pos=[];
@@ -47,8 +40,6 @@ println("Entrenando Support Vector Machine")
 labels = vcat(zeros(size(T_Aux_Sig_Neg,1)),ones(size(T_Aux_Sig_Pos,1)));
 instances = vcat(T_Aux_Sig_Pos[1:end,1:64],T_Aux_Sig_Neg[1:end,1:64])
 
-#instances = vcat(T_Aux_Sig_Pos[1:10000,1:64],T_Aux_Sig_Neg[1:10000,1:64])
-#labels = vcat(zeros(10000),ones(10000));
 
 #SVR.verbosity=true;
 
@@ -60,11 +51,6 @@ predicted_labels = round(SVR.predict(pmodel, instances'));
 SVR.savemodel(pmodel, "SVMfetal.model")
 SVR.freemodel(pmodel)
 
-
-
-#(predicted_labels, decision_values) = svmpredict(model,test_instances);
 # Compute accuracy
 @printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
 
-#save("../SVM_Model.jld","model",model)
-    

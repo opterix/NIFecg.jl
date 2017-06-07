@@ -60,15 +60,4 @@ sleep(1)
 manager[:window][:attributes]("-zoomed", 2)
 savefig("../Test_Images_Wavelets/$(file_name)_.png") 
 
-
-
-#SVR.freemodel(SVM_FET)
-
-# Compute accuracy
-#@printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
-
 end
-
-
-
-
