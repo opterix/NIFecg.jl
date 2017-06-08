@@ -11,6 +11,8 @@ T_Aux_Sig_Neg=[];
 Mat_To_Wavelet_Pos=[];
 Mat_To_Wavelet_Neg=[];
 
+nch=4;
+
 ## Generar Wavelet de Daubechies ##
 
 xt = wavelet(WT.db7)	
@@ -47,19 +49,30 @@ for k in 1:Fil
     T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,3);
 end
 
+feature_Pos=zeros(Int64(size(Mat_To_Wavelet_Pos,1)/nch),64*nch)
+feature_Neg=zeros(Int64(size(Mat_To_Wavelet_Neg,1)/nch),64*nch)
+iexemplar=1;
+
+for k in 1:nch:Fil
+    aux_pos=T_Aux_Sig_Pos[k:k+nch-1,1:64];
+    aux_neg=T_Aux_Sig_Neg[k:k+nch-1,1:64];
+
+    feature_Pos[iexemplar,:] = vec(aux_pos')';
+    feature_Neg[iexemplar,:] = vec(aux_neg')';
+    iexemplar=iexemplar+1;
+end
+
+
 
 
 #### Carga el modelo del SVM
 
-println("Entrenando Support Vector Machine")
-SVM_Fetal=[];
-SVM_Fetal=SVR.loadmodel("SVMfetal.model");
-
-
+println("Cargando Modelo SVM")
+SVM_Fetal=SVR.loadmodel("SVMfetalX4.model");
 ## Aplicar Support Vector Machine para clasificar 
 
-labels = vcat(zeros(size(T_Aux_Sig_Pos,1)),ones(size(T_Aux_Sig_Neg,1)));
-instances = vcat(T_Aux_Sig_Pos[1:end,1:64],T_Aux_Sig_Neg[1:end,1:64])
+labels = vcat(zeros(size(feature_Pos,1)),ones(size(feature_Neg,1)));
+instances = vcat(feature_Pos[1:end,:],feature_Neg[1:end,:])
 
 println("Predicting");
 
@@ -70,14 +83,13 @@ SVR.freemodel(SVM_Fetal)
 # Compute accuracy
 @printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
 
-## Confussion Matrix
-#C = confusmat(1, labels, predicted_labels)
+#Compute Confusion Matrix
 
 tp = (labels.==0) & (predicted_labels.==0)
 tn = (labels.==1) & (predicted_labels.==1)
-
 fp = (labels.==1) & (predicted_labels.==0)
 fn = (labels.==0) & (predicted_labels.==1)
 
 C= [tp fp; fn tn]
- 
+
+println(C);
