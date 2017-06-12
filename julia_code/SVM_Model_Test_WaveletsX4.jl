@@ -102,4 +102,6 @@ fn = (labels.==0) & (predicted_labels.==1)
 
 C= [sum(tp) sum(fp); sum(fn) sum(tn)]
 
+@printf "Fscore: %.2f\n" 2*sum(tp)/(2*sum(tp)+sum(fn)+sum(fp))
+
 println(C);

@@ -108,9 +108,6 @@ for i in 1:num_files
 
     (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 
-    pos_examples = zeros(nch*size(fetal_annot,1), fv_size);
-    neg_examples = zeros(nch*size(fetal_annot,1)*5, fv_size);
-
     fetal_ini=fetal_annot-(fv_size)/2;
     fetal_fin=(fetal_annot+(fv_size)/2)-1;
 
@@ -119,6 +116,10 @@ for i in 1:num_files
 	deleteat!(fetal_fin,1);
 	deleteat!(fetal_annot,1);
     end	
+
+    pos_examples = zeros(nch*size(fetal_annot,1), fv_size);
+    neg_examples = zeros(nch*size(fetal_annot,1)*5, fv_size);
+
 
     AECGm=vcat(AECGm, zeros(128,4));
     total_annot = size(fetal_annot,1)
@@ -129,7 +130,7 @@ for i in 1:num_files
         if iannot==1
             neg_points = linspace(fv_size/2 + 1,fetal_annot[1],5)
         else
-            neg_points = linspace(fetal_annot[iannot-1], fetal_annot[iannot] - fv_size/2,5);
+            neg_points = linspace(fetal_annot[iannot-1] + fv_size, fetal_annot[iannot] - fv_size,5);
         end
 
         neg_point_ini=   round(Int64, neg_points-(fv_size)/2);
