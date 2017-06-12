@@ -8,20 +8,26 @@ include("Main.jl")
 list_file=readdir("../data")
 num_files=size(list_file,1);
 
-dimFV=32 #dimension del vector de caracteristicas por canal
+
+dwt_levels=4;#Numero de niveles para la descomposicion Wavelet
+
+dimFV=16 #dimension del vector de caracteristicas por canal
 nch=4;   #Numero de canales
 
 Ns=10000; #Numero total de muestras
 ks=128;   #muestras utilizadas para aplicar wavelet
 
 ## Modulo SVM cargado
-SVM_FET=load("../models/LIBSVM_fetalmodelX4_32.jld", "pmodel")
-mean_instances=load("../models/LIBSVM_fetalmodelX4_32.jld", "mean_instances")
-std_instances=load("../models/LIBSVM_fetalmodelX4_32.jld", "std_instances")
+
+println("Cargando modelo ../models/LIBSVM_fetalmodelX4_$(dimFV).jld")
+
+SVM_FET=load("../models/LIBSVM_fetalmodelX4_$(dimFV).jld", "pmodel")
+mean_instances=load("../models/LIBSVM_fetalmodelX4_$(dimFV).jld", "mean_instances")
+std_instances=load("../models/LIBSVM_fetalmodelX4_$(dimFV).jld", "std_instances")
 
 ## Genero un vector con los valores del caso
 SVM_Probe=zeros(Ns-ks+1, ks);
-Wavelet_Sig=zeros(Ns-ks+1, ks);
+Wavelet_Sig=zeros(Ns-ks+1, dimFV*nch);
 
 
 F_Ini=hcat(1: Ns-ks+1)';
@@ -39,15 +45,12 @@ for i in 1:num_files
     
     In_Signal=AECGm[:,1:nch];
 
-
-
-
     for interval in 1:(Ns-ks)
         aux_signal=In_Signal[F_Ini[interval]:F_Fin[interval],:];
         aux_dwt=zeros(nch,ks)
 
         for kch in 1:nch
-            aux_dwt[kch,:]=dwt(vec(aux_signal[:,kch]),xt,3);
+            aux_dwt[kch,:]=dwt(vec(aux_signal[:,kch]),xt,dwt_levels);
         end
 
         aux_dwt = aux_dwt[:,1:dimFV];
