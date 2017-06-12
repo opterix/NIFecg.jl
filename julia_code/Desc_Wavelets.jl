@@ -109,7 +109,7 @@ for i in 1:num_files
     (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 
     pos_examples = zeros(nch*size(fetal_annot,1), fv_size);
-    neg_examples = zeros(nch*size(fetal_annot,1), fv_size);
+    neg_examples = zeros(nch*size(fetal_annot,1)*5, fv_size);
 
     fetal_ini=fetal_annot-(fv_size)/2;
     fetal_fin=(fetal_annot+(fv_size)/2)-1;
@@ -121,30 +121,39 @@ for i in 1:num_files
     end	
 
     AECGm=vcat(AECGm, zeros(128,4));
+    total_annot = size(fetal_annot,1)
 
-
-    for iannot = 1:size(fetal_annot,1)
+    for iannot = 1:total_annot
+              
 
         if iannot==1
-            neg_point = fetal_annot[iannot]/2;
+            neg_points = linspace(fv_size/2 + 1,fetal_annot[1],5)
         else
-            neg_point = (fetal_annot[iannot]+fetal_annot[iannot-1])/2;
+            neg_points = linspace(fetal_annot[iannot-1], fetal_annot[iannot] - fv_size/2,5);
         end
 
-        neg_point_ini=   round(Int64, neg_point-(fv_size)/2);
-        neg_point_fin=   round(Int64, neg_point+((fv_size)/2))-1;
+        neg_point_ini=   round(Int64, neg_points-(fv_size)/2);
+        neg_point_fin=   round(Int64, neg_points+((fv_size)/2))-1;
 
-        if neg_point_ini<=0;
-            neg_point_ini=1;
-            neg_point_fin=fv_size;
-        end
+
+
+        #if any(neg_point_ini.<=0);
+        #    neg_point_ini[any(neg_point_ini.<=0)]=1;
+        #    neg_point_fin=fv_size;
+        #end
 	   
         
         pos_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[Int64(fetal_ini[iannot]):Int64(fetal_fin[iannot]),:]';
         #print(iannot);
-        #println(iannot);
-
-        neg_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[neg_point_ini:neg_point_fin,:]'
+        #println("Tamaño")
+        #println(size(neg_point_ini,1));
+        
+        
+        for ipoint in 1:size(neg_point_ini,1)
+            #println()
+            #print("$(((iannot-1)*4+1)+(total_annot*(ipoint-1)))..")
+            neg_examples[((iannot-1)*4+1)+(total_annot*(ipoint-1)*4):iannot*4+total_annot*(ipoint-1)*4,:] = AECGm[neg_point_ini[ipoint]:neg_point_fin[ipoint],:]'
+        end
         
     end
 

@@ -1,4 +1,4 @@
-using SVR
+using LIBSVM
 using JLD
 using Wavelets
 using Combinatorics
@@ -12,7 +12,10 @@ T_Aux_Sig_Neg=[];
 Mat_To_Wavelet_Pos=[];
 Mat_To_Wavelet_Neg=[];
 
+
+dwt_levels=4;
 nch=4;
+dim=16;
 
 all_perms=collect(permutations(collect(1:nch)))
 
@@ -45,17 +48,17 @@ T_Aux_Sig_Neg=zeros(size(Mat_To_Wavelet_Neg));
 (Fil,Col)=size(Mat_To_Wavelet_Pos);
 
 for k in 1:Fil
-    T_Aux_Sig_Pos[k,:]=dwt(Mat_To_Wavelet_Pos[k,:],xt,3);
-    T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,3);
+    T_Aux_Sig_Pos[k,:]=dwt(Mat_To_Wavelet_Pos[k,:],xt,dwt_levels);
+    T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,dwt_levels);
 end
 
-feature_Pos=zeros(Int64(size(Mat_To_Wavelet_Pos,1)/nch)*size(all_perms,1),64*nch)
-feature_Neg=zeros(Int64(size(Mat_To_Wavelet_Neg,1)/nch)*size(all_perms,1),64*nch)
+feature_Pos=zeros(Int64(size(Mat_To_Wavelet_Pos,1)/nch)*size(all_perms,1),dim*nch)
+feature_Neg=zeros(Int64(size(Mat_To_Wavelet_Neg,1)/nch)*size(all_perms,1),dim*nch)
 iexemplar=1;
 
 for k in 1:nch:Fil
-    aux_pos=T_Aux_Sig_Pos[k:k+nch-1,1:64];
-    aux_neg=T_Aux_Sig_Neg[k:k+nch-1,1:64];
+    aux_pos=T_Aux_Sig_Pos[k:k+nch-1,1:dim];
+    aux_neg=T_Aux_Sig_Neg[k:k+nch-1,1:dim];
     for x in all_perms
         part_Aux_Sig_Pos=aux_pos[x,:]
         part_Aux_Sig_Neg=aux_neg[x,:]
@@ -75,16 +78,28 @@ println("Entrenando Support Vector Machine")
 labels = vcat(zeros(size(feature_Pos,1)),ones(size(feature_Neg,1)));
 instances = vcat(feature_Pos[1:end,:],feature_Neg[1:end,:])
 
+mean_instances=mean(instances,1)
+std_instances=std(instances,1)
+
+norm_instances=instances-repmat(mean_instances,size(instances,1),1)
+norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
+
+
+feature_Pos=[]
+feature_Neg=[]
+
 
 #SVR.verbosity=true;
 
-@time pmodel = SVR.train(labels,instances',verbose=true);
+@time pmodel = svmtrain(norm_instances', labels, verbose=true);
 
 println("Predicting");
 
-predicted_labels = round(SVR.predict(pmodel, instances'));
-SVR.savemodel(pmodel, "SVMfetalX4.model")
-SVR.freemodel(pmodel)
+(predicted_labels, decision_v) = svmpredict(pmodel, norm_instances');
+
+
 
 # Compute accuracy
 @printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
+
+save("../models/LIBSVM_fetalmodelX4_$(dim).jld", "pmodel", pmodel, "mean_instances", mean_instances, "std_instances", std_instances)

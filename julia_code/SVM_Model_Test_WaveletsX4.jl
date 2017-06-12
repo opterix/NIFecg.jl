@@ -1,5 +1,4 @@
-using SVR
-using MLBase
+using LIBSVM
 using JLD
 using Wavelets
 
@@ -11,7 +10,10 @@ T_Aux_Sig_Neg=[];
 Mat_To_Wavelet_Pos=[];
 Mat_To_Wavelet_Neg=[];
 
+dwt_levels=4;
 nch=4;
+
+dim=16;
 
 ## Generar Wavelet de Daubechies ##
 
@@ -45,17 +47,17 @@ T_Aux_Sig_Neg=zeros(size(Mat_To_Wavelet_Neg));
 (Fil,Col)=size(Mat_To_Wavelet_Pos);
 
 for k in 1:Fil
-    T_Aux_Sig_Pos[k,:]=dwt(Mat_To_Wavelet_Pos[k,:],xt,3);
-    T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,3);
+    T_Aux_Sig_Pos[k,:]=dwt(Mat_To_Wavelet_Pos[k,:],xt,dwt_levels);
+    T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,dwt_levels);
 end
 
-feature_Pos=zeros(Int64(size(Mat_To_Wavelet_Pos,1)/nch),64*nch)
-feature_Neg=zeros(Int64(size(Mat_To_Wavelet_Neg,1)/nch),64*nch)
+feature_Pos=zeros(Int64(size(Mat_To_Wavelet_Pos,1)/nch),dim*nch)
+feature_Neg=zeros(Int64(size(Mat_To_Wavelet_Neg,1)/nch),dim*nch)
 iexemplar=1;
 
 for k in 1:nch:Fil
-    aux_pos=T_Aux_Sig_Pos[k:k+nch-1,1:64];
-    aux_neg=T_Aux_Sig_Neg[k:k+nch-1,1:64];
+    aux_pos=T_Aux_Sig_Pos[k:k+nch-1,1:dim];
+    aux_neg=T_Aux_Sig_Neg[k:k+nch-1,1:dim];
 
     feature_Pos[iexemplar,:] = vec(aux_pos')';
     feature_Neg[iexemplar,:] = vec(aux_neg')';
@@ -68,16 +70,24 @@ end
 #### Carga el modelo del SVM
 
 println("Cargando Modelo SVM")
-SVM_Fetal=SVR.loadmodel("SVMfetalX4.model");
+
+pmodel=load("../models/LIBSVM_fetalmodelX4_$(dim).jld", "pmodel")
+mean_instances=load("../models/LIBSVM_fetalmodelX4_$(dim).jld", "mean_instances")
+std_instances=load("../models/LIBSVM_fetalmodelX4_$(dim).jld", "std_instances")
+
+
 ## Aplicar Support Vector Machine para clasificar 
 
 labels = vcat(zeros(size(feature_Pos,1)),ones(size(feature_Neg,1)));
 instances = vcat(feature_Pos[1:end,:],feature_Neg[1:end,:])
 
+norm_instances=instances-repmat(mean_instances,size(instances,1),1)
+norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
+
+
 println("Predicting");
 
-predicted_labels = round(SVR.predict(SVM_Fetal, instances'));
-SVR.freemodel(SVM_Fetal)
+@time (predicted_labels, decision_v) = svmpredict(pmodel, norm_instances');
 
 
 # Compute accuracy
@@ -90,6 +100,6 @@ tn = (labels.==1) & (predicted_labels.==1)
 fp = (labels.==1) & (predicted_labels.==0)
 fn = (labels.==0) & (predicted_labels.==1)
 
-C= [tp fp; fn tn]
+C= [sum(tp) sum(fp); sum(fn) sum(tn)]
 
 println(C);
