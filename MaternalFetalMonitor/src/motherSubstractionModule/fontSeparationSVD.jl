@@ -1,8 +1,9 @@
 function fontSeparationSVD(signal,QRSm_pos,sr,nch,ns)
 
-    window_svd=700; #samples
-    window_init= window_svd*0.4;
-    window_fin= window_svd*0.6;
+	
+    window_svd=Int64(floor(sr*0.7)); #samples
+    window_init= Int64(floor(window_svd*0.4));
+    window_fin= Int64(floor(window_svd*0.6));
     
     numSVD=3; # number of single values take into account for reconstruction
 
@@ -58,11 +59,11 @@ Win_Pos_Rw_Int = convert(Array{Int64}, round(Win_Pos_Rw));
 #        QRSm_pos_tmp=maximind_all
 #    end  
 #
-#    if any(Win_Pos_Rw_Int[1,:] .< 0)
-#        QRSm_pos_tmp=QRSm_pos_tmp[2:end,:]
-#        Win_Pos_Rw_Int=Win_Pos_Rw_Int[2:end,:]
-#        Win_Pos_Fw_Int=Win_Pos_Fw_Int[2:end,:]	
-#    end
+    if any(Win_Pos_Rw_Int[1,:] .< 0)
+        QRSm_pos_tmp=QRSm_pos_tmp[2:end,:]
+        Win_Pos_Rw_Int=Win_Pos_Rw_Int[2:end,:]
+        Win_Pos_Fw_Int=Win_Pos_Fw_Int[2:end,:]	
+    end
 #end
 
 
@@ -120,8 +121,10 @@ designmethod = Butterworth(4)# FIRWindow(hanning(64))
 
 signal_subtract[:,1]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,1])
 signal_subtract[:,2]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,2])
-signal_subtract[:,3]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,3])
-signal_subtract[:,4]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,4])
+if sr > 1000/4
+	signal_subtract[:,3]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,3])
+	signal_subtract[:,4]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,4])
+end
 println("r")
 =#
 
@@ -132,7 +135,7 @@ end
 
 
 function max_per_channel(signal,QRSm_pos,sr,nch,ns)
-    window_maxsearch=200;
+    window_maxsearch=Int64(sr*0.2);
 
 
     detections=zeros(1,ns);
@@ -141,7 +144,7 @@ function max_per_channel(signal,QRSm_pos,sr,nch,ns)
     filtones=ones(1,Int(window_maxsearch/2));
 
     mask = conv(vec(detections), vec(filtones));
-    mask = mask[Int(window_maxsearch/4):Int(window_maxsearch/4+ns)];
+    mask = mask[Int(floor(window_maxsearch/4)):Int(floor(window_maxsearch/4)+ns)];
     mask[1]=0;
     mask[end]=0;
     cambios = diff(mask);

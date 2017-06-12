@@ -18,7 +18,7 @@ module loadDataModule
 		nch = size(AECG,2) # nch - number of channels
 
 		#Read txt annotations if it exist		
-		annot_search = filter(x->contains(x,filename), readdir(pwd()))
+		annot_search = filter(x->contains(x,(filename*".fqrs")), readdir(pwd()))
 		if length(annot_search) != 0
 			fetal_annot = processTxt(filename,ns)
 		else

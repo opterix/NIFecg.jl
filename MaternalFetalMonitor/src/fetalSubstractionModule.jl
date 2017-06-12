@@ -22,7 +22,7 @@ module 	fetalSubstractionModule
 		AECGf_ica = makeIcaFetal(AECG_residual,nch)
 
 		# Select fetal signal
-		AECGf_sort = qrsFetalSelector(AECGf_ica, nch)
+		AECGf_sort = qrsFetalSelector(AECGf_ica, nch, sr)
 
 		# QRS mother detector (Pan - Tomkins)
 		(QRSfcell_pos,QRSfcell_value)= panTomkinsDetector(AECGf_sort, sr, nch)

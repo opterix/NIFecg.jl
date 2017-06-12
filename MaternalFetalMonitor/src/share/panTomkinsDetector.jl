@@ -1,8 +1,5 @@
 function panTomkinsDetector(signal, sr, nch)
 
-############# GLOBAL VARIABLES ################
-#nch=4;
-
 
 #------- Normalization  ------------
 
@@ -42,8 +39,8 @@ for k in 1:nch
 
     #--- Moving integration
 
-    h = ones(151)/151;
-    Delay=75;
+    h = ones(Int64(floor(sr*0.151)))/(Int64(floor(sr*0.151)));
+    Delay=Int64(floor(sr*0.075));
 
     salida=conv(salida, h);
 

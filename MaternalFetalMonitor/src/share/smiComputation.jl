@@ -2,12 +2,7 @@ function smiComputation(FQRSdetections, nch, fs)
 
     CI=0.98;
     SMI = zeros(nch,1);
-    BCM = zeros(nch,1);
-
-    t_comp = 50e-3; #comparison window 50mseg
-
-    tc_samp = t_comp*fs
-    
+    BCM = zeros(nch,1);    
        
     for i in 1:nch
         #QRS=zeros(window_time*fs,1);
@@ -28,15 +23,6 @@ function smiComputation(FQRSdetections, nch, fs)
             SMI[i] = 1000;
         end
 
-        #compare peaks with maternal
-        #dist_all = pairwise(Euclidean(), reshape(QRSm_pos, 1, length(QRSm_pos)), reshape(FQRSdetections[i], 1, length(FQRSdetections[i])));
-
-        
-        #BCM[i]=sum(any(dist_all.<350e-3,2))/size(dist_all,2);
-
-        #if BCM[i]>0.4
-        #    SMI[i]=1000;
-        #end
         
     end
 
