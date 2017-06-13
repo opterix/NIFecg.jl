@@ -68,9 +68,9 @@ norm_instances=instances-repmat(mean_instances,size(instances,1),1)
 norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
 
 #libsvm
-@time pmodel = svmtrain(norm_instances', labels, weights = Dict( 0. => 5., 1. => 1.), verbose=true);
+#@time pmodel = svmtrain(norm_instances', labels, weights = Dict( 0. => 5., 1. => 1.), verbose=true);
 
-#@time pmodel = svmtrain(norm_instances', labels, verbose=true);
+@time pmodel = svmtrain(norm_instances', labels, verbose=true);
 #Modelo con funcion de costo ponderada. La idea es que se penaliza las detecciones fetales falsas (Falsos positivos)
 
 println("Predicting");

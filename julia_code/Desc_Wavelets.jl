@@ -33,6 +33,8 @@ list_file=readdir(data_path)
 num_files=size(list_file,1)
 #leer todos los datos en directorio data
 
+Xmult=5; #Multiply number of exampes per Xmult
+
 
 for i in 1:num_files
     file_name = list_file[i]
@@ -117,8 +119,8 @@ for i in 1:num_files
 	deleteat!(fetal_annot,1);
     end	
 
-    pos_examples = zeros(nch*size(fetal_annot,1), fv_size);
-    neg_examples = zeros(nch*size(fetal_annot,1)*5, fv_size);
+    pos_examples = zeros(nch*size(fetal_annot,1)*Xmult, fv_size);
+    neg_examples = zeros(nch*size(fetal_annot,1)*Xmult, fv_size);
 
 
     AECGm=vcat(AECGm, zeros(128,4));
@@ -128,9 +130,9 @@ for i in 1:num_files
               
 
         if iannot==1
-            neg_points = linspace(fv_size/2 + 1,fetal_annot[1],5)
+            neg_points = linspace(fv_size/2 + 1,fetal_annot[1],Xmult)
         else
-            neg_points = linspace(fetal_annot[iannot-1] + fv_size, fetal_annot[iannot] - fv_size,5);
+            neg_points = linspace(fetal_annot[iannot-1] + fv_size, fetal_annot[iannot] - fv_size,Xmult);
         end
 
         neg_point_ini=   round(Int64, neg_points-(fv_size)/2);
@@ -143,8 +145,10 @@ for i in 1:num_files
         #    neg_point_fin=fv_size;
         #end
 	   
-        
-        pos_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[Int64(fetal_ini[iannot]):Int64(fetal_fin[iannot]),:]';
+        for ipoint=1:Xmult
+            t0=(Xmult-1)/2
+            pos_examples[((iannot-1)*4+1)+(total_annot*(ipoint-1)*4):iannot*4+total_annot*(ipoint-1)*4,:] = AECGm[Int64(fetal_ini[iannot]+(-t0+ipoint-1)*2):Int64(fetal_fin[iannot]+(-t0+ipoint-1)*2),:]';
+        end
         #print(iannot);
         #println("Tamaño")
         #println(size(neg_point_ini,1));
