@@ -2,6 +2,17 @@ using LIBSVM
 using JLD
 using Wavelets
 
+if isempty(ARGS)
+    testModelPath="../models/LIBSVM_fetalmodel.jld"
+    dim=32;
+else   
+    testModelPath = ARGS[1];
+    lmatches=matchall(r"[0-9]+\.*[0-9]*", testModelPath)
+    dim=parse(Int64, lmatches[2]);
+    Cparam=parse(Float64, lmatches[3]);
+    gamma=parse(Float64, lmatches[4]);
+    dwt_levels=parse(Int64, lmatches[5])
+end
 
 Wavelets_Pos=[];
 Wavelets_Neg=[];
@@ -13,7 +24,22 @@ Mat_To_Wavelet_Neg=[];
 ## Generar Wavelet de Daubechies ##
 
 xt = wavelet(WT.db7)	
-dim=32;
+
+
+
+
+
+#if dim==32
+#    dwt_levels=3;
+#elseif dim==16
+#    dwt_levels=4;
+#else
+#    println("\nERROR: USE ONLY dim=32 or dim=16")
+#    println("Exiting...")
+#    exit(-1)
+#end
+
+
 
 ## Aplicar los coeficientes Wavelet a todos los casos positivos y negativos ##
 
@@ -43,17 +69,18 @@ T_Aux_Sig_Neg=zeros(size(Mat_To_Wavelet_Neg));
 (Fil,Col)=size(Mat_To_Wavelet_Pos);
 
 for k in 1:Fil
-    T_Aux_Sig_Pos[k,:]=dwt(Mat_To_Wavelet_Pos[k,:],xt,3);
-    T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,3);
+    T_Aux_Sig_Pos[k,:]=dwt(Mat_To_Wavelet_Pos[k,:],xt,dwt_levels);
+    T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,dwt_levels);
 end
 
 
 
 #### Carga el modelo del SVM
+println("\nLoading model located at $(testModelPath)")
 
-pmodel=load("../models/LIBSVM_fetalmodel.jld", "pmodel")
-mean_instances=load("../models/LIBSVM_fetalmodel.jld", "mean_instances")
-std_instances=load("../models/LIBSVM_fetalmodel.jld", "std_instances")
+pmodel=load(testModelPath, "pmodel")
+mean_instances=load(testModelPath, "mean_instances")
+std_instances=load(testModelPath, "std_instances")
 
 ## Aplicar Support Vector Machine para clasificar 
 
@@ -85,4 +112,3 @@ C= [sum(tp) sum(fp); sum(fn) sum(tn)]
 @printf "Fscore: %.2f\n" 2*sum(tp)/(2*sum(tp)+sum(fn)+sum(fp))
 
 println(C);
-

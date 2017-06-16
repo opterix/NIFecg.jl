@@ -9,16 +9,17 @@ include("Main.jl")
 list_file=readdir("../data")
 num_files=size(list_file,1);
 
-dimFV=32 #dimension del vector de caracteristicas
+dimFV=16 #dimension del vector de caracteristicas
 
+testModelPath = "../models/fetalmodelCh1_16_C10.0_gamma0.625.jld"
 
 Ns=10000; #Numero total de muestras
 ks=128;   #muestras utilizadas para aplicar wavelet
 
 ## Modulo SVM cargado
-SVM_FET=load("../models/LIBSVM_fetalmodel.jld", "pmodel")
-mean_instances=load("../models/LIBSVM_fetalmodel.jld", "mean_instances")
-std_instances=load("../models/LIBSVM_fetalmodel.jld", "std_instances")
+SVM_FET=load(testModelPath, "pmodel")
+mean_instances=load(testModelPath, "mean_instances")
+std_instances=load(testModelPath, "std_instances")
 
 ## Genero un vector con los valores del caso
 SVM_Probe=zeros(Ns-ks+1, ks);

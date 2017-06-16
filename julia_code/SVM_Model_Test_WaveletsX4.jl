@@ -2,6 +2,11 @@ using LIBSVM
 using JLD
 using Wavelets
 
+if isempty(ARGS)
+    testModelPath="../models/LIBSVM_fetalmodelX4_16.jld"
+else   
+    testModelPath = ARGS[1];
+end
 
 Wavelets_Pos=[];
 Wavelets_Neg=[];
@@ -65,16 +70,12 @@ for k in 1:nch:Fil
 end
 
 
-
-
 #### Carga el modelo del SVM
+println("\nLoading model located at $(testModelPath)")
 
-println("Cargando Modelo SVM")
-
-pmodel=load("../models/LIBSVM_fetalmodelX4_$(dim).jld", "pmodel")
-mean_instances=load("../models/LIBSVM_fetalmodelX4_$(dim).jld", "mean_instances")
-std_instances=load("../models/LIBSVM_fetalmodelX4_$(dim).jld", "std_instances")
-
+pmodel=load(testModelPath, "pmodel")
+mean_instances=load(testModelPath, "mean_instances")
+std_instances=load(testModelPath, "std_instances")
 
 ## Aplicar Support Vector Machine para clasificar 
 
