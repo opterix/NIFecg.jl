@@ -3,7 +3,7 @@ function fontSeparationSVD(signal,QRSm_pos,sr,nch,ns)
 	
     window_svd=Int64(floor(sr*0.7)); #samples
     window_init= Int64(floor(window_svd*0.4));
-    window_fin= Int64(floor(window_svd*0.6));
+    window_fin= Int64(ceil(window_svd*0.6));
     
     numSVD=3; # number of single values take into account for reconstruction
 
@@ -135,13 +135,13 @@ end
 
 
 function max_per_channel(signal,QRSm_pos,sr,nch,ns)
-    window_maxsearch=Int64(sr*0.2);
+    window_maxsearch=Int64(floor(sr*0.2));
 
 
     detections=zeros(1,ns);
-    detections[round(Int64, QRSm_pos*sr)]=1;
+    detections[round(Int64, floor(QRSm_pos*sr))]=1;
 
-    filtones=ones(1,Int(window_maxsearch/2));
+    filtones=ones(1,Int(floor(window_maxsearch/2)));
 
     mask = conv(vec(detections), vec(filtones));
     mask = mask[Int(floor(window_maxsearch/4)):Int(floor(window_maxsearch/4)+ns)];
