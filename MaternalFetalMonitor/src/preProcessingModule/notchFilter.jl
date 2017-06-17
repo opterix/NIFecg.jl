@@ -14,7 +14,7 @@ function notchFilter(x, sr)
 
 	Notch=iirnotch(frec_Notch,1,fs=sr)
 	Notch2=iirnotch(frec_Notch*2,1,fs=sr)
-	if sr > 1000/4
+	if frec_Notch*3 < sr/2
 		Notch3=iirnotch(frec_Notch*3,1,fs=sr)
 		Notch4=iirnotch(frec_Notch2,1,fs=sr)
 		Notch5=iirnotch(frec_Notch2*2,1,fs=sr)
@@ -34,7 +34,7 @@ function notchFilter(x, sr)
 
 	sf = filtfilt(Notch, sf)
 	sf = filtfilt(Notch2, sf)
-	if sr > 1000/4
+	if frec_Notch*3 < sr/2
 		sf = filtfilt(Notch3, sf)
 		sf = filtfilt(Notch4, sf)
 		sf = filtfilt(Notch5, sf)
