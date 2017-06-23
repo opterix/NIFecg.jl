@@ -158,4 +158,4 @@ println("Predicting");
 # Compute accuracy
 @printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
 
-save("../models/LIBSVM_fetalmodelX4_$(dim)_C$(Cparam)_gamma($gamma).jld", "pmodel", pmodel, "mean_instances", mean_instances, "std_instances", std_instances)
+save("../models/LIBSVM_fetalmodelX4_$(dim)_C$(Cparam)_gamma$(gamma).jld", "pmodel", pmodel, "mean_instances", mean_instances, "std_instances", std_instances)
