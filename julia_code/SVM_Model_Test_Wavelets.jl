@@ -11,7 +11,8 @@ else
     dim=parse(Int64, lmatches[2]);
     Cparam=parse(Float64, lmatches[3]);
     gamma=parse(Float64, lmatches[4]);
-    dwt_levels=parse(Int64, lmatches[5])
+    dwt_levels=parse(Float64, lmatches[5]);
+    dwt_levels=Int64(dwt_levels);
 end
 
 Wavelets_Pos=[];
@@ -81,6 +82,13 @@ println("\nLoading model located at $(testModelPath)")
 pmodel=load(testModelPath, "pmodel")
 mean_instances=load(testModelPath, "mean_instances")
 std_instances=load(testModelPath, "std_instances")
+
+println("Processing Parameters:")
+println("Feature vector dim: $(dim)")
+println("C parameter: $(Cparam)")
+println("gamma parameter: $(gamma)")
+println("dwt_levels: $(dwt_levels)")
+
 
 ## Aplicar Support Vector Machine para clasificar 
 
