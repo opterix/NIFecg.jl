@@ -4,9 +4,11 @@
 # Third arg = nTree
 # Fourth arg = dwt levels
 
+
 using JLD
 using DecisionTree
 using Wavelets
+using Combinatorics
 
 Aux_Sig_Pos=[];
 Aux_Sig_Neg=[];
@@ -16,6 +18,10 @@ T_Aux_Sig_Pos=[];
 T_Aux_Sig_Neg=[];
 Mat_To_Wavelet_Pos=[];
 Mat_To_Wavelet_Neg=[];
+
+nch=4;
+
+all_perms=collect(permutations(collect(1:nch)))
 
 ## Generar Wavelet de Daubechies ##
 
@@ -54,11 +60,12 @@ println("Number of feats per cut: $(nselFeat)")
 println("Number of Trees: $(nTrees)")
 println("dwt_levels: $(dwt_levels)\n")
 
+
 ## Aplicar los coeficientes Wavelet a todos los casos positivos y negativos ##
+
 data_dictio="../Dictionaries"
 list_file=readdir(data_dictio)
 num_files=size(list_file,1);
-
 
 for i in 1:50
     file_name = list_file[i];
@@ -73,30 +80,44 @@ for i in 1:50
     end
 end
 
-#Solo en portatil
-#Mat_To_Wavelet_Pos=Mat_To_Wavelet_Pos[1:5:end,:];
-#Mat_To_Wavelet_Neg=Mat_To_Wavelet_Neg[1:5:end,:];
+#Solo en portatil- En servidor comentar estas dos lineas
+#Mat_To_Wavelet_Pos=Mat_To_Wavelet_Pos[1:20:end,:];
+#Mat_To_Wavelet_Neg=Mat_To_Wavelet_Neg[1:20:end,:];
+
 
 T_Aux_Sig_Pos=zeros(size(Mat_To_Wavelet_Pos));
 T_Aux_Sig_Neg=zeros(size(Mat_To_Wavelet_Neg));
+
 (Fil,Col)=size(Mat_To_Wavelet_Pos);
 
 for k in 1:Fil
-    Aux_Sig_Pos=Mat_To_Wavelet_Pos[k,:];
-    T_Aux_Sig_Pos[k,:]=dwt(Aux_Sig_Pos,xt,dwt_levels);
+    T_Aux_Sig_Pos[k,:]=dwt(Mat_To_Wavelet_Pos[k,:],xt,dwt_levels);
+    T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,dwt_levels);
 end
 
-(Fil,Col)=size(Mat_To_Wavelet_Neg);
+feature_Pos=zeros(Int64(size(Mat_To_Wavelet_Pos,1)/nch)*size(all_perms,1),dim*nch)
+feature_Neg=zeros(Int64(size(Mat_To_Wavelet_Neg,1)/nch)*size(all_perms,1),dim*nch)
+iexemplar=1;
 
-for k in 1:Fil
-    Aux_Sig_Neg=Mat_To_Wavelet_Neg[k,:];
-    T_Aux_Sig_Neg[k,:]=dwt(Aux_Sig_Neg,xt,dwt_levels);
+for k in 1:nch:Fil
+    aux_pos=T_Aux_Sig_Pos[k:k+nch-1,1:dim];
+    aux_neg=T_Aux_Sig_Neg[k:k+nch-1,1:dim];
+    for x in all_perms
+        part_Aux_Sig_Pos=aux_pos[x,:]
+        part_Aux_Sig_Neg=aux_neg[x,:]
+        
+        feature_Pos[iexemplar,:] = vec(part_Aux_Sig_Pos')';
+        feature_Neg[iexemplar,:] = vec(part_Aux_Sig_Neg')';
+        iexemplar=iexemplar+1;
+    end
+    
 end
+
 
 ## Aplicar Support Vector Machine para clasificar 
 
-labels = vcat(zeros(size(T_Aux_Sig_Pos,1)),ones(size(T_Aux_Sig_Neg,1)));
-instances = vcat(T_Aux_Sig_Pos[1:end,1:dim],T_Aux_Sig_Neg[1:end,1:dim])
+labels = vcat(zeros(size(feature_Pos,1)),ones(size(feature_Neg,1)));
+instances = vcat(feature_Pos[1:end,:],feature_Neg[1:end,:])
 
 mean_instances=mean(instances,1)
 std_instances=std(instances,1)
@@ -114,6 +135,9 @@ T_Aux_Sig_Pos=[];
 T_Aux_Sig_Neg=[];
 Mat_To_Wavelet_Pos=[];
 Mat_To_Wavelet_Neg=[];
+feature_Pos=[]
+feature_Neg=[]
+
 gc()
 #####################
 
@@ -123,22 +147,15 @@ println("Feature vector dimension: $(size(norm_instances,2))")
 
 println("\nEntrenando Random Forest Classifier")
 
-# nselFeat -> Numero de caracteristicas seleccionadas al azar en
-#             cada split
-# nTrees -> Numero de arboles
-
-
 @time pmodel = build_forest(labels, norm_instances, nselFeat, nTrees, 1.0)
 
+
 println("Predicting");
-# Compute accuracy 5fold validation
 accuracy=nfoldCV_forest(labels, norm_instances, nselFeat, nTrees, 3, 1.0)
 
-
-#@printf "Accuracy: %.2f%%\n" mean(accuracy)*100
 @printf "Guardando modelo\n"
 
-out=open("../models/RFmodel_Ch1_$(dim)_randFeats$(nselFeat)_nTrees$(nTrees)_dwt_levels$(dwt_levels).jls", "w")
+out=open("../models/RFmodelX4_Ch1_$(dim)_randFeats$(nselFeat)_nTrees$(nTrees)_dwt_levels$(dwt_levels).jls", "w")
 fullmodel=Dict("pmodel" => pmodel, "mean_instances"=>mean_instances, "std_instances"=>std_instances)
 serialize(out, fullmodel)
 close(out)

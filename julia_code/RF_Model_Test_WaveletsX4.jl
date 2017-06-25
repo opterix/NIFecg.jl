@@ -3,16 +3,18 @@ using JLD
 using Wavelets
 
 if isempty(ARGS)
-    testModelPath="../models/LIBSVM_fetalmodel.jld"
-    dim=32;
+    testModelPath="../models/LIBSVM_fetalmodelX4_16.jld"
 else   
+    
     testModelPath = ARGS[1];
     lmatches=matchall(r"[0-9]+\.*[0-9]*", testModelPath)
-    dim=parse(Int64, lmatches[2]);
-    nselFeat=parse(Int64, lmatches[3]);
-    nTrees=parse(Int64, lmatches[4]);
-    dwt_levels=parse(Float64, lmatches[5]);
+    nch=parse(Int64, lmatches[1])
+    dim=parse(Int64, lmatches[3]);
+    nselFeat=parse(Int64, lmatches[4]);
+    nTrees=parse(Int64, lmatches[5]);
+    dwt_levels=parse(Float64, lmatches[6]);
     dwt_levels=Int64(dwt_levels);
+
 end
 
 Wavelets_Pos=[];
@@ -21,6 +23,7 @@ T_Aux_Sig_Pos=[];
 T_Aux_Sig_Neg=[];
 Mat_To_Wavelet_Pos=[];
 Mat_To_Wavelet_Neg=[];
+
 
 ## Generar Wavelet de Daubechies ##
 
@@ -58,33 +61,45 @@ for k in 1:Fil
     T_Aux_Sig_Neg[k,:]=dwt(Mat_To_Wavelet_Neg[k,:],xt,dwt_levels);
 end
 
+feature_Pos=zeros(Int64(size(Mat_To_Wavelet_Pos,1)/nch),dim*nch)
+feature_Neg=zeros(Int64(size(Mat_To_Wavelet_Neg,1)/nch),dim*nch)
+iexemplar=1;
+
+for k in 1:nch:Fil
+    aux_pos=T_Aux_Sig_Pos[k:k+nch-1,1:dim];
+    aux_neg=T_Aux_Sig_Neg[k:k+nch-1,1:dim];
+
+    feature_Pos[iexemplar,:] = vec(aux_pos')';
+    feature_Neg[iexemplar,:] = vec(aux_neg')';
+    iexemplar=iexemplar+1;
+end
 
 
 #### Carga el modelo Random Forest
 println("\nLoading model located at $(testModelPath)")
+
 in_serial=open(testModelPath, "r")
 fullmodel = deserialize(in_serial)
-
 
 pmodel=fullmodel["pmodel"]
 mean_instances=fullmodel["mean_instances"]
 std_instances=fullmodel["std_instances"]
 
 println("Processing Parameters:")
+println("Number of channels: $(nch)")
 println("Feature vector dim: $(dim)")
 println("Number of feats per cut: $(nselFeat)")
 println("Number of Trees: $(nTrees)")
 println("dwt_levels: $(dwt_levels)")
 
-
 ## Aplicar Support Vector Machine para clasificar 
 
-labels = vcat(zeros(size(T_Aux_Sig_Pos,1)),ones(size(T_Aux_Sig_Neg,1)));
-instances = vcat(T_Aux_Sig_Pos[1:end,1:dim],T_Aux_Sig_Neg[1:end,1:dim])
-
+labels = vcat(zeros(size(feature_Pos,1)),ones(size(feature_Neg,1)));
+instances = vcat(feature_Pos[1:end,:],feature_Neg[1:end,:])
 
 norm_instances=instances-repmat(mean_instances,size(instances,1),1)
 norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
+
 
 println("Predicting");
 
@@ -93,12 +108,10 @@ println("Predicting");
 # Compute accuracy
 @printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
 
-## Confussion Matrix
-#C = confusmat(1, labels, predicted_labels)
+#Compute Confusion Matrix
 
 tp = (labels.==0) & (predicted_labels.==0)
 tn = (labels.==1) & (predicted_labels.==1)
-
 fp = (labels.==1) & (predicted_labels.==0)
 fn = (labels.==0) & (predicted_labels.==1)
 
