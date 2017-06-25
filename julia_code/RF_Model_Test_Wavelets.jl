@@ -78,10 +78,13 @@ end
 
 #### Carga el modelo del SVM
 println("\nLoading model located at $(testModelPath)")
+in_serial=open(testModelPath, "r")
+fullmodel = deserialize(in_serial)
 
-pmodel=load(testModelPath, "pmodel")
-mean_instances=load(testModelPath, "mean_instances")
-std_instances=load(testModelPath, "std_instances")
+
+pmodel=fullmodel["pmodel"]
+mean_instances=fullmodel["mean_instances"]
+std_instances=fullmodel["std_instances"]
 
 println("Processing Parameters:")
 println("Feature vector dim: $(dim)")
@@ -120,3 +123,5 @@ C= [sum(tp) sum(fp); sum(fn) sum(tn)]
 @printf "Fscore: %.2f\n" 2*sum(tp)/(2*sum(tp)+sum(fn)+sum(fp))
 
 println(C);
+
+close(in_serial)

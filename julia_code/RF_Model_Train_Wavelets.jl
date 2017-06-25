@@ -3,8 +3,8 @@
 # Second arg = nselFeat
 # Third arg = gamma
 
-using DecisionTree
 using JLD
+using DecisionTree
 using Wavelets
 
 Aux_Sig_Pos=[];
@@ -72,8 +72,9 @@ for i in 1:50
     end
 end
 
-Mat_To_Wavelet_Pos=Mat_To_Wavelet_Pos[1:5:end,:];
-Mat_To_Wavelet_Neg=Mat_To_Wavelet_Neg[1:5:end,:];
+#Solo en portatil
+#Mat_To_Wavelet_Pos=Mat_To_Wavelet_Pos[1:5:end,:];
+#Mat_To_Wavelet_Neg=Mat_To_Wavelet_Neg[1:5:end,:];
 
 T_Aux_Sig_Pos=zeros(size(Mat_To_Wavelet_Pos));
 T_Aux_Sig_Neg=zeros(size(Mat_To_Wavelet_Neg));
@@ -136,4 +137,7 @@ println("Predicting");
 #@printf "Accuracy: %.2f%%\n" mean(accuracy)*100
 @printf "Guardando modelo\n"
 
-save("../models/RFmodel_Ch1_$(dim)_randFeats$(nselFeat)_nTrees$(nTrees)_dwt_levels$(dwt_levels).jld", "pmodel", pmodel, "mean_instances", mean_instances, "std_instances", std_instances)
+out=open("../models/RFmodel_Ch1_$(dim)_randFeats$(nselFeat)_nTrees$(nTrees)_dwt_levels$(dwt_levels).jls", "w")
+fullmodel=Dict("pmodel" => pmodel, "mean_instances"=>mean_instances, "std_instances"=>std_instances)
+serialize(out, fullmodel)
+close(out)
