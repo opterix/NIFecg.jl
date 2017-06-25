@@ -101,7 +101,7 @@ norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
 
 println("Predicting");
 
-@time predicted_labels = apply_forest(pmodel, norm_instances)
+@time predicted_labels = round(apply_forest(pmodel, norm_instances))
 
 # Compute accuracy
 @printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100

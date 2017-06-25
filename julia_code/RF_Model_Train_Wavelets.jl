@@ -72,6 +72,9 @@ for i in 1:50
     end
 end
 
+Mat_To_Wavelet_Pos=Mat_To_Wavelet_Pos[1:5:end,:];
+Mat_To_Wavelet_Neg=Mat_To_Wavelet_Neg[1:5:end,:];
+
 T_Aux_Sig_Pos=zeros(size(Mat_To_Wavelet_Pos));
 T_Aux_Sig_Neg=zeros(size(Mat_To_Wavelet_Neg));
 (Fil,Col)=size(Mat_To_Wavelet_Pos);
