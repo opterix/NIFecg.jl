@@ -150,8 +150,8 @@ println("\nEntrenando Random Forest Classifier")
 @time pmodel = build_forest(labels, norm_instances, nselFeat, nTrees, 1.0)
 
 
-println("Predicting");
-accuracy=nfoldCV_forest(labels, norm_instances, nselFeat, nTrees, 3, 1.0)
+#println("Predicting");
+#accuracy=nfoldCV_forest(labels, norm_instances, nselFeat, nTrees, 3, 1.0)
 
 @printf "Guardando modelo\n"
 

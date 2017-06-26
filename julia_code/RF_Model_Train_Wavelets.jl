@@ -130,12 +130,11 @@ println("\nEntrenando Random Forest Classifier")
 
 @time pmodel = build_forest(labels, norm_instances, nselFeat, nTrees, 1.0)
 
-println("Predicting");
+# println("Predicting");
 # Compute accuracy 5fold validation
-accuracy=nfoldCV_forest(labels, norm_instances, nselFeat, nTrees, 3, 1.0)
-
-
+# accuracy=nfoldCV_forest(labels, norm_instances, nselFeat, nTrees, 3, 1.0)
 #@printf "Accuracy: %.2f%%\n" mean(accuracy)*100
+
 @printf "Guardando modelo\n"
 
 out=open("../models/RFmodel_Ch1_$(dim)_randFeats$(nselFeat)_nTrees$(nTrees)_dwt_levels$(dwt_levels).jls", "w")
