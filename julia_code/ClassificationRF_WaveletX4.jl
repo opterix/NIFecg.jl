@@ -92,8 +92,10 @@ for i in 1:num_files
     norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
     
     println("Clasificando intervalos")
-    #(predicted_labels, decision_v) = svmpredict(RF_FET, norm_instances');
-    @time predicted_labels = round(apply_forest(pmodel, norm_instances));
+
+    @time predicted_labels = apply_forest(pmodel, norm_instances);
+    
+    #@time predicted_labels = round(apply_forest(pmodel, norm_instances));
 
     
     figure(i)
