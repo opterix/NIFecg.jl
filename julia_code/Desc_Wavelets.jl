@@ -110,6 +110,13 @@ for i in 1:num_files
 
     (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 
+    #Normalizar AECGm
+
+    for i in 1:nch
+        AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/std(AECGm[:,i]);
+    end
+
+
     fetal_ini=fetal_annot-(fv_size)/2;
     fetal_fin=(fetal_annot+(fv_size)/2)-1;
 
