@@ -66,7 +66,7 @@ for i in 1:num_files
  #Normalizar AECGm
     #for i in 1:nch
         #AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/std(AECGm[:,i]);
-        AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/quantile(AECGm[:,i], 0.99);
+        #AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/quantile(AECGm[:,i], 0.99);
     #end
 
     
