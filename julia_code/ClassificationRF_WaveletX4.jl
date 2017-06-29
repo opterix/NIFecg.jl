@@ -64,9 +64,10 @@ for i in 1:num_files
     (nch,AECG,ns,t,sr,AECG_clean,QRSm_pos,QRSm_value,QRSf_pos,QRSf_value,AECG_white,fetal_annot,AECGf2,QRSfcell_pos,QRSfcell_value,heart_rate_mother,heart_rate_feto,AECGm, SVDrec, frecQ, Qfactor, QRSfcell_pos_smooth, SMI, giniMeasure)=process_fetal(filename)
 
  #Normalizar AECGm
-    for i in 1:nch
-        AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/std(AECGm[:,i]);
-    end
+    #for i in 1:nch
+        #AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/std(AECGm[:,i]);
+        AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/quantile(AECGm[:,i], 0.99);
+    #end
 
     
     In_Signal=AECGm[:,1:nch];

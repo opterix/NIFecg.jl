@@ -1,6 +1,6 @@
 
 ############## LIBRARIES ##############
-using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Wavelets, JLD, Distances
+using MultivariateStats, DSP, Wavelets, JLD, Distances
 
 ############# FUNCTIONS ####################
 include("process_svs.jl")
@@ -8,16 +8,10 @@ include("process_txt.jl")
 include("Notch_Filter_Detrent.jl")
 include("MakeICAll.jl")
 include("SortICA.jl")
-include("InterpSignal.jl")
 include("QRSm_detector.jl")
-include("QRSf_detector.jl")
 include("QRSf_selector.jl")
-include("MedianFilter.jl")
 include("Font_Separation_SVD.jl")
-include("MakeICAfeto.jl")
-include("Plotting.jl")
 include("pan_tomkins_detector.jl")
-include("QRSf_selector.jl")
 include("gini.jl")
 
 ############# ALL SOURCES #######################
@@ -111,10 +105,9 @@ for i in 1:num_files
     (SVDrec,AECGm) = Font_Separation_SVD(AECG_clean,QRSm_pos,sr,nch,ns);
 
     #Normalizar AECGm
-
-    for i in 1:nch
-        AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/std(AECGm[:,i]);
-    end
+    #for i in 1:nch
+    #    AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/quantile(AECGm[:,i], 0.99);
+    #end
 
 
     fetal_ini=fetal_annot-(fv_size)/2;
