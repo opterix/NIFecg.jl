@@ -1,5 +1,5 @@
 ############## LIBRARIES ##############
-using MultivariateStats, Base.Test, DataFrames, PyPlot, DSP, Distances
+using MultivariateStats, PyPlot, DSP, Distances
 
 ############# FUNCTIONS ####################
 include("process_svs.jl")

@@ -2,8 +2,8 @@ using DecisionTree
 using Wavelets
 using JLD
 
-include("process_svs.jl")
-include("process_txt.jl")
+#include("process_svs.jl")
+#include("process_txt.jl")
 include("Main.jl")
 list_file=readdir("../data")
 num_files=size(list_file,1);
