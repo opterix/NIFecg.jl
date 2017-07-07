@@ -1,6 +1,8 @@
 using DecisionTree
 using JLD
 using Wavelets
+using MLBase
+#using PyPlot
 
 if isempty(ARGS)
     testModelPath="../models/LIBSVM_fetalmodel.jld"
@@ -88,24 +90,32 @@ norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
 
 println("Predicting");
 
-@time predicted_labels = round(apply_forest(pmodel, norm_instances))
+@time predicted_labels = apply_forest(pmodel, norm_instances);
+pred_classes=round(predicted_labels)
 
 # Compute accuracy
-@printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
+@printf "Accuracy: %.2f%%\n" mean(pred_classes .== labels)*100
 
 ## Confussion Matrix
-#C = confusmat(1, labels, predicted_labels)
+#C = confusmat(1, labels, pred_classes)
 
-tp = (labels.==0) & (predicted_labels.==0)
-tn = (labels.==1) & (predicted_labels.==1)
+tp = (labels.==0) & (pred_classes.==0)
+tn = (labels.==1) & (pred_classes.==1)
 
-fp = (labels.==1) & (predicted_labels.==0)
-fn = (labels.==0) & (predicted_labels.==1)
+fp = (labels.==1) & (pred_classes.==0)
+fn = (labels.==0) & (pred_classes.==1)
 
 C= [sum(tp) sum(fp); sum(fn) sum(tn)]
 
 @printf "Fscore: %.2f\n" 2*sum(tp)/(2*sum(tp)+sum(fn)+sum(fp))
-
 println(C);
-
 close(in_serial)
+
+roc_info=roc(round(Int64, labels), predicted_labels);
+
+fpr = [false_positive_rate(x) for x in roc_info]
+tpr = [true_positive_rate(x) for x in roc_info]
+
+AUC = sum(tpr)/size(tpr,1);
+
+@printf "AUC: %.2f\n" AUC

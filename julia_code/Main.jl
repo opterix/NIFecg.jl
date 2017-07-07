@@ -16,7 +16,6 @@ include("Font_Separation_SVD.jl")
 include("MakeICAfeto.jl")
 include("Plotting.jl")
 include("pan_tomkins_detector.jl")
-include("QRSf_selector.jl")
 include("gini.jl")
 
 ############# ALL SOURCES #######################
@@ -27,7 +26,7 @@ function process_fetal(filename)
 #filename="a12"
 
 ############# GLOBAL VARIABLES ################
-    window_size = 10#seconds
+    window_size = 60#seconds
     sr=1000 #Sample rate
     ns = window_size * sr #number of samples
 

@@ -1,6 +1,7 @@
 using DecisionTree
 using JLD
 using Wavelets
+using MLBase
 
 if isempty(ARGS)
     testModelPath="../models/LIBSVM_fetalmodelX4_16.jld"
@@ -103,7 +104,8 @@ norm_instances=norm_instances./repmat(std_instances,size(instances,1),1)
 
 println("Predicting");
 
-@time predicted_labels = round(apply_forest(pmodel, norm_instances))
+@time aux_plabels = apply_forest(pmodel, norm_instances)
+predicted_labels=round(aux_plabels)
 
 # Compute accuracy
 @printf "Accuracy: %.2f%%\n" mean((predicted_labels .== labels))*100
@@ -122,3 +124,13 @@ C= [sum(tp) sum(fp); sum(fn) sum(tn)]
 println(C);
 
 close(in_serial)
+
+roc_info=roc(round(Int64, labels), aux_plabels);
+
+fpr = [false_positive_rate(x) for x in roc_info]
+tpr = [true_positive_rate(x) for x in roc_info]
+
+AUC = sum(tpr)/size(tpr,1);
+
+@printf "AUC: %.2f\n" AUC
+

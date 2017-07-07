@@ -27,7 +27,7 @@ list_file=readdir(data_path)
 num_files=size(list_file,1)
 #leer todos los datos en directorio data
 
-Xmult=5; #Multiply number of exampes per Xmult
+Xmult=1; #Multiply number of exampes per Xmult
 
 
 for i in 1:num_files
@@ -130,9 +130,17 @@ for i in 1:num_files
               
 
         if iannot==1
-            neg_points = linspace(fv_size/2 + 1,fetal_annot[1],Xmult)
+            if Xmult>1
+                neg_points = linspace(fv_size/2 + 1,fetal_annot[1],Xmult)
+            else
+                neg_points = fv_size/2 + 1
+            end
         else
-            neg_points = linspace(fetal_annot[iannot-1] + fv_size, fetal_annot[iannot] - fv_size,Xmult);
+            if Xmult>1
+                neg_points = linspace(fetal_annot[iannot-1] + fv_size, fetal_annot[iannot] - fv_size,Xmult);
+            else
+                neg_points = (fetal_annot[iannot-1] + fetal_annot[iannot])/2
+            end
         end
 
         neg_point_ini=   round(Int64, neg_points-(fv_size)/2);
