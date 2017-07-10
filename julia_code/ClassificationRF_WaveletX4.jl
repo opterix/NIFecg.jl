@@ -97,7 +97,8 @@ for i in 1:num_files
     @time predicted_labels = apply_forest(pmodel, norm_instances);
     
     #@time predicted_labels = round(apply_forest(pmodel, norm_instances));
-
+    
+    fetal_annot = fetal_annot[fetal_annot.<=Ns];
     
     figure(i)
     #hold(true)

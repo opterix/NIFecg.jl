@@ -27,7 +27,7 @@ include("Main.jl")
 list_file=readdir("../data")
 num_files=size(list_file,1);
 
-perc_hn = 1 #Number of hard negatives as percentage of initial positives (Defined in the dictionary)
+perc_hn = 8 #Number of hard negatives as percentage of initial positives (Defined in the dictionary)
 
 if isempty(ARGS)
     testModelPath="RFmodelX4_Ch1_16_randFeats4_nTrees10_dwt_levels5.jls"
@@ -78,7 +78,7 @@ F_Fin=hcat(ks:Ns+ks)';
 xt = wavelet(WT.db7);
 
 #for i in 1:num_files
-for i in 2:51
+for i in 1:50
     println("$i")
     file_name = list_file[i];
     file_name = file_name[1:end-4]
@@ -145,7 +145,7 @@ for i in 2:51
     AECGm=vcat(AECGm, zeros(fv_size,4));
     
     hn_examples = zeros(nch*size(hn_annot,1), fv_size);
-    extrap_examples = zeros(nch*size(hn_annot,1), fv_size);
+    #extrap_examples = zeros(nch*size(hn_annot,1), fv_size);
     
     idxRand = randperm(total_annot)
     fetal_ini=fetal_ini[idxRand]
@@ -153,10 +153,10 @@ for i in 2:51
     
     
     for iannot in 1:size(hn_annot,1)
-        delta=rand(-32:32)
+        #delta=0;
         
         hn_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[hn_annot[iannot]:hn_annot[iannot]+fv_size-1,:]'
-        extrap_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[Int64(fetal_ini[iannot]+delta):Int64(fetal_fin[iannot]+delta),:]';
+        #extrap_examples[(iannot-1)*4+1:iannot*4,:] = AECGm[Int64(fetal_ini[iannot]+delta):Int64(fetal_fin[iannot]+delta),:]';
     end
 
 
@@ -165,13 +165,14 @@ for i in 2:51
     println("Procesando Dictionary $(file_name)")
     d = load("../Dictionaries/$(file_name)_examples.jld")
     if isempty(Mat_To_Wavelet_Pos)
-        Mat_To_Wavelet_Pos=vcat(d["pos_examples"], extrap_examples);
+        Mat_To_Wavelet_Pos=d["pos_examples"];
+        #Mat_To_Wavelet_Pos=vcat(d["pos_examples"], extrap_examples);
         Mat_To_Wavelet_Neg= vcat(d["neg_examples"], hn_examples);
         #Mat_To_Wavelet_Neg = hn_examples;
 
     else
         Mat_To_Wavelet_Pos=vcat(Mat_To_Wavelet_Pos,d["pos_examples"]);
-        Mat_To_Wavelet_Pos=vcat(Mat_To_Wavelet_Pos, extrap_examples);
+        #Mat_To_Wavelet_Pos=vcat(Mat_To_Wavelet_Pos, extrap_examples);
 
         Mat_To_Wavelet_Neg=vcat(Mat_To_Wavelet_Neg,d["neg_examples"]);
         Mat_To_Wavelet_Neg = vcat(Mat_To_Wavelet_Neg, hn_examples);
