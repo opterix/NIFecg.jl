@@ -27,7 +27,8 @@ list_file=readdir(data_path)
 num_files=size(list_file,1)
 #leer todos los datos en directorio data
 
-Xmult=1; #Multiply number of exampes per Xmult
+posXmult=1; #Multiply number of exampes per Xmult
+negXmult=5;
 
 
 for i in 1:num_files
@@ -119,8 +120,8 @@ for i in 1:num_files
 	deleteat!(fetal_annot,1);
     end	
 
-    pos_examples = zeros(nch*size(fetal_annot,1)*Xmult, fv_size);
-    neg_examples = zeros(nch*size(fetal_annot,1)*Xmult, fv_size);
+    pos_examples = zeros(nch*size(fetal_annot,1)*posXmult, fv_size);
+    neg_examples = zeros(nch*size(fetal_annot,1)*negXmult, fv_size);
 
 
     AECGm=vcat(AECGm, zeros(128,4));
@@ -130,14 +131,14 @@ for i in 1:num_files
               
 
         if iannot==1
-            if Xmult>1
-                neg_points = linspace(fv_size/2 + 1,fetal_annot[1],Xmult)
+            if negXmult>1
+                neg_points = linspace(fv_size/2 + 1,fetal_annot[1],negXmult)
             else
                 neg_points = fv_size/2 + 1
             end
         else
-            if Xmult>1
-                neg_points = linspace(fetal_annot[iannot-1] + fv_size, fetal_annot[iannot] - fv_size,Xmult);
+            if negXmult>1
+                neg_points = linspace(fetal_annot[iannot-1] + fv_size, fetal_annot[iannot] - fv_size,negXmult);
             else
                 neg_points = (fetal_annot[iannot-1] + fetal_annot[iannot])/2
             end
@@ -153,8 +154,8 @@ for i in 1:num_files
         #    neg_point_fin=fv_size;
         #end
 	   
-        for ipoint=1:Xmult
-            t0=(Xmult-1)/2
+        for ipoint=1:posXmult
+            t0=(posXmult-1)/2
             pos_examples[((iannot-1)*4+1)+(total_annot*(ipoint-1)*4):iannot*4+total_annot*(ipoint-1)*4,:] = AECGm[Int64(fetal_ini[iannot]+(-t0+ipoint-1)*2):Int64(fetal_fin[iannot]+(-t0+ipoint-1)*2),:]';
         end
         #print(iannot);
