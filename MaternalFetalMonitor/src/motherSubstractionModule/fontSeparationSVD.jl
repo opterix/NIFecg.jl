@@ -1,7 +1,7 @@
 function fontSeparationSVD(signal,QRSm_pos,sr,nch,ns)
 
 	
-    window_svd=Int64(floor(sr*0.7)); #samples
+    window_svd=Int64(floor(sr*0.2)); #samples
     window_init= Int64(floor(window_svd*0.4));
     window_fin= Int64(ceil(window_svd*0.6));
     
