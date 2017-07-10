@@ -147,7 +147,7 @@ println("Feature vector dimension: $(size(norm_instances,2))")
 
 println("\nEntrenando Random Forest Classifier")
 
-@time pmodel = build_forest(labels, norm_instances, nselFeat, nTrees, 1.0)
+@time pmodel = build_balanced_forest(labels, norm_instances, nselFeat, nTrees, 1.0)
 
 
 #println("Predicting");
