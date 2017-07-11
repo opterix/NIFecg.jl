@@ -13,7 +13,7 @@ A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg pr
 
 #### Ejecutar prueba
 
-1. Los datos para ser procesados deben estar en formato "csv" (`archivo.csv`). Estos deben ser grabaciones de almenos cuatro canales.
+1. Los datos para ser procesados deben estar en formato "csv" (`archivo.csv`). Estos deben ser grabaciones de al menos cuatro canales.
 
 2. La función `MFMTest` aplica las funciones necesarias del paquete para detectar la señal del feto y de la madre. La prueba se ejecuta así:
 
