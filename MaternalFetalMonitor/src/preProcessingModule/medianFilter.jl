@@ -41,6 +41,7 @@ for i = 1:nch
 		s = difference / float(median_difference)
 		figure(i);plot(t_tmp,s,color="green");
 		
+<<<<<<< HEAD:MaternalFetalMonitor/src/preProcessingModule/medianFilter.jl
 
 		Threshold_local = maximum(s);
 		figure(i);plot(t_tmp,ones(window_temp)*Threshold_local,color="yellow");			
@@ -49,6 +50,16 @@ for i = 1:nch
 
 		mask = s .> Threshold_local
 		signal_temp[mask] = threshold;# median(signal_temp)
+=======
+		threshold_local = maximum(s);
+		figure(i);plot(t_tmp,ones(window_temp)*threshold_local,color="yellow");		
+		
+		mask = s .> threshold_local
+		if findfirst(mask,1) != 0
+			signal_temp[mask] = signal[findfirst(mask,1)];
+			#threshold_global;# median(signal_temp)
+		end
+>>>>>>> e8eefa907408a31df90379471ff0ecde578c2169:julia_code/MedianFilter.jl
 		median_filtered_signal = vcat(median_filtered_signal,signal_temp)
 	end
 
