@@ -25,11 +25,11 @@ A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg pr
 - `archivo` = ruta del archivo csv (digitar sin la extensión)
 	- El paquete detecta automaticamente los encabezados del csv.
 	- Especificar el directorio del archivo ("directorio/archivo") o buscará en el directorio actual.
-	- Sí tiene anotaciones del feto, guardarlas en el mismo directorio con la extensión archivo.fqrs.txt (el csv y el fqrs.txt deben tener el mismo nombre).
+	- Sí tiene anotaciones del feto, guardarlas en el mismo directorio con  eñ mismo nombre del archivo.csv pero con la extensión archivo.fqrs.txt.
 
 ##### Salidas
 
-Estos datos son estructuras que contiene varias variables que se necesitan almacenar a lo larfo del proceso.
+Estos datos son estructuras que contiene varias variables que se necesitan almacenar a lo largo del proceso.
 
 - `inputVar` = Contiene las variables con la información para ser procesada despues un análisis de errores y eliminación de información inncesaria
 - `motherVar` = Contiene las variables con la información despues del preprocesamiento y la extracción de la señal materna.
