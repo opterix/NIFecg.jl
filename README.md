@@ -43,7 +43,7 @@ Ejemplo: En el directorio del paquete contiene `../data/`, este tiene el archivo
 
 ### Visualización
 
-Por medio de la función `plotData`esta función se puede visualizar el procesamiento de las señales en diferentes momentos
+Por medio de la función `plotData` se puede visualizar el procesamiento de las señales en diferentes momentos de la siguiente manera:
 
 `plotData(inputVar,motherVar,fetalVar,[número(s)de gráfica(s)])`
 
