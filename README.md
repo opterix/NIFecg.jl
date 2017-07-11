@@ -50,6 +50,8 @@ Por medio de esta función se puede visualizar el procesamiento de la informaci�
 6. N/A
 7. Señal materna y fetal
 
+Ejemplo: Para visualizar la gráfica 2,3 y 7 debe ejecutarse de esta manera: `plotData(inputVar,motherVar,fetalVar,[2,3,7])`
+
 
 
 
