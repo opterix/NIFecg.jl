@@ -8,7 +8,7 @@ A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg pr
 
 1. En Julia debe ejecutar la siguiente sentencia `Pkg.clone("git://github.com/opterix/NI-Fecg.jl.git")`, la cual le permitirá descargar el paquete.
 
-2. Para utilizar las funciones  del paquete debe ejecutar `using NI-Fecg`.
+2. Para utilizar las funciones  del paquete debe ejecutar `using NI_Fecg`.
 
 
 #### Ejecutar prueba
