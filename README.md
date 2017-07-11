@@ -4,7 +4,7 @@
 
 A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg provee las rutinas necesarias en Julia para detectar la señal del feto y de la madre.
 
-Para evaluar el desempeño del paquete se uso la base de datos del challengue Physionet2013. Para mas información, ver: [https://physionet.org/challenge/2013/](https://physionet.org/challenge/2013/)
+Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive Fetal ECG: the PhysioNet/Computing in Cardiology Challenge 2013". Para mas información, ver: [https://physionet.org/challenge/2013/](https://physionet.org/challenge/2013/)
 
 
 
