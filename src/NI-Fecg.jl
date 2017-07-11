@@ -1,6 +1,6 @@
 VERSION >= v"0.1" && __precompile__()
 
-module MaternalFetalMonitor #MFM
+module NI-Fecg # NonInvasive - Fetal electrocardiogram
 
 	#---------------------------------- LIBRARIES 
 	using Reexport
