@@ -6,14 +6,14 @@ A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg pr
 
 #### Instalación
 
-1. En Julia debe ejecutar la siguiente sentencia `Pkg.clone("git://github.com/opterix/NI-Fecg.jl.git")`, la cual le permitirá descargar el paquete en su computador.
+1. En Julia debe ejecutar la siguiente sentencia `Pkg.clone("git://github.com/opterix/NI-Fecg.jl.git")`, la cual le permitirá descargar el paquete.
 
 2. Para utilizar las funciones  del paquete debe ejecutar `using NI-Fecg`.
 
 
 #### Ejecutar prueba
 
-1. Los datos para ser procesados debe estar en formato "csv" (`archivo.csv`). Estos deben ser grabaciones de almenos cuatro canales.
+1. Los datos para ser procesados deben estar en formato "csv" (`archivo.csv`). Estos deben ser grabaciones de almenos cuatro canales.
 
 2. La función `MFMTest` aplica las funciones necesarias del paquete para detectar la señal del feto y de la madre. La prueba se ejecuta así:
 
@@ -38,7 +38,7 @@ Estos datos son estructuras que contiene varias variables que se necesitan almac
 
 #### Visualización
 
-Por medio de esta función se puede visualizar el procesamiento de la información en diferentes momentos
+Por medio de esta función se puede visualizar el procesamiento de las señales en diferentes momentos
 
 `plotData(inputVar,motherVar,fetalVar,[número(s)de gráfica(s)])`
 
