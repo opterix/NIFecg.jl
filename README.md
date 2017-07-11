@@ -1,21 +1,19 @@
-# NI-Fecg  
-## Non Invasive - Fetal electrocardiogram
-### Monitor Materno-Fetal
+# NI-Fecg.jl : Non Invasive - Fetal electrocardiogram  
+## Monitor Materno-Fetal
 
 A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg provee las rutinas necesarias en Julia para detectar la señal del feto y de la madre.
 
 Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive Fetal ECG: the PhysioNet/Computing in Cardiology Challenge 2013". Para mas información, ver: [https://physionet.org/challenge/2013/](https://physionet.org/challenge/2013/)
 
 
-
-#### Instalación
+### Instalación
 
 1. En Julia debe ejecutar `Pkg.clone("git://github.com/opterix/NI-Fecg.jl.git")`, la cual le permitirá descargar el paquete.
 
 2. Para utilizar las funciones  del paquete debe ejecutar `using NI_Fecg`.
 
 
-#### Ejecutar prueba
+### Ejecutar prueba
 
 1. Los datos para ser procesados deben estar en formato "csv" (`archivo.csv`). Estos deben ser grabaciones de al menos cuatro canales.
 
@@ -23,7 +21,7 @@ Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive 
 
 `(inputVar,motherVar,fetalVar)=MFMTest("archivo",ts,sr)`:
 
-##### Entradas
+#### Entradas
 - `ts` =  el tiempo de la señal a ser procesada en segundos (mínimo 10 segundos)
 - `sr` =  frecuencia de muestreo (minimo 250 Hz)
 - `archivo` = ruta del archivo csv (digitar sin la extensión)
@@ -31,7 +29,7 @@ Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive 
 	- Especificar el directorio del archivo ("directorio/archivo") o buscará en el directorio actual.
 	- Sí tiene anotaciones del feto, guardarlas en el mismo directorio con  eñ mismo nombre del archivo.csv pero con la extensión archivo.fqrs.txt.
 
-##### Salidas
+#### Salidas
 
 Estos datos son estructuras que contiene varias variables que se necesitan almacenar a lo largo del proceso.
 
@@ -42,7 +40,7 @@ Estos datos son estructuras que contiene varias variables que se necesitan almac
 Ejemplo: En el directorio del paquete contiene `../data/`, este tiene el archivo `a01.csv` y `a01.fqrs.txt`. Entonces, para utilizar esta grabación de cuatro canales con 10 segundos de procesamiento a 1000 Hz, se ejecuta así `(inputVar,motherVar,fetalVar)=MFMTest("a01",10,1000)`
 
 
-#### Visualización
+### Visualización
 
 Por medio de la función `plotData`esta función se puede visualizar el procesamiento de las señales en diferentes momentos
 
