@@ -4,6 +4,10 @@
 
 A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg provee las rutinas necesarias en Julia para detectar la señal del feto y de la madre.
 
+Para evaluar el desempeño del paquete se uso la base de datos del challengue Physionet2013. Para mas información, ver: [https://physionet.org/challenge/2013/](https://physionet.org/challenge/2013/)
+
+
+
 #### Instalación
 
 1. En Julia debe ejecutar `Pkg.clone("git://github.com/opterix/NI-Fecg.jl.git")`, la cual le permitirá descargar el paquete.
@@ -35,12 +39,12 @@ Estos datos son estructuras que contiene varias variables que se necesitan almac
 - `motherVar` = Contiene las variables con la información despues del preprocesamiento y la extracción de la señal materna.
 - `fetalVar` = Contiene las variables de la señal del feto extraida.
 
-Ejemplo: En el directorio del paquete contiene `data/`, este tiene el archivo `a01.csv` y `a01.fqrs.txt`. Entonces, para utilizar esta grabación con 10 segundos de procesamiento a 1000 Hz, se ejecuta así `(inputVar,motherVar,fetalVar)=MFMTest("a01",10,1000)`
+Ejemplo: En el directorio del paquete contiene `../data/`, este tiene el archivo `a01.csv` y `a01.fqrs.txt`. Entonces, para utilizar esta grabación de cuatro canales con 10 segundos de procesamiento a 1000 Hz, se ejecuta así `(inputVar,motherVar,fetalVar)=MFMTest("a01",10,1000)`
 
 
 #### Visualización
 
-Por medio de esta función se puede visualizar el procesamiento de las señales en diferentes momentos
+Por medio de la función `plotData`esta función se puede visualizar el procesamiento de las señales en diferentes momentos
 
 `plotData(inputVar,motherVar,fetalVar,[número(s)de gráfica(s)])`
 
