@@ -20,7 +20,9 @@ A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg pr
 `(inputVar,motherVar,fetalVar)=MFMTest("archivo",ts,sr)`:
 
 > ts =  el tiempo de la señal a ser procesada en segundos (mínimo 10 segundos)
+
 > sr =  frecuencia de muestreo (minimo 250 Hz)
+
 > archivo = ruta del archivo csv (digitar sin la extensión)
 	Notas:
 	- El paquete detecta automaticamente los encabezados del csv.
