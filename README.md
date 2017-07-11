@@ -35,6 +35,8 @@ Estos datos son estructuras que contiene varias variables que se necesitan almac
 - `motherVar` = Contiene las variables con la información despues del preprocesamiento y la extracción de la señal materna.
 - `fetalVar` = Contiene las variables de la señal del feto extraida.
 
+Ejemplo: En el directorio del paquete contiene `data/`, este tiene el archivo `a01.csv` y `a01.fqrs.txt`. Entonces, para utilizar esta grabación con 10 segundos de procesamiento a 1000 Hz, se ejecuta así `(inputVar,motherVar,fetalVar)=MFMTest("a01",10,1000)`
+
 
 #### Visualización
 
