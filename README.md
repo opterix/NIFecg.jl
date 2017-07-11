@@ -1,4 +1,5 @@
-# NI-Fecg.jl : Non Invasive - Fetal electrocardiogram  
+# NI-Fecg.jl
+# Non Invasive - Fetal electrocardiogram
 ## Monitor Materno-Fetal
 
 A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg provee las rutinas necesarias en Julia para detectar la señal del feto y de la madre.
