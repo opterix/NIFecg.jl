@@ -9,7 +9,7 @@ Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive 
 
 ### Instalación
 
-1. En Julia debe ejecutar `Pkg.clone("git://github.com/opterix/NI-Fecg.jl.git")`, la cual le permitirá descargar el paquete.
+1. En Julia debe ejecutar `Pkg.clone("git://github.com/opterix/NIFecg.jl.git")`, la cual le permitirá descargar el paquete.
 
 2. Para utilizar las funciones  del paquete debe ejecutar `using NI_Fecg`.
 

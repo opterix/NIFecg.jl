@@ -1,6 +1,6 @@
 VERSION >= v"0.1" && __precompile__()
 
-module NI_Fecg # NonInvasive - Fetal electrocardiogram
+module NIFecg # Non Invasive Fetal electrocardiogram
 
 	#---------------------------------- LIBRARIES 
 	using Reexport
