@@ -28,7 +28,7 @@ num_files=size(list_file,1)
 #leer todos los datos en directorio data
 
 posXmult=1; #Multiply number of exampes per Xmult
-negXmult=5;
+negXmult=30;
 
 
 for i in 1:num_files
