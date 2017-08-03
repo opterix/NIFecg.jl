@@ -30,7 +30,7 @@ function MFMTest(filename,ts,sr)
 	(inputVar,motherVar,fetalVar)=groupVar(nch,ns,ts,sr,t,fetal_annot,AECG,AECG_clean,	AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,
 	AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure)
 
-	return inputVar,motherVar,fetalVar
+	return inputVar,motherVar,fetalVar;
 
 end
 
