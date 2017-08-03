@@ -125,6 +125,7 @@ if sr > 1000/4
 	signal_subtract[:,3]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,3])
 	signal_subtract[:,4]=filt(digitalfilter(responsetype, designmethod), signal_subtract[:,4])
 end
+=#
 
 return signal_rec, signal_subtract;
 
