@@ -25,8 +25,6 @@ function smiComputation(FQRSdetections, nch, fs)
 
         
     end
-
-    println(BCM);
     
     return SMI;
 end

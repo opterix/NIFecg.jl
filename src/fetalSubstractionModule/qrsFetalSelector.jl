@@ -17,9 +17,8 @@ function qrsFetalSelector(signal_feto,nch,fs)
     dw_ini = Int(round(0.8/dw_min)); #Iniciar buscando en 1.3Hz: 77 pulsos por min
     dw_fin = Int(round(3.8/dw_min));
 	
-#    print(f_final);
+
     Etotal = sum(Efft[1:f_final,:],1);
-    #    print(Etotal);
     points=collect(dw_ini:0.1:dw_fin);
     x=zeros(size(points,1),nch);
 
@@ -28,12 +27,10 @@ function qrsFetalSelector(signal_feto,nch,fs)
     for i in points
 	Eparcial=median(Efft[round(Int64, 1:i:10*i)+1,:],1);
         #O usar sum o average?
-	#print(Eparcial);
 	x[kpoint,:]=Eparcial;
         kpoint += 1;
     end
 	
-	#print(x);
 	for k in 1:nch#
 		x[:,k]=x[:,k]/Etotal[:,k];
 	end
@@ -41,9 +38,7 @@ function qrsFetalSelector(signal_feto,nch,fs)
     maximosQindex= maximum(x,1);
     #(maxval,indQ)=findmax(Qfactor,1);
     
-    print(maximosQindex);
     idx=sortperm(vec(maximosQindex),rev=true);
-    print(idx);
     sorted_feto = signal_feto[:,idx];
     
     return sorted_feto

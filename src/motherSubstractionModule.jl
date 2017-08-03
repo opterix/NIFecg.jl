@@ -43,7 +43,6 @@ module 	motherSubstractionModule
 	
 		#  Computation of heart rate mother
 		heart_rate_mother = (60*size(QRSm_pos,1))/ts
-		println("QRSdetectados: $(QRSm_pos)")
 		# SVD process and subtract mother signal
 		(SVDrec,AECG_residual) = fontSeparationSVD(AECG_clean,QRSm_pos,sr,nch,ns);
 
