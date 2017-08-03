@@ -1,8 +1,8 @@
-# NI-Fecg.jl
+# NIFecg.jl
 # Non Invasive - Fetal electrocardiogram
 ## Monitor Materno-Fetal
 
-A partir de la señal electrocardiográfica abdominal de una materna, NI-Fecg provee las rutinas necesarias en Julia para detectar la señal del feto y de la madre.
+A partir de la señal electrocardiográfica abdominal de una materna, NIFecg provee las rutinas necesarias en Julia para detectar la señal del feto y de la madre.
 
 Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive Fetal ECG: the PhysioNet/Computing in Cardiology Challenge 2013". Para mas información, ver: [https://physionet.org/challenge/2013/](https://physionet.org/challenge/2013/)
 
@@ -11,7 +11,7 @@ Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive 
 
 1. En Julia debe ejecutar `Pkg.clone("git://github.com/opterix/NIFecg.jl.git")`, la cual le permitirá descargar el paquete.
 
-2. Para utilizar las funciones  del paquete debe ejecutar `using NI_Fecg`.
+2. Para utilizar las funciones  del paquete debe ejecutar `using NIFecg`.
 
 
 ### Ejecutar prueba
@@ -20,7 +20,7 @@ Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive 
 
 2. La función `MFMTest` aplica las funciones necesarias del paquete para detectar la señal del feto y de la madre. La prueba se ejecuta así:
 
-`(inputVar,motherVar,fetalVar)=MFMTest("archivo",ts,sr)`:
+`(inputVar,motherVar,fetalVar)=MFMTest("archivo",ts,sr);`:
 
 #### Entradas
 - `ts` =  el tiempo de la señal a ser procesada en segundos (mínimo 10 segundos)
@@ -28,7 +28,7 @@ Para evaluar el desempeño del paquete se uso la base de datos del "Noninvasive 
 - `archivo` = ruta del archivo csv (digitar sin la extensión)
 	- El paquete detecta automaticamente los encabezados del csv.
 	- Especificar el directorio del archivo ("directorio/archivo") o buscará en el directorio actual.
-	- Sí tiene anotaciones del feto, guardarlas en el mismo directorio con  eñ mismo nombre del archivo.csv pero con la extensión archivo.fqrs.txt.
+	- Sí tiene anotaciones del feto, guardarlas en el mismo directorio con el mismo nombre del archivo.csv pero con la extensión archivo.fqrs.txt.
 
 #### Salidas
 
@@ -38,7 +38,7 @@ Estos datos son estructuras que contiene varias variables que se necesitan almac
 - `motherVar` = Contiene las variables con la información despues del preprocesamiento y la extracción de la señal materna.
 - `fetalVar` = Contiene las variables de la señal del feto extraida.
 
-Ejemplo: En el directorio del paquete contiene `../data/`, este tiene el archivo `a01.csv` y `a01.fqrs.txt`. Entonces, para utilizar esta grabación de cuatro canales con 10 segundos de procesamiento a 1000 Hz, se ejecuta así `(inputVar,motherVar,fetalVar)=MFMTest("a01",10,1000)`
+Ejemplo: En el directorio del paquete contiene `../data/`, este tiene el archivo `a01.csv` y `a01.fqrs.txt`. Entonces, para utilizar esta grabación de cuatro canales con 10 segundos de procesamiento a 1000 Hz, se ejecuta así `(inputVar,motherVar,fetalVar)=MFMTest("a01",10,1000);`
 
 
 ### Visualización
