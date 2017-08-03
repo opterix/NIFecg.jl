@@ -26,7 +26,7 @@ PTSignal=filtfilt(filtroHP, PTSignal);
 #------- Derivative Filter
 B=[-1, -2, 0 , 2, 1]/8;
 
-    cellRValue = Array{Float64}(nch);
+    cellRValue = Array{Float64,1}(nch);
     cellRIndex = Array{Int64}(nch);
 
 
