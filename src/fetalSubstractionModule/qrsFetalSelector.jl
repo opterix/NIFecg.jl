@@ -30,11 +30,11 @@ function qrsFetalSelector(signal_feto,nch,fs)
 	x[kpoint,:]=Eparcial;
         kpoint += 1;
     end
-	println('x')
+	println("x")
 	println(x)
 	println(typeof(x))
 
-	println('Etotal')
+	println("Etotal")
 	println(Etotal)
 	println(typeof(Etotal))
 		
