@@ -1,7 +1,8 @@
 function plotData(inputVar,motherVar,fetalVar,graph=0)
 
 	nch = inputVar["nch"];
-	ts = inputVar["ts"];
+	ti = inputVar["ti"];
+	tf = inputVar["tf"];
 	sr = inputVar["sr"];
 	t = inputVar["t"];
 	ns = inputVar["ns"];

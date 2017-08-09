@@ -16,7 +16,7 @@ module 	fetalSubstractionModule
 
 	export fetalSubstraction
 
-	function fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,ts)
+	function fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,ti,tf)
 
 		# Source separation - ICA
 		AECGf_ica = makeIcaFetal(AECG_residual,nch)
@@ -55,7 +55,7 @@ module 	fetalSubstractionModule
 		gini_measure=gini_measure[auxidx]
 
 	    
-		heart_rate_feto = (60*size(QRSf_pos,1))/ts
+		heart_rate_feto = (60*size(QRSf_pos,1))/(tf-ti)
 		FreqDiff = 1 - abs(heart_rate_mother-heart_rate_feto)/heart_rate_mother;
 
 		if FreqDiff > 0.9;
@@ -67,7 +67,7 @@ module 	fetalSubstractionModule
 			SMI = SMI[auxidx];
 			gini_measure=gini_measure[auxidx]
 			QRSf_pos=QRSfcell_pos_smooth[1];
-			heart_rate_feto = (60*size(QRSf_pos,1))/ts
+			heart_rate_feto = (60*size(QRSf_pos,1))/(tf-ti)
 		end
 
 	return AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure

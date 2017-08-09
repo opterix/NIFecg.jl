@@ -15,7 +15,7 @@ module 	motherSubstractionModule
 
 	export motherSubstraction
 
-	function motherSubstraction(AECG_clean,nch,sr,ns,ts)
+	function motherSubstraction(AECG_clean,nch,sr,ns,ti,tf)
 
 		# Source separation - ICA 
 		(AECGm_ica) = makeIcaMother(AECG_clean,nch)
@@ -42,7 +42,7 @@ module 	motherSubstractionModule
 		QRSm_pos=QRSmcell_pos_smooth[1];
 	
 		#  Computation of heart rate mother
-		heart_rate_mother = (60*size(QRSm_pos,1))/ts
+		heart_rate_mother = (60*size(QRSm_pos,1))/(tf-ti)
 		# SVD process and subtract mother signal
 		(SVDrec,AECG_residual) = fontSeparationSVD(AECG_clean,QRSm_pos,sr,nch,ns);
 

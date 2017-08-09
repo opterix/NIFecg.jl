@@ -1,12 +1,13 @@
 function groupVar(
-nch,ns,ts,sr,t,fetal_annot,AECG,AECG_clean,
+nch,ns,ti,tf,sr,t,fetal_annot,AECG,AECG_clean,
 AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,
 AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure)
 
 	inputVar = Dict([
 	("nch",nch),
 	("ns",ns),
-	("ts",ts),
+	("ti",ti),
+	("tf",tf),
 	("sr",sr),
 	("t",t),
 	("fetal_annot",fetal_annot),

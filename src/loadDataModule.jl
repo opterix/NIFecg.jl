@@ -7,14 +7,14 @@ module loadDataModule
 
 	export loadData
 
-	function loadData(filename,ns)
+	function loadData(filename,ns,sr,ti,tf)
 	
 		# Read and fix data
 		(t,AECG) = processSvs(filename)
 
 		# Load data according global varaibles
-		AECG = AECG[1:ns,:]
-		t = t[1:ns,:]
+		AECG = AECG[ti*sr:tf*sr,:]
+		t = t[ti*sr:tf*sr,:]
 		nch = size(AECG,2) # nch - number of channels
 
 		#Read txt annotations if it exist		
