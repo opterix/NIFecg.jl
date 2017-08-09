@@ -3,7 +3,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 	nch = inputVar["nch"];
 	sr = inputVar["sr"];
 	ti = sr * inputVar["ti"]+1;
-	ti_t = inputVar["ti"]+1;
+	ti_t = inputVar["ti"]+0.001;
 	tf = sr * inputVar["tf"];
 	tf_t = inputVar["tf"];
 	t = inputVar["t"];
@@ -53,7 +53,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		for i in 1:nch
 		subplot("41$(i)")    
 		plot(t[ti:tf], motherVar["AECG_residual"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-		if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
+		if fetal_annot!= 0; plot(ti_t+fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 		title("residual signals")
 		end
 	end
@@ -71,7 +71,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 
 		subplot("42$(2*i)")
 		plot(t[ti:tf], motherVar["AECG_residual"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-		if fetal_annot != 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end 
+		if fetal_annot != 0; plot(ti_t+fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end 
 		title("Residuals signals")
 		end
 	end
@@ -83,13 +83,13 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		for i in 1:nch
 		subplot("42$(2*i-1)")
 		plot(t[ti:tf], fetalVar["AECG_sort"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-		if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
+		if fetal_annot!= 0; plot(ti_t+fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 		plot(ti_t+fetalVar["QRScell_pos_smooth"][i], zeros(size(fetalVar["QRScell_pos_smooth"][i],1),1), "ro")
 		title("Sorted Second ICA signals. SMI=$(fetalVar["SMI"][i]). gini=$(fetalVar["gini_measure"][i])")
 
 		subplot("42$(2*i)")
 		plot(t[ti:tf], fetalVar["AECG_sort"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-		if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
+		if fetal_annot!= 0; plot(ti_t+fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 		plot(ti_t+fetalVar["QRScell_pos"][i]',fetalVar["QRScell_value"][i]', "ro")
 		title("Sorted Second ICA signals")
 		end
@@ -106,7 +106,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		subplot(212)
 		title("Ritmo cardíaco fetal = $(fetalVar["heart_rate"])")    
 		plot(t[ti:tf], fetalVar["AECG_sort"][1:ns,1], color="black", linewidth=1.0, linestyle="-")
-		if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
+		if fetal_annot!= 0; plot(ti_t+fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 		plot(ti_t+fetalVar["QRS_pos"][:,1], zeros(size(fetalVar["QRS_pos"][:,1],1),1)+0.5, "bo")
 	end
 
