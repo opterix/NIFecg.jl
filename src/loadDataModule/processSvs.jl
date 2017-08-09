@@ -8,7 +8,7 @@ function processSvs(filename)
 	indx=findfirst(bool_string)
 
 	#Extraer la información del archivo
-	t=a[indx:end, 1:end]
+	t=a[indx:end, 1]
 	b=a[indx:end, 2:end] 
 
 	#Busca y convierte los valores NaN en 0

@@ -13,7 +13,7 @@ module loadDataModule
 		(t,AECG) = processSvs(filename)
 
 		# Load data according global varaibles
-		AECG = AECG[ti*sr+2:tf*sr+1,:]
+		AECG = AECG[ti*sr+1:tf*sr,:]
 		#t = t[ti*sr+2:tf*sr+1,1]
 		nch = size(AECG,2) # nch - number of channels
 
