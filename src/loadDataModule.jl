@@ -7,7 +7,7 @@ module loadDataModule
 
 	export loadData
 
-	function loadData(T4filename,ns,sr,ti,tf)
+	function loadData(filename,ns,sr,ti,tf)
 	
 		# Read and fix data
 		(t,AECG) = processSvs(filename)
