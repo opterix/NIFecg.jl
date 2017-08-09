@@ -3,7 +3,9 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 	nch = inputVar["nch"];
 	sr = inputVar["sr"];
 	ti = sr * inputVar["ti"]+1;
+	ti_t = sr * inputVar["ti"]+1;
 	tf = sr * inputVar["tf"];
+	tf_t = sr * inputVar["tf"];
 	t = inputVar["t"];
 	ns = inputVar["ns"];
 	nch = inputVar["nch"];
@@ -40,7 +42,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		for i in 1:nch
 		subplot("$(nch)1$(i)")
 		plot(t[ti:tf], motherVar["AECG_ica"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
-		plot(ti+motherVar["QRS_pos"][:,1]',zeros(size(motherVar["QRS_pos"],1),1)', "ro")
+		plot(ti_t+motherVar["QRS_pos"][:,1]',zeros(size(motherVar["QRS_pos"],1),1)', "ro")
 		title("First ICA")
 		end
 	end
@@ -82,13 +84,13 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		subplot("42$(2*i-1)")
 		plot(t[ti:tf], fetalVar["AECG_sort"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
 		if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
-		plot(ti+fetalVar["QRScell_pos_smooth"][i], zeros(size(fetalVar["QRScell_pos_smooth"][i],1),1), "ro")
+		plot(ti_t+fetalVar["QRScell_pos_smooth"][i], zeros(size(fetalVar["QRScell_pos_smooth"][i],1),1), "ro")
 		title("Sorted Second ICA signals. SMI=$(fetalVar["SMI"][i]). gini=$(fetalVar["gini_measure"][i])")
 
 		subplot("42$(2*i)")
 		plot(t[ti:tf], fetalVar["AECG_sort"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
 		if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
-		plot(ti+fetalVar["QRScell_pos"][i]',fetalVar["QRScell_value"][i]', "ro")
+		plot(ti_t+fetalVar["QRScell_pos"][i]',fetalVar["QRScell_value"][i]', "ro")
 		title("Sorted Second ICA signals")
 		end
 	end
@@ -99,13 +101,13 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		subplot(211)
 		title("Ritmo cardíaco materno = $(motherVar["heart_rate"])")
 		plot(t[ti:tf], motherVar["AECG_sort"][1:ns,1], color="black", linewidth=1.0, linestyle="-")
-		plot(ti+motherVar["QRS_pos"][:,1]',zeros(size(motherVar["QRS_pos"],1),1)', "ro")
+		plot(ti_t+motherVar["QRS_pos"][:,1]',zeros(size(motherVar["QRS_pos"],1),1)', "ro")
 
 		subplot(212)
 		title("Ritmo cardíaco fetal = $(fetalVar["heart_rate"])")    
 		plot(t[ti:tf], fetalVar["AECG_sort"][1:ns,1], color="black", linewidth=1.0, linestyle="-")
 		if fetal_annot!= 0; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
-		plot(ti+fetalVar["QRS_pos"][:,1], zeros(size(fetalVar["QRS_pos"][:,1],1),1)+0.5, "bo")
+		plot(ti_t+fetalVar["QRS_pos"][:,1], zeros(size(fetalVar["QRS_pos"][:,1],1),1)+0.5, "bo")
 	end
 
 end
