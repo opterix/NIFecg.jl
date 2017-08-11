@@ -19,8 +19,8 @@ function extractDWTFeatures(record_id)
 
     nch=4;
 
-    all_perms=collect(permutations(collect(1:nch)))
-    #all_perms=[collect(1:4)]
+    #all_perms=collect(permutations(collect(1:nch)))
+    all_perms=[collect(1:4)]
     ## Generar Wavelet de Daubechies ##
     xt = wavelet(WT.db7)	
 
@@ -73,6 +73,11 @@ function extractDWTFeatures(record_id)
         end
     end
 
+    #b=gaussian(15,0.3)
+    #labels2=conv(b,1-labels)
+    #labels=1-labels2[8:end-7]
+    
+
     labels=repmat(labels, size(all_perms,1))
     instances = Wavelet_Sig;
 
@@ -113,7 +118,7 @@ end
 
  mkdir("../DictionariesDWT")  # Un directorio para guardar los diccionarios generados
 
- for k in 1:50
+ for k in 1:10
     fileID = @sprintf "a%02d" k
     println("Record: $(fileID)")        
     labels, instances = extractDWTFeatures(fileID)

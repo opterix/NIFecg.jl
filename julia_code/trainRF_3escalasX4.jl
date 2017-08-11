@@ -131,7 +131,7 @@ num_files=size(list_file,1);
 all_instances=[]
 all_labels=[]
 
-for i in 1:50
+for i in 1:10
     file_name = list_file[i];
     println("Procesando Dictionary $(file_name)")
     d = load("$(data_dictio)/$(file_name)")
