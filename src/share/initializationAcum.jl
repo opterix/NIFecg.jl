@@ -1,4 +1,4 @@
-function	initializationAcum(i,t,fetal_annot,AECG,AECG_clean,
+function	initializationAcum(i,fetal_annot,AECG,AECG_clean,
 AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,
 AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure)
 	if i == 1
