@@ -23,7 +23,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 		bw = Int64(nsLimits[i,1]);
 		fw = Int64(nsLimits[i,2]);
 
-		nsd = Int64(nsLimits[i,2]-nsLimits[i,1]);	
+		nsd = Int64(nsLimits[i,2]-nsLimits[i,1]+1);	
 		(AECGd) = loadDataWindow(AECG,bw,fw)
 
 		#---------------------------------------- PREPROCESING
