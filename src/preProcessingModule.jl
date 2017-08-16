@@ -6,6 +6,7 @@ module preProcessingModule
 	# Include function files	
 	include("preProcessingModule/notchFilter.jl")
 	include("preProcessingModule/medianFilter.jl")
+	include("preProcessingModule/divideSignal.jl")
 	
 	export preProcessing
 
