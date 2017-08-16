@@ -3,6 +3,7 @@ function medianFilter(AECG_input,window,sr)
 ns=size(AECG_input,1);
 nch=size(AECG_input,2);
 AECG_output=zeros(ns,nch)
+println(size(AECG_output))
 
 for i = 1:nch
 	signal = AECG_input[:,i];
