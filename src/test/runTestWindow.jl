@@ -16,7 +16,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 	ns = (tf-ti) * sr # number of samples
 
 	#------------------------------------------- LOAD DATA
-	(nch,t,AECG,fetal_annot) = loadData(filename,ns,ti,tf,f)	
+	(nch,t,AECG,fetal_annot) = loadData(filename,ns,sr,ti,tf)	
 	(nsLimits)=divideSignal(AECG,ns,nch,f)
 	println(nsLimits)
 	for i = 1 : f 	
