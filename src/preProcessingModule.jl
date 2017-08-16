@@ -15,6 +15,7 @@ module preProcessingModule
 		(AECG_clean, lowSignal) = notchFilter(AECG, sr)
 		
 		# Median Filter
+		window=30
 		(AECG_clean) = medianFilter(AECG_clean,window,sr)
 		
 		return AECG_clean
