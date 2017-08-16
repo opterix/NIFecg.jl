@@ -1,28 +1,29 @@
 function medianFilter(AECG_input,sr,nch,ns)
-close("all")
+#close("all")
 AECG_output=zeros(ns,nch);
 threshold_global=15;
+#=
+figure(9); for i in 1:nch
+		subplot("$(nch)1$(i)")
+		plot(AECG_input[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+		title("Filtered signals")        
+		end
+=#
 
 for i = 1:nch
 	signal = AECG_input[:,i];
 	#figure(i);plot(signal,color="black");
-	#figure(i);plot(signal);
-	median_filtered_signal = [];
   
  	# Compute a threshold from median global informaion
-
-	difference_global = abs(signal - median(signal));
-  	#figure(i);plot(difference_global);
-
-  	median_difference_global = median(difference_global);
-	println("median_difference=$(median_difference_global)");
+	difference_global = abs(signal - mean(signal));
+  	median_difference_global = mean(difference_global);
   	s_global = difference_global / float(median_difference_global);
 	#figure(i);plot(s_global);
 
 	mask = s_global .> threshold_global
-	signal[mask] = median(signal); # median_difference_global;
+	signal[mask] = mean(signal); # median_difference_global;
 	AECG_output[:,i] = signal;
-	#plot(signal,color="blue");
+	#plot(AECG_output[:,i],color="blue");
 
 #=
   	for ii in range(0, window_temp, ns)
@@ -58,13 +59,13 @@ for i = 1:nch
 =#
 
 end
-figure(10);plot(AECG_output)
-		for i in 1:nch
+#=
+figure(10);	for i in 1:nch
 		subplot("$(nch)1$(i)")
-		plot(t[ti:tf], AECG_clean[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+		plot(AECG_output[1:ns,i], color="black", linewidth=1.0, linestyle="-")
 		title("Filtered signals")        
 		end
-
+=#
 return  AECG_output
 
 end
