@@ -20,8 +20,8 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 	(nsLimits)=divideSignal(AECG,ns,nch,f)
 	println(nsLimits)
 	for i = 1 : f 	
-		bw = nsLimits[i,1];
-		fw = nsLimits[i,2];
+		bw = Int64(nsLimits[i,1]);
+		fw = Int64(nsLimits[i,2]);
 
 		nsd = nsLimits[i,2]-nsLimits[i,1];	
 		(AECGd) = loadDataWindow(AECG,bw,fw)
