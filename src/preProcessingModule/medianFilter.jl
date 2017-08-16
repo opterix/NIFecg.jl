@@ -1,12 +1,13 @@
 function medianFilter(AECG_input,window,sr)
-
+close("all")
 ns=size(AECG_input,1);
 nch=size(AECG_input,2);
-AECG_output=zeros(ns,nch)
-println(size(AECG_output))
+AECG_output=zeros(ns,nch);
+threshold_global=15;
 
 for i = 1:nch
 	signal = AECG_input[:,i];
+	#figure(i);plot(signal,color="black");
 	#figure(i);plot(signal);
 	median_filtered_signal = [];
 	window_temp = window;
@@ -21,9 +22,11 @@ for i = 1:nch
   	s_global = difference_global / float(median_difference_global);
 	#figure(i);plot(s_global);
 
-	threshold_global = maximum(s_global);
-	figure(i);plot(ones(ns)*threshold_global, color="red");
+	mask = s_global .> threshold_global
+	signal[mask] = median(signal); # median_difference_global;
+	#plot(signal,color="blue");
 
+#=
   	for ii in range(0, window_temp, ns)
 	    	if ii >= ns
 		      	AECG_output[:,i]=median_filtered_signal
@@ -54,7 +57,7 @@ for i = 1:nch
 		signal_temp[mask] = threshold;# median(signal_temp)
 		median_filtered_signal = vcat(median_filtered_signal,signal_temp)
 	end
-
+=#
 
 end
 
