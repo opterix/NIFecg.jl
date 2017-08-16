@@ -8,7 +8,6 @@ for i = 1:nch
 	#figure(i);plot(signal,color="black");
 	#figure(i);plot(signal);
 	median_filtered_signal = [];
-	window_temp = window;
   
  	# Compute a threshold from median global informaion
 
