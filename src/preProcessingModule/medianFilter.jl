@@ -58,6 +58,12 @@ for i = 1:nch
 =#
 
 end
+figure(10);plot(AECG_output)
+		for i in 1:nch
+		subplot("$(nch)1$(i)")
+		plot(t[ti:tf], AECG_clean[1:ns,i], color="black", linewidth=1.0, linestyle="-")
+		title("Filtered signals")        
+		end
 
 return  AECG_output
 
