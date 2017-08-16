@@ -4,8 +4,6 @@ module loadDataModule
 	path="loadDataModule/"	
 	include(path*"processSvs.jl")
 	include(path*"processTxt.jl")
-	include(path*"divideSignal.jl")
-	
 
 	export loadData
 
