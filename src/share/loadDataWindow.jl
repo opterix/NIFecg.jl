@@ -1,4 +1,4 @@
-function loadDataWindow(AECG,sr,ti,tf)
+function loadDataWindow(AECG,ti,tf)
 	
 	# Load data according global varaibles
 	AECG = AECG[ti:tf,:];

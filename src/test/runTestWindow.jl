@@ -24,7 +24,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 		fw = nsLimits[i,2];
 
 		nsd = nsLimits[i,2]-nsLimits[i,1];	
-		(AECGd) = loadDataWindow(AECG,sr,bw,fw)
+		(AECGd) = loadDataWindow(AECG,bw,fw)
 
 		#---------------------------------------- PREPROCESING
 		(AECG_clean) = preProcessing(AECGd,sr,nch,nsd)
