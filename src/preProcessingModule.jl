@@ -5,6 +5,7 @@ module preProcessingModule
 
 	# Include function files	
 	include("preProcessingModule/notchFilter.jl")
+	include("preProcessingModule/medianFilter.jl")
 	
 	export preProcessing
 
@@ -12,7 +13,10 @@ module preProcessingModule
 	
 		# Notch Filtering and detrending
 		(AECG_clean, lowSignal) = notchFilter(AECG, sr)
-
+		
+		# Median Filter
+		(AECG_clean) = medianFilter(AECG_clean,window,sr)
+		
 		return AECG_clean
 
 	end
