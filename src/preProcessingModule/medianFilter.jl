@@ -21,6 +21,7 @@ for i = 1:nch
 
 	mask = s_global .> threshold_global
 	signal[mask] = median(signal); # median_difference_global;
+	AECG_output[:,i] = signal;
 	#plot(signal,color="blue");
 
 #=
