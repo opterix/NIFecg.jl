@@ -1,7 +1,5 @@
-function medianFilter(AECG_input,window,sr)
+function medianFilter(AECG_input,sr,nch,ns)
 close("all")
-ns=size(AECG_input,1);
-nch=size(AECG_input,2);
 AECG_output=zeros(ns,nch);
 threshold_global=15;
 

@@ -19,7 +19,7 @@ function MFMTest(filename,ti,tf,sr)
 	(nch,t,AECG,fetal_annot) = loadData(filename,ns,sr,ti,tf)
 
 	#---------------------------------------- PREPROCESING
-	(AECG_clean) = preProcessing(AECG,sr)
+	(AECG_clean) = preProcessing(AECG,sr,nch,ns)
 
 	#----------------- MOTHER SUBSTRACTION AND COMPUTATION
 	(heart_rate_mother,AECGm_ica,SVDrec,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value) = motherSubstraction(AECG_clean,nch,sr,ns,ti,tf)

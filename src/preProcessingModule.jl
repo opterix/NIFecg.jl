@@ -9,14 +9,13 @@ module preProcessingModule
 	
 	export preProcessing
 
-	function preProcessing(AECG,sr)
+	function preProcessing(AECG,sr,nch,ns)
 	
 		# Notch Filtering and detrending
-		(AECG_clean, lowSignal) = notchFilter(AECG, sr)
+		(AECG_clean, lowSignal) = notchFilter(AECG, sr);
 		
 		# Median Filter
-#		window=30
-#	(AECG_clean) = medianFilter(AECG_clean,window,sr)
+		(AECG_clean) = medianFilter(AECG_clean,sr,nch,ns);
 		
 		return AECG_clean
 
