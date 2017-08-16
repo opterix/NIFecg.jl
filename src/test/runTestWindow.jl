@@ -40,7 +40,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 		(tAcum,fetal_annotAcum,AECGAcum,AECG_cleanAcum,
 	AECG_icaAcum,SVDrecAcum,AECG_sortAcum,AECG_residualAcum,heart_rateAcum,QRS_valueAcum,
 	QRS_posAcum,AECG_sortAcum,QRS_posAcum,QRS_valueAcum,QRScell_posAcum,QRScell_valueAcum,
-	heart_rateAcum,QRScell_pos_smoothAcum,SMIAcum,gini_measureAcum) = initializationAcum(i,fetal_annot,AECGd,AECG_clean,
+	heart_rateAcum,QRScell_pos_smoothAcum,SMIAcum,gini_measureAcum) = initializationAcum(f,i,fetal_annot,AECGd,AECG_clean,
 	AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,
 	AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure)
 
