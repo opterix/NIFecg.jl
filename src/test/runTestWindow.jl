@@ -18,7 +18,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 	#------------------------------------------- LOAD DATA
 	(nch,t,AECG,fetal_annot) = loadData(filename,ns,ti,tf,f)	
 	(nsLimits)=divideSignal(AECG,ns,nch,f)
-	println(nsLimitsinc)
+	println(nsLimits)
 	for i = 1 : f 	
 		bw = nsLimits[i,1];
 		fw = nsLimits[i,2];
