@@ -1,9 +1,6 @@
 function processTxt(filename,ns,sr,ti,tf)
    		
 	a=readdlm(filename*".fqrs.txt")
-	z(x) = x<ns
-	idx=broadcast(z,a)
-	a=a[idx]
 
 	fbw(x) = x > (ti*sr);
 	i_bw = broadcast(fbw,a);
