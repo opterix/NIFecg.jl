@@ -1,6 +1,7 @@
-function MFMTestDB(ts,sr)
+function MFMTestDB(ti,tf,sr)
 
-	# ts =  time signal in seconds (Uint32)
+	# ti =  time signal in seconds (Uint32)	
+	# tf =  time signal in seconds (Uint32)
 	# sr =  sample rate (UInt64)
 	# Notes: the module search in the current directory csv files
 
@@ -12,7 +13,7 @@ function MFMTestDB(ts,sr)
 		if file_name[end-2:end] == "csv"
 			file_name = file_name[1:end-4]
 			println("Procesando record $(file_name)")
-			(inputVar,motherVar,fetalVar)=MFMTest(file_name,ts,sr)
+			(inputVar,motherVar,fetalVar)=MFMTest(file_name,ti,tf,sr)
 			saveFetalDetecTxt(file_name,fetalVar["QRS_pos"])
 		end
 	end
