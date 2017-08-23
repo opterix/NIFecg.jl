@@ -15,7 +15,7 @@ function MFMTestDB(ti,tf,sr)
 			println("Procesando record $(file_name)")
 			(inputVar,motherVar,fetalVar)=MFMTest(file_name,ti,tf,sr)
 			data = fetalVar["QRS_pos"] * sr;
-			saveFetalDetecTxt(file_name,fetalVar["QRS_pos"])
+			saveFetalDetecTxt(file_name,data)
 		end
 	end
 
