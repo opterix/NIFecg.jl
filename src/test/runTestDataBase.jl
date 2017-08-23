@@ -14,6 +14,11 @@ function MFMTestDB(ti,tf,sr)
 			file_name = file_name[1:end-4]
 			println("Procesando record $(file_name)")
 			(inputVar,motherVar,fetalVar)=MFMTest(file_name,ti,tf,sr)
+
+			fetal_annot = inputVar["fetal_annot"];
+			fetal_annot = convert(Array{Int64,1},floor(fetal_annot));
+			saveFetalAnnotationTxt(file_name,fetal_annot)			
+
 			data = fetalVar["QRS_pos"] * sr;
 			data = convert(Array{Int64,1},floor(data));
 			saveFetalDetecTxt(file_name,data)
@@ -22,9 +27,19 @@ function MFMTestDB(ti,tf,sr)
 
 end
 
+function saveFetalAnnotationTxt(filename,fetal_measure)
+
+	open(filename*"Annotation.fqrs.txt", "w") do f
+		for i in 1:size(fetal_measure[:,1],1)
+			write(f,"$(fetal_measure[i,1])\n")
+		end
+	end
+
+end
+
 function saveFetalDetecTxt(filename,fetal_measure)
 
-	open(filename*"_fet_result.fqrs.txt", "w") do f
+	open(filename*"FetalResult.fqrs.txt", "w") do f
 		for i in 1:size(fetal_measure[:,1],1)
 			write(f,"$(fetal_measure[i,1])\n")
 		end
