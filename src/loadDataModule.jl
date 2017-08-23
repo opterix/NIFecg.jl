@@ -20,7 +20,7 @@ module loadDataModule
 		#Read txt annotations if it exist		
 		annot_search = filter(x->contains(x,(filename*".fqrs")), readdir(pwd()))
 		if length(annot_search) != 0
-			fetal_annot = processTxt(filename,ns,sr,ti,tf)
+			fetal_annot = processTxt(filename,ns)
 		else
 			fetal_annot = 0
 		end

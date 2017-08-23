@@ -25,7 +25,7 @@ module 	fetalSubstractionModule
 		AECGf_sort = qrsFetalSelector(AECGf_ica, nch, sr)
 
 		# QRS mother detector (Pan - Tomkins)
-		(QRSfcell_pos,QRSfcell_value)= panTomkinsDetector(AECGf_sort,sr,nch,ti)
+		(QRSfcell_pos,QRSfcell_value)= panTomkinsDetector(AECGf_sort, sr, nch)
 		QRSf_value=QRSfcell_value[1];
 
 		# R-R smoothing

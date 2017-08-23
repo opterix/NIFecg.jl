@@ -21,7 +21,7 @@ module 	motherSubstractionModule
 		(AECGm_ica) = makeIcaMother(AECG_clean,nch)
 
 		# QRS mother detector (Pan - Tomkins)
-		(QRSmcell_pos, QRSmcell_value)=panTomkinsDetector(AECGm_ica,sr,nch,ti);
+		(QRSmcell_pos, QRSmcell_value)=panTomkinsDetector(AECGm_ica, sr, nch);
 		QRSm_pos=QRSmcell_pos[1];
 		QRSm_value=QRSmcell_value[1];
 	    
