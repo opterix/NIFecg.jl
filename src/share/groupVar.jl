@@ -14,6 +14,8 @@ AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSf
 	("AECG",AECG),
 	("AECG_clean",AECG_clean)
 	]) 
+	
+	QRSm_pos = QRSm_pos + ti + 0.001;
 
 	motherVar = Dict([
 	("AECG_ica",AECGm_ica),
@@ -24,6 +26,12 @@ AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSf
 	("QRS_value",QRSm_value),
 	("QRS_pos",QRSm_pos)
 	])
+	
+	QRSf_pos = QRSf_pos + ti + 0.001;
+	for i in 1:nch
+		QRSfcell_pos_smooth[i] = QRSfcell_pos_smooth[i] + ti + 0.001;
+		QRSfcell_pos[i] = QRSfcell_pos[i] + ti + 0.001;
+	end
 
 	fetalVar = Dict([
 	("AECG_sort",AECGf_sort),
