@@ -1,4 +1,4 @@
-function panTomkinsDetector(signal, sr, nch)
+function panTomkinsDetector(signal,sr,nch,ti)
 
 
 	#------- Normalization  ------------
@@ -72,7 +72,7 @@ function panTomkinsDetector(signal, sr, nch)
 	    maximoRIndex=maximoRIndex/sr
 
 	    cellRValue[k] = maximoRValue;
-	    cellRIndex[k] = maximoRIndex;
+	    cellRIndex[k] = maximoRIndex + ti;
 	end
 	    
 
