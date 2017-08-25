@@ -5,7 +5,9 @@ AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,
 heart_rate_motherAcum,QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,
 QRSf_valueAcum,QRSfcell_posAcum,QRSfcell_valueAcum,heart_rate_fetoAcum,
 QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum)
-	
+
+i=i;
+ 
 if i > 1
 	AECGAcum =  vcat(AECG,AECGAcum); #
 	AECG_cleanAcum =  vcat(AECG_clean,AECG_cleanAcum); #
