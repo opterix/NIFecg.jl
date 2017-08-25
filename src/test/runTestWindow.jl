@@ -35,13 +35,12 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 		#------------------ FETAL SUBSTRACTION AND COMPUTATION 
 		(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,bw,fw)
 
-if i == 1
-(AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,	QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
+					(AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,	QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
 QRSfcell_valueAcum,heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum) = initializationAcum(nch,f,i,AECG,AECG_clean,AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,
 QRSm_value,heart_rate_mother,SVDrec,AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,
-QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure)
+QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure);
 
-else
+		if i > 1
 (AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,
 heart_rate_motherAcum,QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,
 QRSf_valueAcum,QRSfcell_posAcum,QRSfcell_valueAcum,heart_rate_fetoAcum,
@@ -50,8 +49,8 @@ AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,
 AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure,AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,
 AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,QRSm_valueAcum,QRSm_posAcum,
 AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,QRSfcell_valueAcum,
-heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum)
-end
+heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum);
+		end
 	end
 
 
