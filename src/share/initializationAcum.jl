@@ -1,7 +1,7 @@
 function initializationAcum(nch,f,i,AECG,AECG_clean,AECGm_ica,AECGm_sort,
 AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,AECGf_sort,
-QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure)
-	if i == 1
+QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure)	
+
 		AECGAcum = AECG; #
 		AECG_cleanAcum = AECG_clean; #
 		AECGm_icaAcum = AECGm_ica; #
@@ -27,5 +27,4 @@ QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_sm
 return AECGAcum,AECG_cleanAcum,	AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,	QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
 QRSfcell_valueAcum,heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum
 
-end 
 end
