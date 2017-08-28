@@ -69,9 +69,9 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			QRSf_posAcum = vcat(QRSf_posAcum,QRSf_pos+bw/sr);
 			QRSf_valueAcum = vcat(QRSf_valueAcum,QRSf_value);
 			for idx=1:nch; QRSfcell_posAcum[idx] = vcat(QRSfcell_posAcum[idx],QRSfcell_pos[idx]+bw/sr);end
-			for idx=1:nch; QRSfcell_valueAcum[idx] = vcat(QRSfcell_valueAcum[idx],QRSfcell_value[idx]); 
+			for idx=1:nch; QRSfcell_valueAcum[idx] = vcat(QRSfcell_valueAcum[idx],QRSfcell_value[idx]);end 
 			heart_rate_fetoAcum[i,1] = heart_rate_feto;
-			for idx=1:nch; QRSfcell_pos_smoothAcum[idx] = vcat(QRSfcell_pos_smoothAcum[idx],QRSfcell_pos_smooth[idx]+bw/sr);
+			for idx=1:nch; QRSfcell_pos_smoothAcum[idx] = vcat(QRSfcell_pos_smoothAcum[idx],QRSfcell_pos_smooth[idx]+bw/sr);end
 			SMIAcum[:,i] = SMI;
 			gini_measureAcum[:,i] = gini_measure;
 		end
