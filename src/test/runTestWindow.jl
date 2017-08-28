@@ -18,8 +18,8 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 	#------------------------------------------- LOAD DATA
 	(nch,t,AECG,fetal_annot) = loadData(filename,ns,sr,ti,tf)	
 	(nsLimits)=divideSignal(AECG,ns,nch,f)
-	println(nsLimits)
-	for i = 1 : f 	
+	for i = 1 : f
+		println("i= $i")
 		bw = Int64(nsLimits[i,1]);
 		fw = Int64(nsLimits[i,2]);
 
@@ -36,12 +36,12 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 		(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,bw,fw)
 
 
-(AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,	QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
-QRSfcell_valueAcum,heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum) = initConcatVar
-(nch,f,i,AECG,AECG_clean,AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,
-QRSm_value,heart_rate_mother,SVDrec,AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,
-QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth,SMI,gini_measure,
-AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,	QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
+(AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,
+QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
+QRSfcell_valueAcum,heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum) = initConcatVar(nch,f,i,AECG,AECG_clean,AECGm_ica,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value,heart_rate_mother,SVDrec,AECGf_sort,
+QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto,QRSfcell_pos_smooth,SMI,gini_measure,
+AECGAcum,AECG_cleanAcum,AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,
+QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
 QRSfcell_valueAcum,heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum);
 
 	end
