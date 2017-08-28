@@ -61,7 +61,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			SVDrecAcum = vcat(SVDrec,SVDrecAcum); 
 			AECGm_sortAcum = vcat(AECGm_sort,AECGm_sortAcum); 
 			AECG_residualAcum = vcat(AECG_residual,AECG_residualAcum);
-			heart_rate_motherAcum[i,1] = vcat(heart_rate_mother,heart_rate_motherAcum[i,1]);
+			heart_rate_motherAcum[i,1] = heart_rate_mother;
 			QRSm_valueAcum = vcat(QRSm_value,QRSm_valueAcum); 
 			QRSm_posAcum = vcat(QRSm_pos,QRSm_posAcum);
 			AECGf_sortAcum = vcat(AECGf_sort,AECGf_sortAcum);
@@ -69,7 +69,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			QRSf_valueAcum = vcat(QRSf_value,QRSf_valueAcum);
 			QRSfcell_posAcum = vcat(QRSfcell_pos,QRSfcell_posAcum);
 			QRSfcell_valueAcum = vcat(QRSfcell_value,QRSfcell_valueAcum); 
-			heart_rate_fetoAcum[i,1] = vcat(heart_rate_feto,heart_rate_fetoAcum[i,1]);
+			heart_rate_fetoAcum[i,1] = heart_rate_feto;
 			QRSfcell_pos_smoothAcum = vcat(QRSfcell_pos_smooth,QRSfcell_pos_smoothAcum);
 			SMIAcum[:,i] = hcat(SMI,SMIAcum[:,i]);
 			gini_measureAcum[:,i] = hcat(gini_measure,gini_measureAcum[:,i]);
