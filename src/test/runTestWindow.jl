@@ -54,8 +54,8 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			global QRSfcell_valueAcum = QRSfcell_value; 
 			global heart_rate_fetoAcum = zeros(f,1); heart_rate_fetoAcum[i,1] =  heart_rate_feto;
 			global QRSfcell_pos_smoothAcum = QRSfcell_pos_smooth;
-			global SMIAcum = zeros(nch,f); SMIAcum = SMI;
-			global gini_measureAcum = zeros(nch,f); gini_measureAcum = gini_measure;
+			global SMIAcum = zeros(nch,f); SMIAcum[:,i] = SMI;
+			global gini_measureAcum = zeros(nch,f); gini_measureAcum[:,i] = gini_measure;
 		else
 			AECGAcum = vcat(AECG,AECGAcum); 
 			AECG_cleanAcum = vcat(AECG_clean,AECG_cleanAcum); 
@@ -73,8 +73,8 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			QRSfcell_valueAcum = vcat(QRSfcell_value,QRSfcell_valueAcum); 
 			heart_rate_fetoAcum[i,1] = heart_rate_feto;
 			QRSfcell_pos_smoothAcum = vcat(QRSfcell_pos_smooth,QRSfcell_pos_smoothAcum);
-			SMIAcum[:,i] = hcat(SMI,SMIAcum[:,i]);
-			gini_measureAcum[:,i] = hcat(gini_measure,gini_measureAcum[:,i]);
+			SMIAcum[:,i] = SMI;
+			gini_measureAcum[:,i] = gini_measure;
 		end
 
 		if i == f
