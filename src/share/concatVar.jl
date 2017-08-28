@@ -6,7 +6,6 @@ heart_rate_motherAcum,QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,
 QRSf_valueAcum,QRSfcell_posAcum,QRSfcell_valueAcum,heart_rate_fetoAcum,
 QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum)
  
-
 	AECGAcum =  vcat(AECG,AECGAcum); #
 	AECG_cleanAcum =  vcat(AECG_clean,AECG_cleanAcum); #
 	AECGm_icaAcum =  vcat(AECGm_ica,AECGm_icaAcum); #
@@ -26,14 +25,13 @@ QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum)
 	SMIAcum[:,i] =  hcat(SMI,SMIAcum[:,i]);
 	gini_measureAcum[:,i] =  hcat(gini_measure,gini_measureAcum[:,i]);
 
-if i == f
-heart_rate_motherAcum = mean(heart_rate_motherAcum,1)
-heart_rate_fetoAcum = mean(heart_rate_fetoAcum,1)
-gini_measureAcum = mean(gini_measureAcum,2)
-SMIAcum = mean(SMIAcum,2)
-end
+	if i == f
+		heart_rate_motherAcum = mean(heart_rate_motherAcum,1)
+		heart_rate_fetoAcum = mean(heart_rate_fetoAcum,1)
+		gini_measureAcum = mean(gini_measureAcum,2)
+		SMIAcum = mean(SMIAcum,2)
+	end
 
-
-	return AECGAcum,AECG_cleanAcum,	AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,	QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
+return AECGAcum,AECG_cleanAcum,	AECGm_icaAcum,SVDrecAcum,AECGm_sortAcum,AECG_residualAcum,heart_rate_motherAcum,	QRSm_valueAcum,QRSm_posAcum,AECGf_sortAcum,QRSf_posAcum,QRSf_valueAcum,QRSfcell_posAcum,
 QRSfcell_valueAcum,heart_rate_fetoAcum,QRSfcell_pos_smoothAcum,SMIAcum,gini_measureAcum
 end
