@@ -37,7 +37,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 		(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,bw,fw);
 
 		if i == 1
-			global AECGAcum = AECG; 
+			global AECGAcum = AECGd; 
 			global AECG_cleanAcum = AECG_clean; 
 			global AECGm_icaAcum = AECGm_ica; 
 			global SVDrecAcum = SVDrec; 
@@ -56,22 +56,22 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			global SMIAcum = zeros(nch,f); SMIAcum[:,i] = SMI;
 			global gini_measureAcum = zeros(nch,f); gini_measureAcum[:,i] = gini_measure;
 		else
-			AECGAcum = vcat(AECG,AECGAcum); 
-			AECG_cleanAcum = vcat(AECG_clean,AECG_cleanAcum); 
-			AECGm_icaAcum = vcat(AECGm_ica,AECGm_icaAcum); 
-			SVDrecAcum = vcat(SVDrec,SVDrecAcum); 
-			AECGm_sortAcum = vcat(AECGm_sort,AECGm_sortAcum); 
-			AECG_residualAcum = vcat(AECG_residual,AECG_residualAcum);
+			AECGAcum = vcat(AECGAcum,AECGd); 
+			AECG_cleanAcum = vcat(AECG_cleanAcum,AECG_clean); 
+			AECGm_icaAcum = vcat(AECGm_icaAcum,AECGm_ica); 
+			SVDrecAcum = vcat(SVDrecAcum,SVDrec); 
+			AECGm_sortAcum = vcat(AECGm_sortAcum,AECGm_sort); 
+			AECG_residualAcum = vcat(AECG_residualAcum,AECG_residual);
 			heart_rate_motherAcum[i,1] = heart_rate_mother;
-			QRSm_valueAcum = vcat(QRSm_value,QRSm_valueAcum); 
-			QRSm_posAcum = vcat(QRSm_pos+bw/sr,QRSm_posAcum);
-			AECGf_sortAcum = vcat(AECGf_sort,AECGf_sortAcum);
-			QRSf_posAcum = vcat(QRSf_pos+bw/sr,QRSf_posAcum);
-			QRSf_valueAcum = vcat(QRSf_value,QRSf_valueAcum);
-			QRSfcell_posAcum = vcat(QRSfcell_pos+bw/sr,QRSfcell_posAcum);
-			QRSfcell_valueAcum = vcat(QRSfcell_value,QRSfcell_valueAcum); 
+			QRSm_valueAcum = vcat(QRSm_valueAcum,QRSm_value); 
+			QRSm_posAcum = vcat(QRSm_posAcum,QRSm_pos+bw/sr);
+			AECGf_sortAcum = vcat(AECGf_sortAcum,AECGf_sort);
+			QRSf_posAcum = vcat(QRSf_posAcum,QRSf_pos+bw/sr);
+			QRSf_valueAcum = vcat(QRSf_valueAcum,QRSf_value);
+			QRSfcell_posAcum = vcat(QRSfcell_posAcum,QRSfcell_pos+bw/sr);
+			QRSfcell_valueAcum = vcat(QRSfcell_valueAcum,QRSfcell_value); 
 			heart_rate_fetoAcum[i,1] = heart_rate_feto;
-			QRSfcell_pos_smoothAcum = vcat(QRSfcell_pos_smooth+bw/sr,QRSfcell_pos_smoothAcum);
+			QRSfcell_pos_smoothAcum = vcat(QRSfcell_pos_smoothAcum,QRSfcell_pos_smooth+bw/sr);
 			SMIAcum[:,i] = SMI;
 			gini_measureAcum[:,i] = gini_measure;
 		end
