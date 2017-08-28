@@ -31,10 +31,10 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 		(AECG_clean) = preProcessing(AECGd,sr,nch,nsd);
 
 		#----------------- MOTHER SUBSTRACTION AND COMPUTATION
-		(heart_rate_mother,AECGm_ica,SVDrec,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value) = motherSubstraction(AECG_clean,nch,sr,nsd,bw,fw);
+		(heart_rate_mother,AECGm_ica,SVDrec,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value) = motherSubstraction(AECG_clean,nch,sr,nsd,bw/sr,fw/sr);
 
 		#------------------ FETAL SUBSTRACTION AND COMPUTATION 
-		(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,bw,fw);
+		(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,bw/sr,fw/sr);
 
 		if i == 1
 			global AECGAcum = AECGd; 
