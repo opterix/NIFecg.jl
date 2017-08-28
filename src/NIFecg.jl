@@ -26,6 +26,7 @@ module NIFecg # Non Invasive Fetal electrocardiogram
 	include("share/loadDataWindow.jl"); export loadDataWindow
 	include("share/concatVar.jl"); export concatVar
 	include("share/initializationAcum.jl"); export initializationAcum
+	include("share/initConcatVar.jl"); export initConcatVar
 	include("share/plotData.jl"); export plotData
 	include("share/groupVar.jl"); export groupVar
 
