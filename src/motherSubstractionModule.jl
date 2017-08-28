@@ -48,6 +48,7 @@ module 	motherSubstractionModule
 		heart_rate_mother = (60*size(QRSm_pos,1))/(tf-ti)
 		# SVD process and subtract mother signal
 		(SVDrec,AECG_residual) = fontSeparationSVD(AECG_clean,QRSm_pos,sr,nch,ns);
+		(AECG_residual) = medianFilter(AECG_residual,sr,nch,ns);
 
 	return heart_rate_mother,AECGm_ica,SVDrec,AECGm_sort,AECG_residual,QRSm_pos,QRSm_value
 
