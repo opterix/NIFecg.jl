@@ -34,6 +34,8 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 
 		#------------------ FETAL SUBSTRACTION AND COMPUTATION 
 		(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,bw,fw);
+		println("SMI=$SMI")
+		println("gini_measure=$gini_measure")
 
 		if i == 1
 			global AECGAcum = AECG; 
