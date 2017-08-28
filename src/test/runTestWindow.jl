@@ -75,8 +75,12 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			SMIAcum[:,i] = SMI;
 			gini_measureAcum[:,i] = gini_measure;
 		end
+		println("heart_rate_mother=$heart_rate_mother")
+		println("heart_rate_feto=$heart_rate_feto")
 
 		if i == f
+			println("heart_rate_motherAcum=$heart_rate_motherAcum")
+			println("heart_rate_fetoAcum=$heart_rate_fetoAcum")
 			heart_rate_motherAcum = mean(heart_rate_motherAcum,1)
 			heart_rate_fetoAcum = mean(heart_rate_fetoAcum,1)
 			gini_measureAcum = mean(gini_measureAcum,2)
