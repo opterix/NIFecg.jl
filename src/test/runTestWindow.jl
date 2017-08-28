@@ -18,6 +18,7 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 	#------------------------------------------- LOAD DATA
 	(nch,t,AECG,fetal_annot) = loadData(filename,ns,sr,ti,tf)	
 	(nsLimits)=divideSignal(AECG,ns,nch,f)
+	println(nsLimits)
 	for i = 1 : f
 		println("i= $i")
 		bw = Int64(nsLimits[i,1]);
@@ -34,8 +35,6 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 
 		#------------------ FETAL SUBSTRACTION AND COMPUTATION 
 		(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,bw,fw);
-		println("SMI=$SMI")
-		println("gini_measure=$gini_measure")
 
 		if i == 1
 			global AECGAcum = AECG; 
@@ -65,14 +64,14 @@ function MFMTestWindow(filename,ti,tf,sr,f)
 			AECG_residualAcum = vcat(AECG_residual,AECG_residualAcum);
 			heart_rate_motherAcum[i,1] = heart_rate_mother;
 			QRSm_valueAcum = vcat(QRSm_value,QRSm_valueAcum); 
-			QRSm_posAcum = vcat(QRSm_pos,QRSm_posAcum);
+			QRSm_posAcum = vcat(QRSm_pos+bw/sr,QRSm_posAcum);
 			AECGf_sortAcum = vcat(AECGf_sort,AECGf_sortAcum);
-			QRSf_posAcum = vcat(QRSf_pos,QRSf_posAcum);
+			QRSf_posAcum = vcat(QRSf_pos+bw/sr,QRSf_posAcum);
 			QRSf_valueAcum = vcat(QRSf_value,QRSf_valueAcum);
-			QRSfcell_posAcum = vcat(QRSfcell_pos,QRSfcell_posAcum);
+			QRSfcell_posAcum = vcat(QRSfcell_pos+bw/sr,QRSfcell_posAcum);
 			QRSfcell_valueAcum = vcat(QRSfcell_value,QRSfcell_valueAcum); 
 			heart_rate_fetoAcum[i,1] = heart_rate_feto;
-			QRSfcell_pos_smoothAcum = vcat(QRSfcell_pos_smooth,QRSfcell_pos_smoothAcum);
+			QRSfcell_pos_smoothAcum = vcat(QRSfcell_pos_smooth+bw/sr,QRSfcell_pos_smoothAcum);
 			SMIAcum[:,i] = SMI;
 			gini_measureAcum[:,i] = gini_measure;
 		end
