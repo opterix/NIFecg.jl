@@ -12,6 +12,8 @@ module 	motherSubstractionModule
 	include(path*"panTomkinsDetector.jl")
 	include(path*"smoothRR.jl")
 	include(path*"smiComputation.jl")
+	path="preProcessingModule/"
+	include(path*"medianFilter.jl")
 
 	export motherSubstraction
 
@@ -19,6 +21,7 @@ module 	motherSubstractionModule
 
 		# Source separation - ICA 
 		(AECGm_ica) = makeIcaMother(AECG_clean,nch)
+		(AECGm_ica) = medianFilter(AECGm_ica,sr,nch,ns);
 
 		# QRS mother detector (Pan - Tomkins)
 		(QRSmcell_pos, QRSmcell_value)=panTomkinsDetector(AECGm_ica, sr, nch);
