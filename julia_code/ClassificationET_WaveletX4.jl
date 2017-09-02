@@ -109,7 +109,7 @@ for i in 1:num_files
     fetal_annot = fetal_annot[fetal_annot.<=Ns];
 
     #threshold = vec(medfilt1(vec(votes[1,:]),101))
-    threshold = vec(quantile_filt1(vec(votes[1,:]),101,0.9))+0.15
+    threshold = vec(quantile_filt1(vec(votes[1,:]),1001,0.9))+0.15
     
     figure(i)
     #hold(true)
@@ -121,7 +121,7 @@ for i in 1:num_files
     title("ET Classification Wavelet")
     
     savefig("../Test_Images_WaveletsX4/$(file_name)_X4_ET.png", format="png", dpi=300) 
-    #savefig("../Test_Images_WaveletsX4/$(file_name)_X4_ET.eps"', format="eps", dpi=1000)
+
     close("all")
     
 end

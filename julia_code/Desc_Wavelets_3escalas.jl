@@ -19,12 +19,12 @@ function extractDWTFeatures(record_id)
 
     nch=4;
 
-    #all_perms=collect(permutations(collect(1:nch)))
-    all_perms=[collect(1:4)]
+    all_perms=collect(permutations(collect(1:nch)))
+    #all_perms=[collect(1:4)]
     ## Generar Wavelet de Daubechies ##
     xt = wavelet(WT.db7)	
 
-    Ns=50000; #Numero total de muestras
+    Ns=60000; #Numero total de muestras
     ks=128;   #muestras utilizadas para aplicar wavelet
 
 
