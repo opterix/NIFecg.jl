@@ -24,7 +24,7 @@ function extractDWTFeatures(record_id)
     ## Generar Wavelet de Daubechies ##
     xt = wavelet(WT.db7)	
 
-    Ns=60000; #Numero total de muestras
+    Ns=50000; #Numero total de muestras
     ks=128;   #muestras utilizadas para aplicar wavelet
 
 
@@ -44,7 +44,7 @@ function extractDWTFeatures(record_id)
     #    AECGm[:,i]= (AECGm[:,i]-mean(AECGm[:,i]))/quantile(AECGm[:,i], 0.99);
     #end
 
-    In_Signal=AECGm[:,1:nch];
+    In_Signal=AECGm[1:Ns,1:nch];
     dwt_Signal=zeros(size(In_Signal))'
     
     for kch in 1:nch
@@ -118,7 +118,7 @@ end
 
  mkdir("../DictionariesDWT")  # Un directorio para guardar los diccionarios generados
 
- for k in 1:10
+ for k in 1:50
     fileID = @sprintf "a%02d" k
     println("Record: $(fileID)")        
     labels, instances = extractDWTFeatures(fileID)

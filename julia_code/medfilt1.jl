@@ -1,32 +1,48 @@
-#function medfilt1(x,m)
+function quantile_filt1(x,s,q)
+n=length(x); 
+r=floor(Int64, s/2); 
+indr=collect(0:s-1); 
+indc=collect(1:n);
+#print(indr)
+#print(indc)
+ind=[k+indr for k in indc];
+ind=vcat(ind...)
+#print(ind)
 
-#n=length(x);
-#r=floor(Int,m/2); 
-#indr=(0:m-1)'; 
-#indc=1:n;
-#ind=indc[ones(Int,1,m),1:n]+indr[:,ones(Int,1,n)];
-#x0=x(ones(r,1))*0; 
-#X=[x0'; x'; x0'];
-#X=reshape(X(ind),m,n); 
-#y=median(X,1);
+#x0=x[ones(Int64, r, 1)]; 
+#print(r)
+x0 = x[ones(Int64, r,1)];
+xend = x[ones(Int64, r,1)*n];
 
-
-#end
-
+X=[x0; x; xend];
+X=reshape(X[ind],s,n); 
+y=[quantile(X[:,k],q) for k in 1:size(X,2)];
+return y
+end
 
 
 
 
 function medfilt1(x,s)
 n=length(x); 
-r=floor(s/2); 
+r=floor(Int64, s/2); 
 indr=collect(0:s-1); 
 indc=collect(1:n);
-ind=indc[ones(1,s),1:n]+indr[:,ones(1,n)];
-x0=x[ones(r,1)]*0; 
-X=[x0'; x'; x0'];
+#print(indr)
+#print(indc)
+ind=[k+indr for k in indc];
+ind=vcat(ind...)
+#print(ind)
+
+#x0=x[ones(Int64, r, 1)]; 
+#print(r)
+x0 = x[ones(Int64, r,1)];
+xend = x[ones(Int64, r,1)*n];
+
+X=[x0; x; xend];
 X=reshape(X[ind],s,n); 
 y=median(X,1);
+return y
 end
 
 function median_spectre(A,s)
