@@ -109,7 +109,7 @@ for i in 1:num_files
     fetal_annot = fetal_annot[fetal_annot.<=Ns];
 
     #threshold = vec(medfilt1(vec(votes[1,:]),101))
-    threshold = vec(quantile_filt1(vec(votes[1,:]),1001,0.9))+0.15
+    threshold = vec(quantile_filt1(vec(votes[1,:]),1001,0.95))+0.18
     
     figure(i)
     #hold(true)
