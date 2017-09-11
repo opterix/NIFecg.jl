@@ -114,13 +114,22 @@ for i in 1:num_files
     figure(i)
     #hold(true)
     #plot(vec(round(predicted_labels-1)),color="black")
+
+    fQRS_ini = round(Int64, find(votes[1,:].>threshold))
+    fQRS_aux = zeros(Ns,1)
+    fQRS_aux[fQRS_ini]=1
+    fQRS_diff = round(Int64, diff(fQRS_aux))
+    fQRS_est = (find(fQRS_diff.==1)+find(fQRS_diff.==-1))/2
+    fQRS_est = round(Int64, fQRS_est)
+
     plot(votes[1,:].>threshold, color="black")
     plot(votes[1,:],color="green")
     plot(threshold, color="blue")
     plot(fetal_annot,zeros(size(fetal_annot,1)),"r.") 
     title("ET Classification Wavelet")
     
-    savefig("../Test_Images_WaveletsX4/$(file_name)_X4_ET.png", format="png", dpi=300) 
+    savefig("../Test_Images_WaveletsX4/$(file_name)_X4_ET.png", format="png", dpi=300)     
+    writecsv("../Test_Images_WaveletsX4/$(file_name)_estimation.csv", fQRS_est)
 
     close("all")
     
