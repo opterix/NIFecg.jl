@@ -21,7 +21,7 @@ module 	motherSubstractionModule
 
 		# Source separation - ICA 
 		(AECGm_ica) = makeIcaMother(AECG_clean,nch)
-		(AECGm_ica) = medianFilter(AECGm_ica,sr,nch,ns);
+		#(AECGm_ica) = medianFilter(AECGm_ica,sr,nch,ns);
 
 		# QRS mother detector (Pan - Tomkins)
 		(QRSmcell_pos, QRSmcell_value)=panTomkinsDetector(AECGm_ica, sr, nch);
