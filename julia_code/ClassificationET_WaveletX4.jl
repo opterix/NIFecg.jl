@@ -4,6 +4,7 @@ using JLD
 
 include("medfilt1.jl")
 include("Main.jl")
+include("QRSf_selector.jl")
 
 list_file=readdir("../data")
 num_files=size(list_file,1);
@@ -121,6 +122,7 @@ for i in 1:num_files
     fQRS_diff = round(Int64, diff(fQRS_aux))
     fQRS_est = (find(fQRS_diff.==1)+find(fQRS_diff.==-1))/2
     fQRS_est = round(Int64, fQRS_est)
+    fQRS_est = smooth_RR(fQRS_est, 1, 1000, 2)
 
     plot(votes[1,:].>threshold, color="black")
     plot(votes[1,:],color="green")
