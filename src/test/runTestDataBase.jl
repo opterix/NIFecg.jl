@@ -30,7 +30,7 @@ end
 function saveFetalAnnotation(typeFile,filename,fetal_measure)
 
 	if typeFile == "txt"
-		open(filename*"Annotation.fqrs.txt", "w") do f
+		open(filename*"_annot.fqrs.txt", "w") do f
 			for i in 1:size(fetal_measure[:,1],1)
 				write(f,"$(fetal_measure[i,1])\n")
 			end
@@ -45,7 +45,7 @@ end
 function saveFetalDetec(typeFile,filename,fetal_measure)
 
 	if typeFile == "txt"
-		open(filename*"FetalResult.fqrs.txt", "w") do f
+		open(filename*"_result.fqrs.txt", "w") do f
 			for i in 1:size(fetal_measure[:,1],1)
 				write(f,"$(fetal_measure[i,1])\n")
 			end
