@@ -17,32 +17,41 @@ function MFMTestDB(ti,tf,sr)
 
 			fetal_annot = inputVar["fetal_annot"];
 			fetal_annot = convert(Array{Int64,1},floor(fetal_annot));
-			saveFetalAnnotationTxt(file_name,fetal_annot)			
+			saveFetalAnnotation("csv",file_name,fetal_annot)			
 
 			data = fetalVar["QRS_pos"] * sr;
 			data = convert(Array{Int64,1},floor(data));
-			saveFetalDetecTxt(file_name,data)
+			saveFetalDetec("csv",file_name,data)
 		end
 	end
 
 end
 
-function saveFetalAnnotationTxt(filename,fetal_measure)
+function saveFetalAnnotation(typeFile,filename,fetal_measure)
 
-	open(filename*"Annotation.fqrs.txt", "w") do f
-		for i in 1:size(fetal_measure[:,1],1)
-			write(f,"$(fetal_measure[i,1])\n")
+	if typeFile == "txt"
+		open(filename*"Annotation.fqrs.txt", "w") do f
+			for i in 1:size(fetal_measure[:,1],1)
+				write(f,"$(fetal_measure[i,1])\n")
+			end
 		end
+	else
+		writecsv(filename*"_annot.csv",fetal_measure)
+
 	end
 
 end
 
-function saveFetalDetecTxt(filename,fetal_measure)
+function saveFetalDetec(typeFile,filename,fetal_measure)
 
-	open(filename*"FetalResult.fqrs.txt", "w") do f
-		for i in 1:size(fetal_measure[:,1],1)
-			write(f,"$(fetal_measure[i,1])\n")
+	if typeFile == "txt"
+		open(filename*"FetalResult.fqrs.txt", "w") do f
+			for i in 1:size(fetal_measure[:,1],1)
+				write(f,"$(fetal_measure[i,1])\n")
+			end
 		end
+	else
+		writecsv(filename*"_result.csv",fetal_measure)
 	end
 
 end
