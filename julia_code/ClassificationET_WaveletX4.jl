@@ -60,7 +60,7 @@ xt = wavelet(WT.db7);
 predicted_labels=[]
 votes=[]
 
-for i in 1:num_files
+for i in 51:num_files
 #for i in 1:10
     file_name = list_file[i];
     file_name = file_name[1:end-4]
@@ -122,7 +122,7 @@ for i in 1:num_files
     fQRS_diff = round(Int64, diff(fQRS_aux))
     fQRS_est = (find(fQRS_diff.==1)+find(fQRS_diff.==-1))/2
     fQRS_est = round(Int64, fQRS_est)
-    fQRS_est = smooth_RR(fQRS_est, 1, 1000, 2)
+    #fQRS_est = smooth_RR(fQRS_est, 1, 1000, 2)
 
     plot(votes[1,:].>threshold, color="black")
     plot(votes[1,:],color="green")
