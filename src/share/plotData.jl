@@ -19,7 +19,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		for i in 1:nch
 		subplot("$(nch)1$(i)")
 	    	plot(t[ti:tf], AECG[1:ns,i], color="black", linewidth=1.0, linestyle="-")
-		title("Original signals")
+		if i == 1; title("Original signals"); end
 		end
 	end
 
@@ -30,7 +30,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		for i in 1:nch
 		subplot("$(nch)1$(i)")
 		plot(t[ti:tf], AECG_clean[1:ns,i], color="black", linewidth=1.0, linestyle="-")
-		title("Filtered signals")        
+		if i == 1; title("Filtered signals"); end       
 		end
 	end
 
@@ -41,7 +41,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		subplot("$(nch)1$(i)")
 		plot(t[ti:tf], motherVar["AECG_ica"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
 		plot(motherVar["QRS_pos"][:,1]',zeros(size(motherVar["QRS_pos"],1),1)', "ro")
-		title("First ICA")
+		if i == 1; title("First ICA"); end
 		end
 	end
 
@@ -52,7 +52,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		subplot("41$(i)")    
 		plot(t[ti:tf], motherVar["AECG_residual"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
 		if fetal_annot!= 0 && show_fetal_annot == true; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
-		title("residual signals")
+		if i == 1; title("residual signals"); end
 		end
 	end
 
@@ -64,7 +64,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		subplot("51$(i)")    
 		plot(t[ti:tf], motherVar["SVDrec"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
 		if fetal_annot!= 0 && show_fetal_annot == true; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
-		title("SVD reconstruction")
+		if i == 1; title("SVD reconstruction"); end
 		end
 
 
@@ -97,7 +97,7 @@ function plotData(inputVar,motherVar,fetalVar,graph=0)
 		plot(t[ti:tf], fetalVar["AECG_sort"][1:ns,i], color="black", linewidth=1.0, linestyle="-")
 		if fetal_annot!= 0 && show_fetal_annot == true; plot(fetal_annot/sr,zeros(size(fetal_annot,1)),"go"); end
 		plot(fetalVar["QRScell_pos"][i]',fetalVar["QRScell_value"][i]', "ro")
-		title("Sorted Second ICA signals")
+		if i == 1; title("Sorted Second ICA signals"); end
 		end
 	end
 

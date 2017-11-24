@@ -4,6 +4,8 @@ module NIFecg # Non Invasive Fetal electrocardiogram
 
 	#---------------------------------- LIBRARIES 
 	using Reexport
+	using PyCall
+	pygui(:tk)
 	using PyPlot
 
 	#------------------------------------ MODULES 
