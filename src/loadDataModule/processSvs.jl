@@ -13,6 +13,7 @@ function processSvs(filename)
 
 	#Busca y convierte los valores NaN en 0
 	bool_floats = broadcast(f,b)
+	bool_floats=convert(Array{Bool,2}, bool_floats)	
 	b[~bool_floats] = 0 #Convert all non-number strings to NaN
 	b=convert(Array{Float64,2}, b) #Convert to Float array
 
