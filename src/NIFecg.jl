@@ -4,8 +4,6 @@ module NIFecg # Non Invasive Fetal electrocardiogram
 
 	#---------------------------------- LIBRARIES 
 	using Reexport
-	using PyCall
-	pygui(:tk)
 	using PyPlot
 
 	#------------------------------------ MODULES 
@@ -24,6 +22,7 @@ module NIFecg # Non Invasive Fetal electrocardiogram
 	include("test/runTestDataBase.jl"); export MFMTestDB
 	include("test/runTestDBPlot.jl"); export MFMTestDBPlot
 	include("test/runTestWindow.jl"); export MFMTestWindow
+	include("test/runToJavascript.jl"); export MFMJavascript
 	include("share/divideSignal.jl"); export divideSignal	
 	include("share/loadDataWindow.jl"); export loadDataWindow
 	include("share/concatVar.jl"); export concatVar
