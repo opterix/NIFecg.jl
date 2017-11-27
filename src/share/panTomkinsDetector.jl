@@ -52,7 +52,8 @@ function panTomkinsDetector(signal, sr, nch)
 
 	    max_h = maximum(salida);
 	    thra=(mean(salida));
-	    region=Int.(salida.>thra.*max_h);
+		region=convert(Array{Int},(salida.>thra.*max_h));
+		#region=Int.(salida.>thra.*max_h);
 
 	    aux=diff([0; region]);
 	    aux2=diff([region; 0]);
