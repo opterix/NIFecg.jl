@@ -19,7 +19,6 @@ function MFMSocket(AECG,ti,tf,sr)
 	(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,ti,tf)
 
 	return AECGf_sort[:,1],AECGm_sort[:,1];
-
 end
 
 

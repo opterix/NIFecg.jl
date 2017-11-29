@@ -23,7 +23,7 @@ module NIFecg # Non Invasive Fetal electrocardiogram
 	include("test/runTestDBPlot.jl"); export MFMTestDBPlot
 	include("test/runTestWindow.jl"); export MFMTestWindow
 	include("test/runToJavascript.jl"); export MFMJavascript
-	include("runSocketTest.jl"); export MFMSocket
+	include("test/runSocketTest.jl"); export MFMSocket
 	include("share/divideSignal.jl"); export divideSignal	
 	include("share/loadDataWindow.jl"); export loadDataWindow
 	include("share/concatVar.jl"); export concatVar
