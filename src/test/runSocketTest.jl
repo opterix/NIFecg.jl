@@ -18,7 +18,19 @@ function MFMSocket(AECG,ti,tf,sr)
 	#------------------ FETAL SUBSTRACTION AND COMPUTATION 
 	(AECGf_sort,QRSf_pos,QRSf_value,QRSfcell_pos,QRSfcell_value,heart_rate_feto, QRSfcell_pos_smooth, SMI, gini_measure) = fetalSubstraction(AECG_residual,heart_rate_mother,nch,sr,ti,tf)
 
-	return AECGf_sort[:,1],AECGm_sort[:,1];
+	concatArray = zeros(2*length(AECGf_sort));
+	finalArray = zeros(2*length(AECGf_sort));
+	for i = 2:2:length(AECGf_sort)*2
+		concatArray[i-1]=AECGm_sort[i,1];
+		concatArray[i]=AECGf_sort[i,1];
+	end
+	min=min(concatArray);
+	max=max(concatArray);
+	
+	for i = 1:length(AECGf_sort)*2
+		finalArray = UInt8((concatArray[i]-min)/(max-min)*255);
+	end
+	return finalArray;
 end
 
 
