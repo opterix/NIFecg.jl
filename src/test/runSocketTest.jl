@@ -20,15 +20,19 @@ function MFMSocket(AECG,ti,tf,sr)
 
 	concatArray = zeros(2*length(AECGf_sort));
 	finalArray = zeros(2*length(AECGf_sort));
+	acum = 1;
+	println(length(AECGf_sort)*2))
 	for i = 2:2:length(AECGf_sort)*2
-		concatArray[i-1]=AECGm_sort[i,1];
-		concatArray[i]=AECGf_sort[i,1];
+		println(acum)
+		concatArray[i-1]=AECGm_sort[acum,1];
+		concatArray[i]=AECGf_sort[acum,1];
+		acum += 1;
 	end
-	min=min(concatArray);
-	max=max(concatArray);
+	min=minimum(concatArray);
+	max=maximum(concatArray);
 	
-	for i = 1:length(AECGf_sort)*2
-		finalArray = UInt8((concatArray[i]-min)/(max-min)*255);
+	for ii = 1:length(AECGf_sort)*2
+		finalArray[ii] = ((concatArray[ii]-min)/(max-min)*255);
 	end
 	return finalArray;
 end
