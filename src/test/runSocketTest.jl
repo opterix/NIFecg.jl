@@ -23,7 +23,7 @@ function MFMSocket(AECG,ti,tf,sr)
 	acum = 1;
 	println(length(AECGf_sort)*2)
 	for i = 2:2:length(AECGf_sort)*2
-		println(acum)
+		#println(acum)
 		concatArray[i-1]=AECGm_sort[acum,1];
 		concatArray[i]=AECGf_sort[acum,1];
 		acum += 1;
